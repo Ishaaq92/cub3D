@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+/*These are all test structs*/
 typedef struct  s_player {
     // double  x;
     // double  y;
