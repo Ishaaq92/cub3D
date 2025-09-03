@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/03 16:15:58 by isahmed          ###   ########.fr       */
+/*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
+/*   Updated: 2025/09/03 16:13:21 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-int		main(void)
+
+void	ft_quit(t_data *data)
 {
-	t_data	data;
-	
-	if (initialise_data(&data) == -1)
-		exit(1);
-	render(&data);
-	mlx_key_hook(data.win, key_hook, &data);
-	mlx_loop(data.mlx);
-	ft_quit(&data);
+	if (!data->mlx)
+		return ;
+	if (data->img->img)
+		mlx_destroy_image(data->mlx, data->img->img);
+	if (data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	exit(0);
 }
