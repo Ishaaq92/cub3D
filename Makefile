@@ -1,10 +1,11 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(MLX_DIR) -g
+CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(MLX_DIR) -g 
 SRCS = cub3D.c init.c utils.c render.c hooks.c
 NAME = cub3D
 
 ODIR = objs
-OBJS = $(patsubst %.c, $(ODIR)/%.o, $(SRCS))
+SDIR = srcs
+OBJS = $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(SDIR)/$(SRCS))
 MLX_DIR = minilibx-linux
 
 all: $(NAME) 
@@ -12,7 +13,7 @@ all: $(NAME)
 $(NAME): $(OBJS) $(MLX_DIR)/libmlx.a
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lmlx -lX11 -lXext -lm
 
-$(ODIR)/%.o: %.c | $(ODIR)
+$(ODIR)/%.o: $(SDIR)/%.c | $(ODIR) 
 	$(CC) $(CFLAGS) $< -c -o $@ 
 
 $(ODIR):
