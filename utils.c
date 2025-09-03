@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/03 16:13:21 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/03 16:27:43 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_quit(t_data *data)
 {
-	if (!data->mlx)
+	if (!data || !data->mlx)
 		return ;
-	if (data->img->img)
-		mlx_destroy_image(data->mlx, data->img->img);
+	if (data->img.img)
+		mlx_destroy_image(data->mlx, data->img.img);
 	if (data->win)
 		mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);

@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/03 16:15:41 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/03 16:28:35 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_data_
 {
 	void		*mlx;
 	void		*win;
-	t_img		*img;
+	t_img		img;
 	double		zoom;
 }	t_data;
 

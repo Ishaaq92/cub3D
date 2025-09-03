@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/03 16:12:44 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/03 16:29:54 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	render(t_data *data)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			pixel_put(x, y, data->img, 200);
+			pixel_put(x, y, &data->img, 200);
 		}
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }
