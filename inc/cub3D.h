@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/03 16:28:35 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/08 15:06:35 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,13 @@
 # define CUB3D_H
 
 # include <stdio.h>
+# include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <X11/keysym.h>
+# include <X11/X.h>
 # include "mlx.h"
+# include "libft.h"
 # define WIDTH 800
 # define HEIGHT 800
 
@@ -39,7 +42,7 @@ typedef struct s_data_
 }	t_data;
 
 // utils.c
-void	ft_quit(t_data *data);
+int	ft_quit(t_data *data);
 
 // render.c
 void	render(t_data *data);

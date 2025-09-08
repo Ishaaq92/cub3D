@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
+CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
 SRCS = cub3D.c init.c utils.c render.c hooks.c
 NAME = cub3D
 
@@ -9,11 +9,12 @@ IDIR = inc/
 FULL_SRCS = $(addprefix $(SDIR), $(SRCS))
 OBJS = $(patsubst $(SDIR)%.c, $(ODIR)%.o, $(FULL_SRCS))
 MLX_DIR = minilibx-linux/
+LIBFT_DIR = Libft/
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(MLX_DIR)libmlx.a
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lmlx -lX11 -lXext -lm
+$(NAME): $(OBJS) $(MLX_DIR)libmlx.a $(LIBFT_DIR)libft.a
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lmlx -lX11 -lXext -lm $(LIBFT_DIR)libft.a
 
 $(ODIR)%.o: $(SDIR)%.c  | $(ODIR)
 	$(CC) $(CFLAGS) $< -c -o $@ 
@@ -24,6 +25,9 @@ $(ODIR):
 $(MLX_DIR)libmlx.a:
 	make -C $(MLX_DIR)
 
+$(LIBFT_DIR)libft.a:
+	make -C $(LIBFT_DIR)
+
 clean:
 	rm -rf $(ODIR)
 
@@ -33,3 +37,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
