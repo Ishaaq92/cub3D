@@ -1,6 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/09/08 16:14:59 by isahmed           #+#    #+#              #
+#    Updated: 2025/09/08 16:15:00 by isahmed          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
-SRCS = cub3D.c init.c utils.c render.c hooks.c
+SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c
 NAME = cub3D
 
 ODIR = objs/

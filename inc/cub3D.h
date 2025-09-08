@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/08 15:06:35 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:14:24 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ typedef struct s_data_
 	t_img		img;
 	double		zoom;
 }	t_data;
+
+// parser.c
+int	parser(t_data *data, char *file);
 
 // utils.c
 int	ft_quit(t_data *data);
