@@ -6,13 +6,31 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/08 16:15:34 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:52:37 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	process_map(char *filename)
+int	process_textures(t_data *data, char *line)
+{
+	static int	count;
+
+	if (count == 4)
+		return (1);
+	if (ft_strncmp(line, "NO", 2) == 0)
+		return (count ++, printf("north textures\n"), 0);
+	else if (ft_strncmp(line, "SO", 2) == 0)
+		return (count ++, printf("south textures\n"), 0);
+	else if (ft_strncmp(line, "EA", 2) == 0)
+		return (count ++, printf("east textures\n"), 0);
+	else if (ft_strncmp(line, "WE", 2) == 0)
+		return (count ++, printf("west textures\n"), 0);
+	else
+		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), -1);
+}
+
+int	process_map(t_data *data, char *filename)
 {
 	int		fd;
 	char	*s;
@@ -22,14 +40,13 @@ int	process_map(char *filename)
 	if (fd < 0)
 		return (-1);
 	while ((s = get_next_line(fd)))
-		if (ft_strncmp(s, "\n", 1))
-			printf("%s", s);
+		if (ft_strncmp(s, "\n", 1) && process_textures(data, s) != 1)
+			continue;
 	return (1);
 }
 
 int	parser(t_data *data, char *file)
 {
-	(void) data;
-	process_map(file);
+	process_map(data, file);
 	return (0);
 }
