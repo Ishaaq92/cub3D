@@ -6,13 +6,13 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/08 16:52:37 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/08 17:49:41 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	process_textures(t_data *data, char *line)
+int	process_wall_textures(t_data *data, char *line)
 {
 	static int	count;
 
@@ -30,23 +30,36 @@ int	process_textures(t_data *data, char *line)
 		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), -1);
 }
 
-int	process_map(t_data *data, char *filename)
+int	process_other_textures(t_data *data, char *line)
+{
+	static int	count;
+
+	if (count == 2)
+		return (1);
+	if (ft_strncmp(line, "F", 1) == 0)
+		return (count ++, printf("floor texture\n"), 0);
+	else if (ft_strncmp(line, "C", 1) == 0)
+		return (count ++, printf("celling texture\n"), 0);
+	else
+		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), 1);
+}
+
+// int	process_map(t_data *data, char *filename)
+// {
+// }
+
+int	parser(t_data *data, char *file)
 {
 	int		fd;
 	char	*s;
 
 	s = NULL;
-	fd = open(filename, 0);
+	fd = open(file, 0);
 	if (fd < 0)
 		return (-1);
 	while ((s = get_next_line(fd)))
-		if (ft_strncmp(s, "\n", 1) && process_textures(data, s) != 1)
+		if (ft_strncmp(s, "\n", 1) && (process_wall_textures(data, s) != 1 || process_other_textures(data, s) != 1))
 			continue;
-	return (1);
-}
-
-int	parser(t_data *data, char *file)
-{
-	process_map(data, file);
+	// process_map(data, file);
 	return (0);
 }
