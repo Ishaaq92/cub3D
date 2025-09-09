@@ -1,9 +1,8 @@
 NO	./assets/walls/1.xpm
-SO	./assets/walls/1.xpm
-WE	./assets/walls/1.xpm
 EA	./assets/walls/1.xpm
-
+SO	./assets/walls/1.xpm
 F 256,10,0
+WE	./assets/walls/1.xpm
 C 225,30,0
 
 1111111
