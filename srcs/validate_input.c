@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "cub3D.h"
 
 int file_extension_valid(char* filepath)
 {
@@ -67,32 +67,32 @@ char** list_to_array(t_list* list)
     return (arr);
 }
 
-int validate_input(char*** map, t_list** map_list, char* file_name, t_game** game)
+int validate_input(t_data *data, char* file_name)
 {
     if (!file_extension_valid(file_name))
     {
         printf("Error: file must have a .cub extension\n");
         return (1);
     }
-    *map_list = read_file_to_list(file_name);
-    if (!map_list)
+    data->map.map_list = read_file_to_list(file_name);
+    if (!data->map.map_list)
     {
         printf("Error: unable to read file\n");
         return (1);
     }
-    *map = list_to_array(*map_list);
-    if (!map)
-    {
-        printf("Error: malloc failed in the list_to_array\n");
+    // *map = list_to_array(*map_list);
+    // if (!map)
+    // {
+    //     printf("Error: malloc failed in the list_to_array\n");
+    //     return (1);
+    // }
+    // *game = malloc(sizeof(t_game));
+    // if (!*game)
+    // {
+    //     printf("Error: unabe to malloc sizeof t_game\n");
+    // }
+    if (validate_map(data) != 0)
         return (1);
-    }
-    *game = malloc(sizeof(t_game));
-    if (!*game)
-    {
-        printf("Error: unabe to malloc sizeof t_game\n");
-    }
-    if (validate_map(*map, game) != 0)
-        return (1);
-    print_map(*map);
+    print_map(data->map.map, data->map.map_size);
     return (0);
 }

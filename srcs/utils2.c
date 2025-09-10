@@ -1,11 +1,11 @@
-#include "cub3d.h"
+#include "cub3D.h"
 
-int	player_error(const char *msg, t_game *game)
+int	player_error(const char *msg, t_player *player)
 {
-	if (game && game->player)
+	if (player)
 	{
-		free(game->player);
-		game->player = NULL;
+		free(player);
+		player = NULL;
 	}
 	printf("%s\n", msg);
 	return (1);
@@ -23,14 +23,14 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void	print_map(char **map)
+void	print_map(char **map, int map_size)
 {
 	int	i;
 
 	i = 0;
 	if (!map)
 		printf("No map here?\n");
-	while (map[i])
+	while (i < map_size)
 	{
 		printf("line[%d]: %s", i, map[i]);
 		i++;
