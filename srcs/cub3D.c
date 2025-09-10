@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/08 16:13:29 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:21:07 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int main(int ac, char **av) {
   t_data data;
-  (void)data;
+  // t_map config;
 
+  // data.config = config;
   if (ac > 2)
     return (1);
   if (av[1])
