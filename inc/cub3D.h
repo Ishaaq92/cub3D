@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 15:43:32 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 18:01:25 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int parser(t_data *data, char *file);
 
 // utils.c
 int ft_quit(t_data *data);
+int	set_rgb(char *line);
 
 // render.c
 void render(t_data *data);

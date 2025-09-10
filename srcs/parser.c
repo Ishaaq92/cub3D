@@ -6,33 +6,13 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 16:29:59 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 18:02:26 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	set_rgb(char *line)
-{
-	int		colour;
-	int		rgb;
-	int		i;
-
-	i = 0;
-	while (!ft_isdigit(line[i]))
-		i ++;
-	colour = ft_atoi(&line[i]);
-	rgb = (colour << 16);
-	line = ft_strchr(line, ',') + 1;
-	colour = ft_atoi(line);
-	rgb = rgb + (colour << 8);
-	line = ft_strchr(line, ',') + 1;
-	colour = ft_atoi(line);
-	rgb = rgb + colour;
-	return (rgb);
-}
-
-int	set_texture_config(t_data *data, char *line, char c)
+static int	set_texture_config(t_data *data, char *line, char c)
 {
 	if (c == 'N')
 		data->map.path_to_NO = ft_strdup(ft_strchr(line, '.'));
@@ -51,7 +31,7 @@ int	set_texture_config(t_data *data, char *line, char c)
 	return (0);
 }
 
-int process_textures(t_data *data, char *line)
+static	int process_textures(t_data *data, char *line)
 {
 	static int count;
 
@@ -75,7 +55,7 @@ int process_textures(t_data *data, char *line)
 		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), 1);
 }
 
-char	**add_map_line(t_data *data, char **line)
+static char	**add_map_line(t_data *data, char **line)
 {
 	char	**map;
 	int		i;
@@ -97,7 +77,7 @@ char	**add_map_line(t_data *data, char **line)
 	return (map);
 }
 
-int	process_map(t_data *data, char *line)
+static int	process_map(t_data *data, char *line)
 {
 	static int	start;
 
