@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 15:13:38 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 15:43:32 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 typedef struct s_map {
 	char	**map;
+	int		map_size;
 	int		floor_rgb;
 	int		celling_rgb;
 	char	*path_to_NO;

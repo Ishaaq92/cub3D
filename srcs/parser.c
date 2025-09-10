@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 15:18:08 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 16:16:16 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,38 @@ int process_textures(t_data *data, char *line)
 	return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), -1);
 }
 
+char	**add_map_line(t_data *data, char **line)
+{
+	char	**map;
+	int		i;
+	
+	if (data->map.map_size == 0)
+	{
+		map = malloc(sizeof(char *) * 1);
+		map[0] = *line;
+		data->map.map_size++;
+		return (map);
+	}
+	map = malloc(sizeof(char *) * (data->map.map_size + 1));
+	i = -1;
+	while (++i < data->map.map_size)
+		map[i] = data->map.map[i];
+	map[i] = ft_strdup(*line);
+	data->map.map_size++;
+	free(data->map.map);
+	return (map);
+}
+
 int	process_map(t_data *data, char *line)
 {
-	static int	index = 0;
+	static int	start;
 
-	if (!line || !data->map.map)
+	if (start == 1 && !ft_strncmp(line, "\n", 1))
+		return (2);
+	if (!line)
 		return (1);
-	// printf("-%s\n", (char *)&config);
-	data->map.map[index] = ft_strdup(line);
+	data->map.map = add_map_line(data, &line);
+	start = 1;
 	return (0);
 }
 
@@ -93,21 +117,21 @@ int parser(t_data *data, char *file)
 	fd = open(file, 0);
 	if (fd < 0)
 		return (-1);
+	data->map.map_size = 0;
 	while ((s = get_next_line(fd)))
 	{
 		if (!ft_strncmp(s, "\n", 1) || process_textures(data, s) == 0)
 			continue;
 		else if (process_textures(data, s) == 1)
-		{
-			// printf("%s", s);
-			// while ((s = get_next_line(fd)) && !ft_strncmp(s, "\n", 1))
-			// 	continue;
 			break;
-		}
 	}
-	if (process_map(data, s) == 1)
+	if (process_map(data, s) != 0)
 		printf("error");
-	// while ((s = get_next_line(fd)))
-	// 	process_map(data, s);
+	while ((s = get_next_line(fd)))
+		if (process_map(data, s) != 0)
+			printf("error");
+	printf("size = %d\n", data->map.map_size);
+	for (int i=0;i < data->map.map_size; i++)
+		printf("%s", data->map.map[i]);
 	return (0);
 }
