@@ -12,24 +12,24 @@
 
 #include "libft.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*buff;
-	size_t	i;
+// void	*ft_calloc(size_t nmemb, size_t size)
+// {
+// 	void	*buff;
+// 	size_t	i;
 
-	if (nmemb && (SIZE_MAX / nmemb) < size)
-		return (NULL);
-	buff = malloc(nmemb * size);
-	if (!buff)
-		return (NULL);
-	i = 0;
-	while (i < (nmemb * size))
-	{
-		((unsigned char *)buff)[i] = '\0';
-		i++;
-	}
-	return (buff);
-}
+// 	if (nmemb && (SIZE_MAX / nmemb) < size)
+// 		return (NULL);
+// 	buff = malloc(nmemb * size);
+// 	if (!buff)
+// 		return (NULL);
+// 	i = 0;
+// 	while (i < (nmemb * size))
+// 	{
+// 		((unsigned char *)buff)[i] = '\0';
+// 		i++;
+// 	}
+// 	return (buff);
+// }
 
 char	*append_buff(char *big_buff, char *new_line)
 {

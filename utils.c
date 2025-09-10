@@ -1,67 +1,68 @@
 #include "cub3d.h"
 
-int player_error(const char *msg, t_game* game)
+int	player_error(const char *msg, t_game *game)
 {
-    if (game && game->player)
-    {
-        free(game->player);
-        game->player = NULL;
-    }
-    printf("%s\n", msg);
-    return (1);
+	if (game && game->player)
+	{
+		free(game->player);
+		game->player = NULL;
+	}
+	printf("%s\n", msg);
+	return (1);
 }
 
-void    free_array(char** arr)
+void	free_array(char **arr)
 {
-    int i;
+	int	i;
 
-    if (!arr)
-        return;
-    i = 0;
-    while (arr[i])
-        free(arr[i++]);
-    free(arr);
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
 }
 
-void    print_map(char** map)
+void	print_map(char **map)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!map)
-        printf("No map here?\n");
-    while (map[i])
-    {
-        printf("line[%d]: %s", i, map[i]);
-        i++;
-    }
+	i = 0;
+	if (!map)
+		printf("No map here?\n");
+	while (map[i])
+	{
+		printf("line[%d]: %s", i, map[i]);
+		i++;
+	}
+	printf("\n");
 }
 
-void    free_list_and_exit(t_list** map_list)
+void	free_list_and_exit(t_list **map_list)
 {
-    ft_lstclear(map_list, free);
-    printf("malloc error.....exiting\n");
-    exit(1);
+	ft_lstclear(map_list, free);
+	printf("malloc error.....exiting\n");
+	exit(1);
 }
 
-int clean_up(char** map, t_list** map_list)
+int	clean_up(char **map, t_list **map_list)
 {
-    if (map)
-        free_array(map);
-    if (map_list)
-        ft_lstclear(map_list, free);
-    return (1);
+	if (map)
+		free_array(map);
+	if (map_list)
+		ft_lstclear(map_list, free);
+	return (1);
 }
 
-char*    dup_line(char* src)
+char	*dup_line(char *src)
 {
-    char* dup;
-    int str_len;
+	char	*dup;
+	int		str_len;
 
-    str_len = ft_strlen(src);
-    dup = malloc(sizeof(char) * (str_len + 1));
-    if (!dup)
-        return (NULL);
-    ft_strlcpy(dup, src, (str_len + 1));
-    return (dup);
+	str_len = ft_strlen(src);
+	dup = malloc(sizeof(char) * (str_len + 1));
+	if (!dup)
+		return (NULL);
+	ft_strlcpy(dup, src, (str_len + 1));
+	return (dup);
 }

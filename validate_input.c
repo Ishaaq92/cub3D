@@ -81,7 +81,6 @@ int validate_input(char*** map, t_list** map_list, char* file_name, t_game** gam
         return (1);
     }
     *map = list_to_array(*map_list);
-    print_map(*map);
     if (!map)
     {
         printf("Error: malloc failed in the list_to_array\n");
@@ -94,5 +93,6 @@ int validate_input(char*** map, t_list** map_list, char* file_name, t_game** gam
     }
     if (validate_map(*map, game) != 0)
         return (1);
+    print_map(*map);
     return (0);
 }

@@ -17,7 +17,7 @@ int create_player(t_player** player, int i, int j, char orientation)
 
 int handle_player_char(char c, int i, int j, t_game* game, int* pc, char* pos)
 {
-    printf("In handle player char \n");
+    // printf("In handle player char \n");
     if (ft_strchr(pos, c))
     {
         ++(*pc);
@@ -38,7 +38,7 @@ int   check_player_flow(char** map, char *positions, t_game* game, int* pc)
     int j;
     
     i = 0;
-    printf("In check player_flow \n");
+    // printf("In check player_flow \n");
     while (map[i])
     {
         j = 0;
@@ -72,7 +72,7 @@ int check_player(char** map, t_game *game)
 
 int validate_map(char** map, t_game** game)
 {
-    printf("opening door to validate map\n");
+    // printf("opening door to validate map\n");
     if (check_allowed_chars(map) != 0)
         return (1);
     if (check_walls(map) != 0)
