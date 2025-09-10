@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 18:02:26 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 20:21:01 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static	int process_textures(t_data *data, char *line)
 	else if (ft_strncmp(line, "C", 1) == 0)
 		return (count++, printf("celling texture\n"), set_texture_config(data, line, 'C'));
 	else
-		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), 1);
+		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);
 }
 
 static char	**add_map_line(t_data *data, char **line)
