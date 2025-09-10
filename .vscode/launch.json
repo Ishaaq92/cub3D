@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "by-gdb",
+            "request": "launch",
+            "name": "Launch(lldb)",
+            "program": "${fileBasenameNoExtension}",
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Debug C Project (lldb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/main",   // your binary
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for lldb",
+                    "text": "settings set target.pretty-printing true"
+                }
+            ]
+        }
+    ]
+}
