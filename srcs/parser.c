@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 16:16:16 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 16:29:59 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,26 @@ int	set_texture_config(t_data *data, char *line, char c)
 
 int process_textures(t_data *data, char *line)
 {
-  static int count;
+	static int count;
 
-  if (count == 6)
-	return (1);
-  if (ft_strncmp(line, "NO", 2) == 0)
-	return (count++, set_texture_config(data, line, 'N'),("north textures\n"), 0);
-  else if (ft_strncmp(line, "SO", 2) == 0)
-	return (count++, set_texture_config(data, line, 'S'), printf("south textures\n"), 0);
-  else if (ft_strncmp(line, "EA", 2) == 0)
-	return (count++, set_texture_config(data, line, 'E'), printf("east textures\n"), 0);
-  else if (ft_strncmp(line, "WE", 2) == 0)
-	return (count++, set_texture_config(data, line, 'W'), printf("west textures\n"), 0);
-  else if (ft_strncmp(line, "F", 1) == 0)
-	return (count++, printf("floor texture\n"), set_texture_config(data, line, 'F'));
-  else if (ft_strncmp(line, "C", 1) == 0)
-	return (count++, printf("celling texture\n"), set_texture_config(data, line, 'C'));
-  else
-	return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), -1);
+	if (!ft_strncmp(line, "\n", 1))
+		return (0);
+	else if (count == 6)
+		return (1);
+	else if (ft_strncmp(line, "NO", 2) == 0)
+		return (count++, set_texture_config(data, line, 'N'),("north textures\n"), 0);
+	else if (ft_strncmp(line, "SO", 2) == 0)
+		return (count++, set_texture_config(data, line, 'S'), printf("south textures\n"), 0);
+	else if (ft_strncmp(line, "EA", 2) == 0)
+		return (count++, set_texture_config(data, line, 'E'), printf("east textures\n"), 0);
+	else if (ft_strncmp(line, "WE", 2) == 0)
+		return (count++, set_texture_config(data, line, 'W'), printf("west textures\n"), 0);
+	else if (ft_strncmp(line, "F", 1) == 0)
+		return (count++, printf("floor texture\n"), set_texture_config(data, line, 'F'));
+	else if (ft_strncmp(line, "C", 1) == 0)
+		return (count++, printf("celling texture\n"), set_texture_config(data, line, 'C'));
+	else
+		return (write(2, "Error: Invalid texture\n", 24), ft_quit(data), 1);
 }
 
 char	**add_map_line(t_data *data, char **line)
@@ -116,22 +118,15 @@ int parser(t_data *data, char *file)
 	s = NULL;
 	fd = open(file, 0);
 	if (fd < 0)
-		return (-1);
+		return (1);
 	data->map.map_size = 0;
 	while ((s = get_next_line(fd)))
-	{
-		if (!ft_strncmp(s, "\n", 1) || process_textures(data, s) == 0)
-			continue;
-		else if (process_textures(data, s) == 1)
+		if (process_textures(data, s) == 1)
 			break;
-	}
 	if (process_map(data, s) != 0)
 		printf("error");
 	while ((s = get_next_line(fd)))
 		if (process_map(data, s) != 0)
 			printf("error");
-	printf("size = %d\n", data->map.map_size);
-	for (int i=0;i < data->map.map_size; i++)
-		printf("%s", data->map.map[i]);
 	return (0);
 }
