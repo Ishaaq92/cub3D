@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 18:01:25 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/10 19:20:41 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@
 # define WIDTH 800
 # define HEIGHT 800
 
+
+typedef struct  s_player {
+    // double  x;
+    // double  y;
+    // double  dir_x;
+    // double  dir_y;
+    // double  plane_x;
+    // double  plane_y;
+    int row;
+    int column;
+    char    orientation;
+}   t_player;
+
+
 typedef struct s_map {
 	char	**map;
 	int		map_size;
@@ -35,6 +49,14 @@ typedef struct s_map {
 	char	*path_to_WE;
 	char	*path_to_EA;
 } 			t_map;
+
+typedef struct s_game
+{
+    // t_config    *config;
+    t_map       *map;
+    t_player    *player;
+    // t_window    *window;
+}   t_game;
 
 typedef struct t_img {
 	void	*img;
@@ -69,4 +91,28 @@ int initialise_data(t_data *data);
 // hooks.c
 int key_hook(int keycode, t_data *data);
 
+//Validation functions
+int check_player(char** map, t_game* game);
+int check_allowed_chars(char** map);
+int validate_map(char** map, t_game** game);
+int create_player(t_player** player, int i, int j, char orientation);
+int   check_player_flow(char** map, char *positions, t_game* game, int* pc);
+int handle_player_char(char c, int i, int j, t_game* game, int* pc, char* pos);
+int validate_input(char*** map, t_list** map_list, char* file_name, t_game** game);
+
+//Utils
+int check_walls(char** map);
+char*    dup_line(char* src);
+void    free_array(char** arr);
+void    print_map(char** map);
+int clean_up(char** map, t_list** map_list);
+void    free_list_and_exit(t_list** map_list);
+int player_error(const char *msg, t_game* game);
+
+char*    dup_line(char* src);
+void    free_array(char** arr);
+char** list_to_array(t_list* list);
+int file_extension_valid(char* filepath);
+void    free_list_and_exit(t_list** map_list);
+t_list* read_file_to_list(const char* path);
 #endif
