@@ -94,12 +94,12 @@ int		initialise_data(t_data *data);
 int		key_hook(int keycode, t_data *data);
 
 //Validation functions
-int		check_player(char** map, int map_size, t_player* player);
+int	check_player(t_data *data);
 int		check_allowed_chars(char** map, int map_size);
 int		validate_map(t_data *data);
 int		create_player(t_player** player, int i, int j, char orientation);
-int		check_player_flow(char** map, int map_size, char *positions, t_player* player, int* pc);
-int		handle_player_char(char c, int i, int j, t_player* player, int* pc, char* pos);
+int	check_player_flow(t_data *data, int *pc);
+int	handle_player_char(int i, int j, t_data *data, int *pc);
 int		validate_input(t_data *data, char* file_name);
 
 //Utils

@@ -104,9 +104,10 @@ int parser(t_data *data, char *file)
 		if (process_textures(data, s) == 1)
 			break;
 	if (process_map(data, s) != 0)
-		printf("error");
+		printf("error"); //Need to return 1 here?
 	while ((s = get_next_line(fd)))
 		if (process_map(data, s) != 0)
-			printf("error");
+			printf("error"); //Need to return 1 here?
+	//close(fd); //Do we need to close file descriptor here?
 	return (0);
 }
