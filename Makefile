@@ -6,13 +6,13 @@
 #    By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/08 16:14:59 by isahmed           #+#    #+#              #
-#    Updated: 2025/09/10 19:27:29 by isahmed          ###   ########.fr        #
+#    Updated: 2025/09/16 16:29:11 by isahmed          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
-SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.c validate_map_utils.c validate_map.c
+CFLAGS = -Wall -Wextra  -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
+SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.c validate_map_utils.c validate_map.c dda.c
 NAME = cub3D
 
 ODIR = objs/

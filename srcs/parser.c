@@ -6,22 +6,35 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 20:21:01 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/15 16:20:46 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
+char	*set_path(char *line)
+{
+	char	*path;
+	
+	path = ft_strdup(ft_strtrim(ft_strchr(line, '.'), "\n "));
+	// printf("set_path: %s\n", path);
+	if (access(path, 0) == -1)
+		return(exit(1), NULL);
+	return (path);
+}
+
 static int	set_texture_config(t_data *data, char *line, char c)
 {
+	// if (access(ft_strtrim(ft_strchr(line, '.'), "\n "), 0) == -1)
+	// 	return (printf("failure: bad path for %c", c), exit(1), -1);
 	if (c == 'N')
-		data->map.path_to_NO = ft_strdup(ft_strchr(line, '.'));
+		data->map.path_to_NO = set_path(line);
 	else if (c == 'S')
-		data->map.path_to_SO = ft_strdup(ft_strchr(line, '.'));
+		data->map.path_to_SO = set_path(line);
 	else if (c == 'E')
-		data->map.path_to_EA = ft_strdup(ft_strchr(line, '.'));
+		data->map.path_to_EA = set_path(line);
 	else if (c == 'W')
-		data->map.path_to_WE = ft_strdup(ft_strchr(line, '.'));
+		data->map.path_to_WE = set_path(line);
 	else if (c == 'F')
 		data->map.floor_rgb = set_rgb(line);
 	else if (c == 'C')
@@ -39,17 +52,17 @@ static	int process_textures(t_data *data, char *line)
 		return (0);
 	else if (count == 6)
 		return (1);
-	else if (ft_strncmp(line, "NO", 2) == 0)
-		return (count++, set_texture_config(data, line, 'N'),("north textures\n"), 0);
-	else if (ft_strncmp(line, "SO", 2) == 0)
-		return (count++, set_texture_config(data, line, 'S'), printf("south textures\n"), 0);
-	else if (ft_strncmp(line, "EA", 2) == 0)
-		return (count++, set_texture_config(data, line, 'E'), printf("east textures\n"), 0);
-	else if (ft_strncmp(line, "WE", 2) == 0)
-		return (count++, set_texture_config(data, line, 'W'), printf("west textures\n"), 0);
-	else if (ft_strncmp(line, "F", 1) == 0)
+	else if (ft_strncmp(line, "NO", 2) == 0 && !data->map.path_to_NO)
+		return (count++, set_texture_config(data, line, 'N'), printf("north textures: %s\n", data->map.path_to_NO), 0);
+	else if (ft_strncmp(line, "SO", 2) == 0 && !data->map.path_to_SO)
+		return (count++, set_texture_config(data, line, 'S'), printf("north textures: %s\n", data->map.path_to_SO), 0);
+	else if (ft_strncmp(line, "EA", 2) == 0 && !data->map.path_to_EA)
+		return (count++, set_texture_config(data, line, 'E'), printf("east textures: %s\n", data->map.path_to_EA), 0);
+	else if (ft_strncmp(line, "WE", 2) == 0 && !data->map.path_to_WE)
+		return (count++, set_texture_config(data, line, 'W'), printf("east textures: %s\n", data->map.path_to_EA), 0);
+	else if (ft_strncmp(line, "F", 1) == 0  && data->map.floor_rgb == -1)
 		return (count++, printf("floor texture\n"), set_texture_config(data, line, 'F'));
-	else if (ft_strncmp(line, "C", 1) == 0)
+	else if (ft_strncmp(line, "C", 1) == 0 && data->map.celling_rgb == -1)
 		return (count++, printf("celling texture\n"), set_texture_config(data, line, 'C'));
 	else
 		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);

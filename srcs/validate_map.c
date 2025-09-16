@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:45 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/09/10 21:36:50 by aaladeok         ###   ########.fr       */
+/*   Updated: 2025/09/16 20:20:56 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	create_player(t_player **player, int i, int j, char orientation)
 		printf("Malloc error.....exiting\n");
 		return (1);
 	}
-	(*player)->row = i;
-	(*player)->column = j;
+	(*player)->x = i;
+	(*player)->y = j;
 	(*player)->orientation = orientation;
 	printf("Player has been duly allocated.\n");
 	return (0);

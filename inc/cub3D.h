@@ -6,13 +6,14 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 20:14:02 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/16 20:21:52 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
 
+# include <math.h>
 # include "libft.h"
 # include "mlx.h"
 # include <X11/X.h>
@@ -27,17 +28,10 @@
 
 
 typedef struct  s_player {
-    // double  x;
-    // double  y;
-    // double  dir_x;
-    // double  dir_y;
-    // double  plane_x;
-    // double  plane_y;
-    int row;
-    int column;
-    char    orientation;
+	double  x;
+	double  y;
+	char	orientation;	
 }   t_player;
-
 
 typedef struct s_map {
 	char	**map;
@@ -53,10 +47,13 @@ typedef struct s_map {
 
 typedef struct s_game
 {
-    // t_config    *config;
-    t_map       *map;
-    t_player    *player;
-    // t_window    *window;
+	t_map       *map;
+	t_player    *player;
+	double  dir_x;
+	double  dir_y;
+	double  plane_x;
+	double  plane_y;
+	double  camera_x;
 }   t_game;
 
 typedef struct t_img {
@@ -117,5 +114,9 @@ char**	list_to_array(t_list* list);
 int		file_extension_valid(char* filepath);
 void    free_list_and_exit(t_list** map_list);
 t_list* read_file_to_list(const char* path);
+
+// dda.c
+double dda(t_data *data, int x);
+
 
 #endif
