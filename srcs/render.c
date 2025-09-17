@@ -6,13 +6,13 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 15:56:10 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 16:12:50 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	pixel_put(int x, int y, t_img *img, int colour)
+static void	pixel_put(int x, int y, t_img *img, int colour)
 {
 	char	*pixel;
 
@@ -23,6 +23,28 @@ void	pixel_put(int x, int y, t_img *img, int colour)
 	}
 }
 
+static void	draw_pixel(t_data *data, int x, int y, int line_height)
+{
+	int			draw_start;
+	int			draw_end;
+
+	draw_start = -line_height / 2 + HEIGHT / 2;
+	if(draw_start < 0)
+		draw_start = 0;
+	draw_end = line_height / 2 + HEIGHT / 2;
+	if(draw_end >= HEIGHT)
+		draw_end = HEIGHT - 1;
+
+	if (y > draw_start && y < draw_end)
+		pixel_put(x, y, &data->img, 0XFF00FF);
+	else if (y < draw_start)
+		pixel_put(x, y, &data->img, 300);
+	else if (y > draw_end)
+		pixel_put(x, y, &data->img, 100);
+	else
+		pixel_put(x, y, &data->img, 0x00FF0F);
+}
+
 // get_side_dist_x()
 
 void	render(t_data *data)
@@ -31,8 +53,6 @@ void	render(t_data *data)
 	int			y;
 	double		distance;
 	int			line_height;
-	int			draw_start;
-	int			draw_end;
 
 	x = -1;
 	while (++x < WIDTH)
@@ -44,23 +64,7 @@ void	render(t_data *data)
 		if (line_height < 0)
 		 	line_height = line_height % HEIGHT;
 		while (++y < HEIGHT)
-		{
-			draw_start = -line_height / 2 + HEIGHT / 2;
-  		    if(draw_start < 0)
-				draw_start = 0;
-   			draw_end = line_height / 2 + HEIGHT / 2;
-    		if(draw_end >= HEIGHT)
-				draw_end = HEIGHT - 1;
-
-			if (y > draw_start && y < draw_end)
-				pixel_put(x, y, &data->img, 0Xff00FF);
-			else if (y < draw_start)
-				pixel_put(x, y, &data->img, 300);
-			else if (y > draw_end)
-				pixel_put(x, y, &data->img, 100);
-			else
-				pixel_put(x, y, &data->img, 0x00FF0F);
-		}
+			draw_pixel(data, x, y, line_height);
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 }
