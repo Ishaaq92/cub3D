@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/16 20:14:14 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 15:56:10 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ void	render(t_data *data)
 		y = -1;
 		distance = dda(data, x);
 		line_height = (int) (HEIGHT / distance);
-		printf("|%f|", distance);
+		printf("|%d|", line_height);
 		if (line_height < 0)
 		 	line_height = line_height % HEIGHT;
-			// printf("LESS THAN 0 \n");
 		while (++y < HEIGHT)
 		{
 			draw_start = -line_height / 2 + HEIGHT / 2;

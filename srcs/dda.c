@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/16 20:25:52 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 15:54:13 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,40 @@
 // 		return (side_dist_y - delta_dist_y);
 // }
 
-void	initialise_position(t_data *data)
+void	initialise_game(t_game *game)
 {
-	t_game	*game;
-
 	game->player->x = 4.2;
 	game->player->y = 4.2;
 	game->plane_x = 0;
 	game->plane_y = 0.66;
 	game->dir_x = -1;
 	game->dir_y = 0;
-	
 }
+
+// t_ray	*initialise_ray(t_ray *ray)
+// {
+// 	ray->delta_dist_x = ;
+// 	ray->delta_dist_y;
+// 	ray->ray_dir_x;
+// 	ray->ray_dir_y;
+// 	ray->side_dist_x;
+// 	ray->side_dist_y;
+// }
 
 double dda(t_data *data, int x)
 {
-	char	test_map[8][9] =
+	t_game		game;
+	t_player	player;
+	t_ray		ray;
+	double		distance;
+	double		camera_x = 2 * x / (double)WIDTH - 1;
+	int			map_x;
+	int			map_y;
+	int			step_x;
+	int			step_y;
+	int			hit = 0; 
+	int			side;
+	char		test_map[8][9] =
 	{
 		"1111111\n",
 		"1000001\n",
@@ -133,82 +151,68 @@ double dda(t_data *data, int x)
 		"1000001\n",
 		"1111111\0"
 	};
-	// initialise_position(data);
-	double posX = 4.2, posY = 4.2;
-	double dirX = -1, dirY = 0;
-	double planeX = 0, planeY = 0.66; 
+	game.player = &player;
+	initialise_game(&game);
 
-	double cameraX = 2 * x / (double)WIDTH - 1;
-	double rayDirX = dirX + planeX * cameraX;
-	double rayDirY = dirY + planeY * cameraX;
+	map_x = (int)game.player->x;
+	map_y = (int)game.player->y;
 
-	int mapX = (int)posX;
-	int mapY = (int)posY;
+	ray.ray_dir_x = game.dir_x + game.plane_x * camera_x;
+	ray.ray_dir_y = game.dir_y + game.plane_y * camera_x;
 
-	double sideDistX;
-	double sideDistY;
 
-	double deltaDistX;
-	double deltaDistY;
-
-	double perpWallDist;
-
-	int stepX;
-	int stepY;
-	int hit = 0; 
-	int side;
-	if (rayDirX == 0)
-		deltaDistX = 1e30;
+	if (ray.ray_dir_x == 0)
+		ray.delta_dist_x = 1e30;
 	else
-		deltaDistX = fabs(1 / rayDirX);
+		ray.delta_dist_x = fabs(1 / ray.ray_dir_x);
 
-	if (rayDirY == 0)
-		deltaDistY = 1e30;
+	if (ray.ray_dir_y == 0)
+		ray.delta_dist_y = 1e30;
 	else
-		deltaDistY = fabs(1 / rayDirY);
+		ray.delta_dist_y = fabs(1 / ray.ray_dir_y);
 
 
-	if (rayDirX < 0)
+	if (ray.ray_dir_x < 0)
 	{
-		stepX = -1;
-		sideDistX = (posX - mapX) * deltaDistX;
+		step_x = -1;
+		ray.side_dist_x = (game.player->x - map_x) * ray.delta_dist_x;
 	}
 	else
 	{
-		stepX = 1;
-		sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+		step_x = 1;
+		ray.delta_dist_x = (map_x + 1.0 - game.player->x) * ray.delta_dist_x;
 	}
-	if (rayDirY < 0)
+	if (ray.ray_dir_y < 0)
 	{
-		stepY = -1;
-		sideDistY = (posY - mapY) * deltaDistY;
+		step_y = -1;
+		ray.delta_dist_y = (game.player->y - map_y) * ray.delta_dist_y;
 	}
 	else
 	{
-		stepY = 1;
-		sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+		step_y = 1;
+		ray.side_dist_y = (map_y + 1.0 - game.player->y) * ray.delta_dist_y;
 	}
 	while (hit == 0)
 	{
 		// jump to next map square, either in x-direction, or in y-direction
-		if (sideDistX < sideDistY)
+		if (ray.side_dist_x < ray.delta_dist_y)
 		{
-			sideDistX += deltaDistX;
-			mapX += stepX;
+			ray.side_dist_x += ray.delta_dist_x;
+			map_x += step_x;
 			side = 0;
 		}
 		else
 		{
-			sideDistY += deltaDistY;
-			mapY += stepY;
+			ray.side_dist_y += ray.delta_dist_y;
+			map_y += step_y;
 			side = 1;
 		}
-		if (test_map[mapX][mapY] > '0')
+		if (test_map[map_x][map_y] > '0')
 			hit = 1;
 	}
 	if (side == 0)
-		perpWallDist = (sideDistX - deltaDistX);
+		distance = (ray.side_dist_x - ray.delta_dist_x);
 	else
-		perpWallDist = (sideDistY - deltaDistY);
-	return (perpWallDist);
+		distance = (ray.side_dist_y - ray.delta_dist_y);
+	return (distance);
 }
