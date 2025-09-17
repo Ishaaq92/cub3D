@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 16:40:30 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:10:39 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,6 @@ void free_list_and_exit(t_list **map_list);
 // t_list *read_file_to_list(const char *path);
 
 // dda.c
-double dda(t_data *data, int x);
+double dda(int x);
 
 #endif

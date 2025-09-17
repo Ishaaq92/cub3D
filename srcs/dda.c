@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 17:02:28 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:10:19 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	perform_dda(t_ray *ray, char test_map[8][9])
 		return(ray->side_dist_y - ray->delta_dist_y);
 }
 
-double dda(t_data *data, int x)
+double dda(int x)
 {
 	char		test_map[8][9] =
 	{
@@ -110,7 +110,6 @@ double dda(t_data *data, int x)
 	t_game		game;
 	t_player	player;
 	t_ray		ray;
-	double		distance;
 
 	game.player = &player;
 	game.camera_x = 2 * x / (double)WIDTH - 1;
