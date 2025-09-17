@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 16:45:02 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/17 17:02:28 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,29 @@ static void	initialise_game(t_game *game)
 	game->dir_y = 0;
 }
 
-static void	set_side_dist(t_ray *ray, t_game *game)
+static void set_side_dist(t_ray *ray, t_game *game)
 {
-	if (ray->ray_dir_x < 0)
-	{
-		ray->step_x = -1;
-		ray->side_dist_x = (game->player->x - ray->map_x) * ray->delta_dist_x;
-	}
-	else
-		ray->delta_dist_x = (ray->map_x + 1.0 - game->player->x) * ray->delta_dist_x;
-	if (ray->ray_dir_y < 0)
-	{
-		ray->step_y = -1;
-		ray->delta_dist_y = (game->player->y - ray->map_y) * ray->delta_dist_y;
-	}
-	else
-		ray->side_dist_y = (ray->map_y + 1.0 - game->player->y) * ray->delta_dist_y;
+    if (ray->ray_dir_x < 0)
+    {
+        ray->step_x = -1;
+        ray->side_dist_x = (game->player->x - ray->map_x) * ray->delta_dist_x;
+    }
+    else
+    {
+        ray->step_x = 1;
+        // FIX: Assign to side_dist_x, not delta_dist_x
+        ray->side_dist_x = (ray->map_x + 1.0 - game->player->x) * ray->delta_dist_x;
+    }
+    if (ray->ray_dir_y < 0)
+    {
+        ray->step_y = -1;
+        ray->side_dist_y = (game->player->y - ray->map_y) * ray->delta_dist_y;
+    }
+    else
+    {
+        ray->step_y = 1;
+        ray->side_dist_y = (ray->map_y + 1.0 - game->player->y) * ray->delta_dist_y;
+    }
 }
 
 static void	initialise_ray(t_ray *ray, t_game *game)
@@ -59,14 +66,37 @@ static void	initialise_ray(t_ray *ray, t_game *game)
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
+int	perform_dda(t_ray *ray, char test_map[8][9])
+{
+	int		hit;
+	int		side;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (ray->side_dist_x < ray->delta_dist_y)
+		{
+			ray->side_dist_x += ray->delta_dist_x;
+			ray->map_x += ray->step_x;
+			side = 0;
+		}
+		else
+		{
+			ray->side_dist_y += ray->delta_dist_y;
+			ray->map_y += ray->step_y;
+			side = 1;
+		}
+		if (test_map[ray->map_y][ray->map_x] > '0')
+			hit = 1;
+	}
+	if (side == 0)
+		return (ray->side_dist_x - ray->delta_dist_x);
+	else
+		return(ray->side_dist_y - ray->delta_dist_y);
+}
+
 double dda(t_data *data, int x)
 {
-	t_game		game;
-	t_player	player;
-	t_ray		ray;
-	double		distance;
-	int			hit = 0; 
-	int			side;
 	char		test_map[8][9] =
 	{
 		"1111111\n",
@@ -77,31 +107,15 @@ double dda(t_data *data, int x)
 		"1000001\n",
 		"1111111\0"
 	};
+	t_game		game;
+	t_player	player;
+	t_ray		ray;
+	double		distance;
+
 	game.player = &player;
 	game.camera_x = 2 * x / (double)WIDTH - 1;
 	initialise_game(&game);
 	initialise_ray(&ray, &game);
 	set_side_dist(&ray, &game);
-	while (hit == 0)
-	{
-		if (ray.side_dist_x < ray.delta_dist_y)
-		{
-			ray.side_dist_x += ray.delta_dist_x;
-			ray.map_x += ray.step_x;
-			side = 0;
-		}
-		else
-		{
-			ray.side_dist_y += ray.delta_dist_y;
-			ray.map_y += ray.step_y;
-			side = 1;
-		}
-		if (test_map[ray.map_x][ray.map_y] > '0')
-			hit = 1;
-	}
-	if (side == 0)
-		distance = (ray.side_dist_x - ray.delta_dist_x);
-	else
-		distance = (ray.side_dist_y - ray.delta_dist_y);
-	return (distance);
+	return (perform_dda(&ray, test_map));
 }
