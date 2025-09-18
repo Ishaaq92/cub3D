@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 17:10:19 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/18 16:23:16 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static void	initialise_game(t_game *game)
 {
-	game->player->x = 4.2;
-	game->player->y = 4.2;
+	game->player->x = 1;
+	game->player->y = 1;
 	game->plane_x = 0;
 	game->plane_y = 0.66;
 	game->dir_x = -1;
@@ -74,7 +74,7 @@ int	perform_dda(t_ray *ray, char test_map[8][9])
 	hit = 0;
 	while (hit == 0)
 	{
-		if (ray->side_dist_x < ray->delta_dist_y)
+		if (ray->side_dist_x < ray->side_dist_y)
 		{
 			ray->side_dist_x += ray->delta_dist_x;
 			ray->map_x += ray->step_x;
@@ -101,7 +101,7 @@ double dda(int x)
 	{
 		"1111111\n",
 		"1000001\n",
-		"10S0001\n",
+		"1000001\n",
 		"1000001\n",
 		"1000001\n",
 		"1000001\n",
