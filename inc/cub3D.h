@@ -25,11 +25,16 @@
 
 # define WIDTH 800
 # define HEIGHT 800
+# define FOV 0.66
 
 
 typedef struct  s_player {
 	double  x;
 	double  y;
+	double		dir_y;
+	double		dir_x;
+	double  plane_x;
+	double	plane_y;
 	char	orientation;	
 }   t_player;
 
@@ -53,18 +58,29 @@ typedef struct s_ray
 	double	side_dist_y;
 	double	delta_dist_x;
 	double	delta_dist_y;
+	/*New merger*/
+	int			map_x;
+	int			map_y;
+	int			step_x;
+	int			step_y;
+	// int			x;
+	// int			y;
+	double		distance;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
 }	t_ray;
 
-typedef struct s_game
-{
-	t_map       *map;
-	t_player    *player;
-	double  dir_x;
-	double  dir_y;
-	double  plane_x;
-	double  plane_y;
-	double  camera_x;
-}   t_game;
+// typedef struct s_game
+// {
+// 	t_map       *map;
+// 	t_player    *player;
+// 	double  dir_x;
+// 	double  dir_y;
+// 	double  plane_x;
+// 	double  plane_y;
+// 	double  camera_x;
+// }   t_game;
 
 typedef struct t_img {
 	void	*img;
@@ -75,6 +91,7 @@ typedef struct t_img {
 } 			t_img;
 
 typedef struct s_data_ {
+	t_ray		*ray;
 	t_map		map;
 	t_player	*player;
 	void		*mlx;
@@ -126,7 +143,8 @@ void    free_list_and_exit(t_list** map_list);
 t_list* read_file_to_list(const char* path);
 
 // dda.c
-double dda(t_data *data, int x);
+// double dda(t_data *data, int x);
+void	dda(t_data *data, int x);
 
 
 #endif

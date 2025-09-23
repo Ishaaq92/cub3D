@@ -23,40 +23,70 @@ void	pixel_put(int x, int y, t_img *img, int colour)
 	}
 }
 
-// get_side_dist_x()
+void	set_player_dir(t_player *player, char dir)
+{
+	if (dir == 'N')
+	{
+		player->dir_x = 0;
+		player->dir_y = -1;
+	}
+	else if (dir == 'S')
+	{
+		player->dir_x = 0;
+		player->dir_y = 1;
+	}
+	else if (dir == 'E')
+	{
+		player->dir_x = 1;
+		player->dir_y = 0;
+	}
+	else if (dir == 'W')
+	{
+		player->dir_x = -1;
+		player->dir_y = 0;
+	}
+
+	//Camera Plan calc..
+	player->plane_x = -player->dir_y * FOV; //0.66 see header file
+	player->plane_y = player->dir_x * FOV;
+}
 
 void	render(t_data *data)
 {
 	int			x;
 	int			y;
-	double		distance;
-	int			line_height;
-	int			draw_start;
-	int			draw_end;
+	// double		distance;
+	// int			line_height;
+	// int			draw_start;
+	// int			draw_end;
+	t_ray	ray;
 
 	x = -1;
+	set_player_dir(data->player, data->player->orientation);
+	data->ray = &ray;
 	while (++x < WIDTH)
 	{
 		y = -1;
-		distance = dda(data, x);
-		line_height = (int) (HEIGHT / distance);
-		printf("|%d|", line_height);
-		if (line_height < 0)
-		 	line_height = line_height % HEIGHT;
+		// ray.distance = dda(data, x);
+		dda(data, x);
+		ray.line_height = (int) (HEIGHT / ray.distance);
+		printf("|%d|", ray.line_height);
+		if (ray.line_height < 0)
+		 	ray.line_height = ray.line_height % HEIGHT;
 		while (++y < HEIGHT)
 		{
-			draw_start = -line_height / 2 + HEIGHT / 2;
-  		    if(draw_start < 0)
-				draw_start = 0;
-   			draw_end = line_height / 2 + HEIGHT / 2;
-    		if(draw_end >= HEIGHT)
-				draw_end = HEIGHT - 1;
+			ray.draw_start = -ray.line_height / 2 + HEIGHT / 2;
+  		    if(ray.draw_start < 0)
+				ray.draw_start = 0;
+   			ray.draw_end = ray.line_height / 2 + HEIGHT / 2;
+    		if(ray.draw_end >= HEIGHT)
+				ray.draw_end = HEIGHT - 1;
 
-			if (y > draw_start && y < draw_end)
+			if (y > ray.draw_start && y < ray.draw_end)
 				pixel_put(x, y, &data->img, 0Xff00FF);
-			else if (y < draw_start)
+			else if (y < ray.draw_start)
 				pixel_put(x, y, &data->img, 300);
-			else if (y > draw_end)
+			else if (y > ray.draw_end)
 				pixel_put(x, y, &data->img, 100);
 			else
 				pixel_put(x, y, &data->img, 0x00FF0F);

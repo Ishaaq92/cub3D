@@ -20,11 +20,22 @@ int	create_player(t_player **player, int i, int j, char orientation)
 		printf("Malloc error.....exiting\n");
 		return (1);
 	}
-	(*player)->x = i;
-	(*player)->y = j;
+	(void)i;
+	(void)j;
+	(*player)->x = i + 0.2;
+	(*player)->y = j + 0.25;
 	(*player)->orientation = orientation;
 	printf("Player has been duly allocated.\n");
 	return (0);
+}
+void	printPlayerData(t_player *player)
+{
+	if (player)
+	{
+		printf("Player x: %f\n", player->x);
+		printf("Player y: %f\n", player->y);
+		printf("Player orientation: %c\n", player->orientation);
+	}
 }
 
 int	handle_player_char(int i, int j, t_data *data, int *pc)
@@ -81,6 +92,7 @@ int	check_player(t_data *data)
 		player_error("error: no player in map..exiting\n", data->player);
 		return (1);
 	}
+	printPlayerData(data->player);
 	return (0);
 }
 

@@ -31,7 +31,7 @@ $(NAME): $(OBJS) $(MLX_DIR)libmlx.a $(LIBFT_DIR)libft.a
 $(ODIR)%.o: $(SDIR)%.c  | $(ODIR)
 	$(CC) $(CFLAGS) $< -c -o $@ 
 
-$(ODIR):
+$(ODIR): submodules
 	mkdir -p $(ODIR)
 
 $(MLX_DIR)libmlx.a:
@@ -39,6 +39,9 @@ $(MLX_DIR)libmlx.a:
 
 $(LIBFT_DIR)libft.a:
 	make -C $(LIBFT_DIR)
+
+submodules:
+	@git submodule update --init --recursive
 
 clean:
 	rm -rf $(ODIR)
