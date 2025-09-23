@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/17 17:10:39 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:54:05 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ typedef struct t_img
 	int endian;
 } t_img;
 
-typedef struct s_data_
+typedef struct s_data
 {
 	t_map map;
 	t_player *player;
+	t_game	*game;
 	void *mlx;
 	void *win;
 	t_img img;
@@ -133,6 +134,6 @@ void free_list_and_exit(t_list **map_list);
 // t_list *read_file_to_list(const char *path);
 
 // dda.c
-double dda(int x);
+double dda(t_data *data, int x);
 
 #endif

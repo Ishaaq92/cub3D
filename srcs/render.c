@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/18 16:16:56 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:58:56 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static void	draw_pixel(t_data *data, int x, int y, int line_height)
 		pixel_put(x, y, &data->img, 0x00FF0F);
 }
 
-// get_side_dist_x()
-
 void	render(t_data *data)
 {
 	int			x;
@@ -55,11 +53,13 @@ void	render(t_data *data)
 	int			line_height;
 
 	x = -1;
+	// Iterating over the width of the display. Left to right.
 	while (++x < WIDTH)
 	{
-		distance = dda(x);
+		// This function calculates distance to the wall for each vertical strip of pixel.
+		distance = dda(data, x);
 		line_height = (int) (HEIGHT / distance);
-		printf("|%d|", line_height);
+		// printf("|%d|", line_height);
 		if (line_height < 0)
 			line_height = line_height % HEIGHT;
 		y = -1;
