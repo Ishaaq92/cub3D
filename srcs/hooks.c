@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 15:23:46 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:49:12 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int	key_hook(int keycode, t_data *data)
 		rotate(data, -2);
 	else
 		return (1);
+	// render(data);
 	return (0);
 }

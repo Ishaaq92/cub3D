@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:10:24 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 15:01:00 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:12:17 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int initialise_data(t_data *data)
 	data->game->plane_y = 0.66;
 	data->game->dir_x = -1;
 	data->game->dir_y = 0;
-	data->game->player->orientation = 's';
+	// data->game->player->orientation = 's';
 	if (!data->mlx)
 		return (-1);
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");

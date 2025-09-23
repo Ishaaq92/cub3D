@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 15:22:33 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:49:22 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ int main(int ac, char **av)
 
 	if (initialise_data(&data) == -1)
 		exit(1);
-	if (data.game == NULL)
-		printf("game is NULL in main too\n");
 	mlx_hook(data.win, DestroyNotify, NoEventMask, ft_quit, &data);
 	mlx_key_hook(data.win, key_hook, &data);
 	mlx_loop_hook(data.mlx, render, &data);
