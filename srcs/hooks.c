@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 17:00:11 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:43:24 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	key_hook(int keycode, t_data *data)
 	else if (keycode == XK_d || keycode == XK_D)
 		data->game->player->y += 0.1;
 	else if (keycode == XK_Right)
-		rotate(data, 2);
+		rotate(data, 0.3);
 	else if (keycode == XK_Left)
-		rotate(data, -2);
+		rotate(data, -0.3);
 	else
 		return (1);
 	// render(data);
