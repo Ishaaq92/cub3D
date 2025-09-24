@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/22 16:54:05 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/23 17:09:54 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define WIDTH 800
 # define HEIGHT 800
 
+# include <sys/time.h>
 # include <math.h>
 # include <X11/X.h>
 # include <X11/keysym.h>
