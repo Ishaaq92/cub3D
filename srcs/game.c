@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:08:45 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 14:42:21 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:21:25 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	fixed_fps(t_data *data, double fps)
 	diff = get_diff_in_usec(t0) ;
 	if ((diff) > ((1.0 / fps) * 1000000.0))
 	{
-		printf("fps = %d\n", (int)(1000000 / diff));
+		// printf("fps = %d\n", (int)(1000000 / diff));
 		gettimeofday(&t0, NULL);
 		render(data);
 		start = 1;
