@@ -6,12 +6,11 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:08:45 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 14:39:41 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 14:42:21 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
 
 double	get_diff_in_usec(struct timeval t0)
 {
