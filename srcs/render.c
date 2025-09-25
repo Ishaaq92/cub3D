@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 17:15:46 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:53:02 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ static void	draw_pixel(t_data *data, int x, int y, int line_height)
 		draw_end = HEIGHT - 1;
 
 	if (y > draw_start && y < draw_end)
-		pixel_put(x, y, &data->img, 0XFF00FF);
+		pixel_put(x, y, &data->img, 0xffffff);
 	else if (y < draw_start)
-		pixel_put(x, y, &data->img, 300);
+		pixel_put(x, y, &data->img, 0xe6e6fa);
 	else if (y > draw_end)
-		pixel_put(x, y, &data->img, 100);
+		pixel_put(x, y, &data->img, 0xcbbeb5);
 	else
 		pixel_put(x, y, &data->img, 0x00FF0F);
 }

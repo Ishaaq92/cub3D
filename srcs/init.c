@@ -6,24 +6,54 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:10:24 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 16:12:17 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:46:57 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+
+void	set_orientation(t_data *data)
+{
+	printf("orientation = %c\n", data->player->orientation);
+	data->game->dir_x = 0;
+	data->game->dir_y = 0;
+	switch(data->player->orientation)
+	{
+		case ('N'):
+		{
+			data->game->dir_y = 1;
+			break;
+		}
+		case ('S'):
+		{
+			data->game->dir_y = -1;
+			break;
+		}
+		case ('W'):
+		{
+			data->game->dir_x = -1;
+			break;
+		}
+		case ('E'):
+		{
+			data->game->dir_x = 1;
+			break;
+		}
+	}
+}
 
 int initialise_data(t_data *data)
 {
 	data->mlx = mlx_init();
 	data->game = malloc(sizeof(t_game));
 	data->game->player = malloc(sizeof(t_player));
+	printf("x = %f\n", data->game->player->x);
+	printf("y = %f\n", data->game->player->y);
 	data->game->player->x = 3;
 	data->game->player->y = 3;
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
-	data->game->dir_x = -1;
-	data->game->dir_y = 0;
-	// data->game->player->orientation = 's';
+	set_orientation(data);
 	if (!data->mlx)
 		return (-1);
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
