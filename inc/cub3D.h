@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 14:11:15 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 16:23:58 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ typedef struct s_game
 	double plane_x;
 	double plane_y;
 	double camera_x;
+	int		key_down;
+	int		key_up;
+	int		key_right;
+	int		key_left;
 } t_game;
 
 typedef struct t_img

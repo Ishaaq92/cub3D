@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 14:12:59 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 16:30:09 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ int main(int ac, char **av)
 
 	if (initialise_data(&data) == -1)
 		exit(1);
-	mlx_hook(data.win, DestroyNotify, NoEventMask, ft_quit, &data);
-	mlx_key_hook(data.win, key_hook, &data);
+	mlx_hook(data.win, DestroyNotify, KeyReleaseMask, ft_quit, &data);
+	mlx_hook(data.win, KeyPress, KeyPressMask, key_hook, &data);
+	// mlx_key_hook(data.win, key_hook, &data);
 	mlx_loop_hook(data.mlx, game_loop, &data);
 	mlx_loop(data.mlx);
 	ft_quit(&data);
