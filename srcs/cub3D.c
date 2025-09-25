@@ -6,23 +6,18 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 18:23:02 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 14:12:59 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int	game_loop(t_data *data)
+double	get_time_in_ms(void)
 {
-	static int	frames;
+	struct timeval	t;
 
-	struct timeval	t1;
-	struct timeval	t2;
-	gettimeofday(&t1, NULL);
-	render(data);
-	gettimeofday(&t2, NULL);
-	printf("%d\n", (int) (1 / (double)((t2.tv_usec - t1.tv_usec) / 1000000.0)));
-	return (0);
+	gettimeofday(&t, NULL);
+	return ((double)(t.tv_sec * 1000 + t.tv_usec / 1000));
 }
 
 int main(int ac, char **av)

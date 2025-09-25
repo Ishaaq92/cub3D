@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/24 16:43:24 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/24 17:50:43 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	rotate(t_data *data, double rot_speed)
     double oldPlaneX = data->game->plane_x;
     data->game->plane_x = data->game->plane_x * cos(-rot_speed) - data->game->plane_y * sin(-rot_speed);
     data->game->plane_y = oldPlaneX * sin(-rot_speed) + data->game->plane_y * cos(-rot_speed);
-	printf("rotate\n");
 }
 
 int	key_hook(int keycode, t_data *data)

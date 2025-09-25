@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/23 17:09:54 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/09/25 14:11:15 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,48 +93,49 @@ typedef struct s_data
 } t_data;
 
 // parser.c
-int parser(t_data *data, char *file);
+int		parser(t_data *data, char *file);
 
 // utils.c
-int ft_quit(t_data *data);
-int set_rgb(char *line);
+int		ft_quit(t_data *data);
+int		set_rgb(char *line);
 
 // render.c
-void render(t_data *data);
+void	render(t_data *data);
 // void	pixel_put(int x, int y, t_img *img, int colour);
 
 // init.c
-int initialise_data(t_data *data);
+int		initialise_data(t_data *data);
 
 // hooks.c
-int key_hook(int keycode, t_data *data);
+int		key_hook(int keycode, t_data *data);
 
 // Validation functions
-int check_player(t_data *data);
-int check_allowed_chars(char **map, int map_size);
-int validate_map(t_data *data);
-int create_player(t_player **player, int i, int j, char orientation);
-int check_player_flow(t_data *data, int *pc);
-int handle_player_char(int i, int j, t_data *data, int *pc);
-int validate_input(t_data *data, char *file_name);
+int		check_player(t_data *data);
+int		check_allowed_chars(char **map, int map_size);
+int		validate_map(t_data *data);
+int		create_player(t_player **player, int i, int j, char orientation);
+int		check_player_flow(t_data *data, int *pc);
+int		handle_player_char(int i, int j, t_data *data, int *pc);
+int		validate_input(t_data *data, char *file_name);
 
 // Utils
-int check_walls(char **map, int map_size);
-char *dup_line(char *src);
-void free_array(char **arr);
-void print_map(char **map, int map_size);
-int clean_up(char **map, t_list **map_list);
-void free_list_and_exit(t_list **map_list);
-int player_error(const char *msg, t_player *player);
+int		check_walls(char **map, int map_size);
+char	*dup_line(char *src);
+void	free_array(char **arr);
+void	print_map(char **map, int map_size);
+int		clean_up(char **map, t_list **map_list);
+void	free_list_and_exit(t_list **map_list);
+int		player_error(const char *msg, t_player *player);
 
-char *dup_line(char *src);
-void free_array(char **arr);
-// char **list_to_array(t_list *list);
-int file_extension_valid(char *filepath);
-void free_list_and_exit(t_list **map_list);
-// t_list *read_file_to_list(const char *path);
+char	*dup_line(char *src);
+void	free_array(char **arr);
+int		file_extension_valid(char *filepath);
+void	free_list_and_exit(t_list **map_list);
 
 // dda.c
-double dda(t_data *data, int x);
+double	dda(t_data *data, int x);
+
+// game.c
+int		game_loop(t_data *data);
 
 #endif
