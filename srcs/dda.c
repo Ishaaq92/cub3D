@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/24 15:37:00 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:25:24 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,9 @@ double	perform_dda(t_ray *ray, char **test_map)
 
 double dda(t_data *data, int x)
 {
-	char		test_map[8][9] =
-	{
-		"1111111\n",
-		"1000001\n",
-		"1000001\n",
-		"1000001\n",
-		"1000001\n",
-		"1000001\n",
-		"1111111\0"
-	};
 	t_ray		ray;
 
 	data->game->camera_x = (2 * x) / (double)WIDTH - 1;
-	if (test_map[(int)data->game->player->y][(int)data->game->player->x] > '0')
-		return (1);
 	initialise_ray(&ray, data->game);
 	set_side_dist(&ray, data->game);
 	// return (perform_dda(&ray, test_map));

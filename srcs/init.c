@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:10:24 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 15:46:57 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:34:49 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,28 +17,27 @@ void	set_orientation(t_data *data)
 	printf("orientation = %c\n", data->player->orientation);
 	data->game->dir_x = 0;
 	data->game->dir_y = 0;
-	switch(data->player->orientation)
+	data->game->plane_x = 0;
+	data->game->plane_y = 0;
+	if (data->player->orientation == 'N')
 	{
-		case ('N'):
-		{
-			data->game->dir_y = 1;
-			break;
-		}
-		case ('S'):
-		{
-			data->game->dir_y = -1;
-			break;
-		}
-		case ('W'):
-		{
-			data->game->dir_x = -1;
-			break;
-		}
-		case ('E'):
-		{
-			data->game->dir_x = 1;
-			break;
-		}
+		data->game->dir_y = 1;
+		data->game->plane_x = 0.66;
+	}
+	if (data->player->orientation == 'S')
+	{
+		data->game->dir_y = -1;
+		data->game->plane_x = -0.66;
+	}
+	if (data->player->orientation == 'W')
+	{
+		data->game->dir_x = -1;
+		data->game->plane_y = 0.66;
+	}
+	if (data->player->orientation == 'E')
+	{
+		data->game->dir_x = 1;
+		data->game->plane_y = -0.66;
 	}
 }
 

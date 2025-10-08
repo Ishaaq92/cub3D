@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 15:29:15 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/08 15:23:13 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ void	walk(t_data *data, char dir, double scale)
 		new_x = data->game->player->x + (data->game->plane_x * scale);
 		new_y = data->game->player->y + (data->game->plane_y * scale);
 	}
-	if (data->map.map[(int)(new_y - 0.3)][(int)(new_x - 0.3)] == '1')
-		return ;
+	// if (data->map.map[(int)(new_y - 0.3)][(int)(new_x - 0.3)] == '1')
+	// 	return ;
 	data->game->player->x = new_x;
 	data->game->player->y = new_y;
+	// printf("%f, %f\n", new_x, new_y);
 }
 
 int	key_hook(int keycode, t_data *data)
