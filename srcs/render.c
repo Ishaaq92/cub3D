@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:12:40 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/08 15:22:04 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/08 16:11:02 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	render(t_data *data)
 	{
 		// This function calculates distance to the wall for each vertical strip of pixel.
 		distance = dda(data, x);
-		printf("%f\n", distance);
 		line_height = (int) (HEIGHT / distance);
 		y = -1;
 		while (++y < HEIGHT)
