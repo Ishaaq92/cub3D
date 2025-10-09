@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:10:24 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/08 15:34:49 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:12:43 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ int initialise_data(t_data *data)
 {
 	data->mlx = mlx_init();
 	data->game = malloc(sizeof(t_game));
-	data->game->player = malloc(sizeof(t_player));
-	printf("x = %f\n", data->game->player->x);
-	printf("y = %f\n", data->game->player->y);
-	data->game->player->x = 3;
-	data->game->player->y = 3;
+	printf("x = %f\n", data->player->x);
+	printf("y = %f\n", data->player->y);
+	// data->game->player->x = 3;
+	// data->game->player->y = 3;
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
 	set_orientation(data);

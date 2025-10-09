@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/08 16:26:30 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:15:25 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ void	walk(t_data *data, char dir, double scale)
 
 	if (dir == 'f' || dir == 'b')
 	{
-		new_x = data->game->player->x + (data->game->dir_x * scale);
-		new_y = data->game->player->y + (data->game->dir_y * scale);
+		new_x = data->player->x + (data->game->dir_x * scale);
+		new_y = data->player->y + (data->game->dir_y * scale);
 	}
 	else if (dir == 'l' || dir == 'r')
 	{
-		new_x = data->game->player->x + (data->game->plane_x * scale);
-		new_y = data->game->player->y + (data->game->plane_y * scale);
+		new_x = data->player->x + (data->game->plane_x * scale);
+		new_y = data->player->y + (data->game->plane_y * scale);
 	}
 	if (wall_detection(data, new_x, new_y) == 1)
 		return ;
-	data->game->player->x = new_x;
-	data->game->player->y = new_y;
+	data->player->x = new_x;
+	data->player->y = new_y;
 }
 
 int	key_hook(int keycode, t_data *data)

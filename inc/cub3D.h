@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/25 16:23:58 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:09:34 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_ray
 typedef struct s_game
 {
 	t_map *map;
-	t_player *player;
+	// t_player *player;
 	double dir_x;
 	double dir_y;
 	double plane_x;
