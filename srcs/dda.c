@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 16:10:07 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 16:18:31 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:09:43 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void set_side_dist(t_ray *ray, t_data *data)
 static void	initialise_ray(t_ray *ray, t_data *data)
 {
 	t_game *game;
+
 	game = data->game;
 	ray->map_x = (int)data->player->x;
 	ray->map_y = (int)data->player->y;
@@ -90,9 +91,9 @@ double dda(t_data *data, int x)
 {
 	t_ray		ray;
 
+	x = WIDTH -x;
 	data->game->camera_x = (2 * x) / (double)WIDTH - 1;
 	initialise_ray(&ray, data);
 	set_side_dist(&ray, data);
-	// return (perform_dda(&ray, test_map));
 	return (perform_dda(&ray, data->map.map));
 }

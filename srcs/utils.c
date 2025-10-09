@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/10 18:01:45 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:34:09 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ int	ft_quit(t_data *data)
 		mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
+	free(data->map.path_to_EA);
+	free(data->map.path_to_NO);
+	free(data->map.path_to_WE);
+	free(data->map.path_to_SO);
 	exit(0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:10:24 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 16:12:43 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:53:11 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	set_orientation(t_data *data)
 	data->game->plane_y = 0;
 	if (data->player->orientation == 'N')
 	{
-		data->game->dir_y = 1;
-		data->game->plane_x = 0.66;
+		data->game->dir_y = -1;
+		data->game->plane_x = -0.66;
 	}
 	if (data->player->orientation == 'S')
 	{
-		data->game->dir_y = -1;
-		data->game->plane_x = -0.66;
+		data->game->dir_y = 1;
+		data->game->plane_x = 0.66;
 	}
 	if (data->player->orientation == 'W')
 	{
@@ -47,8 +47,6 @@ int initialise_data(t_data *data)
 	data->game = malloc(sizeof(t_game));
 	printf("x = %f\n", data->player->x);
 	printf("y = %f\n", data->player->y);
-	// data->game->player->x = 3;
-	// data->game->player->y = 3;
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
 	set_orientation(data);

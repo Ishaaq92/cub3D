@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:25 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/09/10 21:36:28 by aaladeok         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:29:04 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_allowed_chars(char **map, int map_size)
 			if ((map[i][j] != '\n') && !ft_strchr(expected_chars, map[i][j]))
 			{
 				printf("Map error at row %d, col %d.\n", i, j);
-				return (1);
+				exit(1);
 			}
 			++j;
 		}

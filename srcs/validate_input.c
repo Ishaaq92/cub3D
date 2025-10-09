@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:00 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/09/10 21:36:04 by aaladeok         ###   ########.fr       */
+/*   Updated: 2025/10/09 17:29:19 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,74 +24,13 @@ int file_extension_valid(char* filepath)
     return (0);
 }
 
-// t_list* read_file_to_list(const char* path)
-// {
-//     int fd;
-//     char* line;
-//     t_list* new;
-//     t_list* map_list;
-
-//     map_list = NULL;
-//     fd = open(path, O_RDONLY);
-//     if (fd < 0)
-//         return NULL;
-//     line = get_next_line(fd);
-//     while (line)
-//     {
-//         new = ft_lstnew(line);
-//         if (!new)
-//         {
-//             free(line);
-//             free_list_and_exit(&map_list);
-//         }                    
-//         ft_lstadd_back(&map_list, new);
-//         line = get_next_line(fd);
-//     }
-//     close(fd);
-//     return (map_list);
-// }
-
-// char** list_to_array(t_list* list)
-// {
-//     int i;
-//     char** arr;
-//     t_list* temp;
-//     int list_len;
-
-//     i = 0;
-//     temp = list;
-//     list_len = ft_lstsize(list);
-//     arr = malloc(sizeof(char *) * (list_len + 1));
-//     if (!arr)
-//         return (NULL);
-//     while(i < list_len)
-//     {
-//         arr[i] = dup_line(temp->content);
-//         if (!arr[i])
-//         {
-//             free_array(arr);
-//             return (NULL);
-//         }
-//         temp = temp->next;
-//         i++;
-//     }
-//     arr[i] = NULL;
-//     return (arr);
-// }
-
 int validate_input(t_data *data, char* file_name)
 {
     if (!file_extension_valid(file_name))
     {
         printf("Error: file must have a .cub extension\n");
-        return (1);
+        exit(1);
     }
-    // data->map.map_list = read_file_to_list(file_name);
-    // if (!data->map.map_list)
-    // {
-    //     printf("Error: unable to read file\n");
-    //     return (1);
-    // }
     if (validate_map(data) != 0)
         return (1);
     print_map(data->map.map, data->map.map_size);

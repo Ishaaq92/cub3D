@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 16:15:25 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:15:33 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	wall_detection(t_data *data, double new_x, double new_y)
 {
 	double	gap;
 
-	gap = 0.3;
+	gap = 0.2;
 	if (data->map.map[(int)(new_y)][(int)(new_x - gap)] == '1')
 		return (1);
 	else if (data->map.map[(int)(new_y)][(int)(new_x + gap)] == '1')
@@ -68,15 +68,15 @@ int	key_hook(int keycode, t_data *data)
 	else if (keycode == XK_w || keycode == XK_W)
 	 	walk(data, 'f', 0.1);
 	else if (keycode == XK_a || keycode == XK_A)
-	 	walk(data, 'r', -0.1);
+	 	walk(data, 'r', 0.1);
 	else if (keycode == XK_s || keycode == XK_S)
 	 	walk(data, 'b', -0.1);
 	else if (keycode == XK_d || keycode == XK_D)
-	 	walk(data, 'l', 0.1);
+	 	walk(data, 'l', -0.1);
 	else if (keycode == XK_Right)
-		rotate(data, 0.1);
-	else if (keycode == XK_Left)
 		rotate(data, -0.1);
+	else if (keycode == XK_Left)
+		rotate(data, 0.1);
 	else
 		return (1);
 	// render(data);

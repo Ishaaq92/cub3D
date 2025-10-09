@@ -6,12 +6,12 @@
 #    By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/08 16:14:59 by isahmed           #+#    #+#              #
-#    Updated: 2025/09/25 14:09:17 by isahmed          ###   ########.fr        #
+#    Updated: 2025/10/09 17:44:58 by isahmed          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra  -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
+CFLAGS = -Wall -Wextra  -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g -fsanitize=address
 SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.c validate_map_utils.c validate_map.c dda.c game.c
 NAME = cub3D
 
@@ -31,8 +31,11 @@ $(NAME): $(OBJS) $(MLX_DIR)libmlx.a $(LIBFT_DIR)libft.a
 $(ODIR)%.o: $(SDIR)%.c  | $(ODIR)
 	$(CC) $(CFLAGS) $< -c -o $@ 
 
-$(ODIR):
-	mkdir -p $(ODIR)
+$(ODIR): submodule
+	@mkdir -p $(ODIR)
+
+submodule:
+	@git submodule update --init --recursive
 
 $(MLX_DIR)libmlx.a:
 	make -C $(MLX_DIR)

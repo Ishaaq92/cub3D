@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/09/15 16:20:46 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:45:31 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 char	*set_path(char *line)
 {
 	char	*path;
+	char	*tmp1;
 	
-	path = ft_strdup(ft_strtrim(ft_strchr(line, '.'), "\n "));
-	// printf("set_path: %s\n", path);
+	tmp1 = ft_strtrim(ft_strchr(line, '.'), "\n ");
+	path = ft_strdup(tmp1);
 	if (access(path, 0) == -1)
 		return(exit(1), NULL);
+	free(tmp1);
 	return (path);
 }
 
@@ -105,22 +107,32 @@ static int	process_map(t_data *data, char *line)
 
 int parser(t_data *data, char *file)
 {
-	int fd;
-	char *s;
+	int		fd;
+	char	*s;
 
 	s = NULL;
 	fd = open(file, 0);
 	if (fd < 0)
 		return (1);
 	data->map.map_size = 0;
-	while ((s = get_next_line(fd)))
+	s = get_next_line(fd);
+	while (s)
+	{
 		if (process_textures(data, s) == 1)
 			break;
+		free(s);
+		s = get_next_line(fd);
+	}
 	if (process_map(data, s) != 0)
 		printf("error"); //Need to return 1 here?
-	while ((s = get_next_line(fd)))
+	s = get_next_line(fd);
+	while ((s))
+	{
 		if (process_map(data, s) != 0)
 			printf("error"); //Need to return 1 here?
+		free(s);
+		s = get_next_line(fd);
+	}
 	//close(fd); //Do we need to close file descriptor here?
 	return (0);
 }
