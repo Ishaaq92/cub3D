@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:45 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/09/16 20:20:56 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:23:21 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	create_player(t_player **player, int i, int j, char orientation)
 		printf("Malloc error.....exiting\n");
 		return (1);
 	}
-	(*player)->x = i;
-	(*player)->y = j;
+	(*player)->x = i + 0.3;
+	(*player)->y = j + 0.3;
 	(*player)->orientation = orientation;
 	printf("Player has been duly allocated.\n");
 	return (0);
