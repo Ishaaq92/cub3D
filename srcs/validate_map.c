@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:45 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/10/09 17:28:52 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 20:35:56 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	create_player(t_player **player, int i, int j, char orientation)
 	{
 		printf("Malloc error.....exiting\n");
 		free(player);
-		exit(1);
+		return (1);
 	}
 	(*player)->x = j + 0.3;
 	(*player)->y = i + 0.3;
@@ -88,11 +88,11 @@ int	check_player(t_data *data)
 int	validate_map(t_data *data)
 {
 	if (check_allowed_chars(data->map.map, data->map.map_size) != 0)
-		return (1);
+		exit(1);
 	if (check_walls(data->map.map, data->map.map_size) != 0)
-		return (1);
+		exit(1);
 	if (check_player(data) != 0)
-		return (1);
+		exit(1);
 	printf("exiting validate map\n");
 	return (0);
 }
