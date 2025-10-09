@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:11:05 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 17:15:33 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 20:23:13 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,39 @@ void	walk(t_data *data, char dir, double scale)
 	data->player->y = new_y;
 }
 
-int	key_hook(int keycode, t_data *data)
+int	key_release(int keycode, t_data *data) 
+{
+	if (keycode == XK_w || keycode == XK_W)
+		data->player->forward = false;
+	else if (keycode == XK_a || keycode == XK_A)
+		data->player->left = false;
+	else if (keycode == XK_s || keycode == XK_S)
+		data->player->back = false;
+	else if (keycode == XK_d || keycode == XK_D)
+		data->player->right = false;
+	else if (keycode == XK_Right)
+		data->player->rotate_right = false;
+	else if (keycode == XK_Left)
+		data->player->rotate_left = false;
+	return (0);
+}
+
+int	key_press_hold(int keycode, t_data *data)
 {
 	if (keycode == XK_Escape)
 		ft_quit(data);
 	else if (keycode == XK_w || keycode == XK_W)
-	 	walk(data, 'f', 0.1);
+		data->player->forward = true;
 	else if (keycode == XK_a || keycode == XK_A)
-	 	walk(data, 'r', 0.1);
+		data->player->left = true;
 	else if (keycode == XK_s || keycode == XK_S)
-	 	walk(data, 'b', -0.1);
+		data->player->back = true;
 	else if (keycode == XK_d || keycode == XK_D)
-	 	walk(data, 'l', -0.1);
+		data->player->right = true;
 	else if (keycode == XK_Right)
-		rotate(data, -0.1);
+		data->player->rotate_right = true;
 	else if (keycode == XK_Left)
-		rotate(data, 0.1);
+		data->player->rotate_left = true;
 	else
 		return (1);
 	// render(data);

@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 16:09:34 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 20:23:13 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,21 @@
 # include <unistd.h>
 # include "libft.h"
 # include "mlx.h"
+# include <stdbool.h>
 
 typedef struct s_player
 {
 	double x;
 	double y;
 	char orientation;
+	// movement
+	bool	right;
+	bool	left;
+	bool	forward;
+	bool	back;
+	bool	rotate_right;
+	bool	rotate_left;
+
 } t_player;
 
 typedef struct s_map
@@ -111,7 +120,10 @@ void	render(t_data *data);
 int		initialise_data(t_data *data);
 
 // hooks.c
-int		key_hook(int keycode, t_data *data);
+int		key_press_hold(int keycode, t_data *data);
+void	walk(t_data *data, char dir, double scale);
+void	rotate(t_data *data, double rot_speed);
+int		key_release(int keycode, t_data *data);
 
 // Validation functions
 int		check_player(t_data *data);

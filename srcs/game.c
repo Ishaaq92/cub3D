@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:08:45 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/08 15:06:59 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/09 20:16:29 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,42 @@ static long int	get_time_in_ms(void)
 	return (t.tv_sec * 1000 + t.tv_usec / 1000);
 }
 
+void	move(t_data *data)
+{
+	t_player	*player;
+	double		pace;
+
+	pace = 0.01;
+	player = data->player;
+	if (player->forward)
+	 	walk(data, 'f', pace);
+	if (player->back)
+	 	walk(data, 'b', -pace);
+	if (player->right)
+	 	walk(data, 'r', -pace);
+	if (player->left)
+	 	walk(data, 'l', pace);
+	if (player->rotate_right)
+		rotate(data, -0.01);
+	if (player->rotate_left)
+		rotate(data, 0.01);
+
+	// player->forward = false;
+	// player->back = false;
+	// player->right = false;
+	// player->left = false;
+
+	// player->rotate_right = false;
+	// player->rotate_left = false;
+}
+
 
 int	game_loop(t_data *data)
 {
 	static long			frames = 0;
 	static long int		t0;
 
+	move(data);
 	if (get_time_in_ms() - t0 > 1000)
 	{
 		t0 = get_time_in_ms();
