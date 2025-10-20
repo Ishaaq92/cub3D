@@ -21,6 +21,13 @@ double	get_time_in_ms(void)
 	return ((double)(t.tv_sec * 1000 + t.tv_usec / 1000));
 }
 
+void    mouse_setup(t_data *data)
+{
+    data->mouse_x = WIDTH / 2;
+    data->mouse_y = HEIGHT / 2;
+    data->mouse_locked = 0;
+}
+
 int main(int ac, char **av)
 {
 	t_data		data;
@@ -36,10 +43,16 @@ int main(int ac, char **av)
 	if (initialise_data(&data) == -1)
 		exit(1);
 
+	mouse_setup(&data);//mouse_setup
 
 	mlx_hook(data.win, DestroyNotify, KeyReleaseMask, ft_quit, &data);
 	mlx_hook(data.win, KeyPress, KeyPressMask, key_press_hold, &data);
 	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release, &data);
+
+	//Mouse hook
+	mlx_hook(data.win, MotionNotify, PointerMotionMask, mouse_move, &data);
+    mlx_hook(data.win, ButtonPress, ButtonPressMask, mouse_click, &data);
+	
 	// mlx_key_hook(data.win, key_hook, &data);
 	mlx_loop_hook(data.mlx, game_loop, &data);
 	mlx_loop(data.mlx);

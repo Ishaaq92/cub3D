@@ -28,6 +28,11 @@
 # include "mlx.h"
 # include <stdbool.h>
 
+/*Movement speeds*/
+# define MOVE_SPEED 0.1
+# define ROT_SPEED 0.05
+# define MOUSE_SENSITIVITY 0.002
+
 typedef struct s_player
 {
 	double x;
@@ -103,10 +108,22 @@ typedef struct s_data
 	void *win;
 	t_img img;
 	double zoom;
+	//mouse
+	int     mouse_x;
+    int     mouse_y;
+    int     mouse_locked;
+	//Textures
+	t_img	wall_tex[4]
+t_img	ceiling_tex;
+	t_img	floor_tex;	
 } t_data;
 
 // parser.c
 int		parser(t_data *data, char *file);
+
+//mouse control
+int mouse_move(int x, int y, t_data *data);
+int mouse_click(int button, int x, int y, t_data *data);
 
 // utils.c
 int		ft_quit(t_data *data);
