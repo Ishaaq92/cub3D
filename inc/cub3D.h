@@ -95,9 +95,20 @@ typedef struct t_img
 	void *img;
 	char *pxls;
 	int bpp;
+	int	width;
+	int	height;
 	int line_length;
 	int endian;
 } t_img;
+
+typedef struct s_textures
+{
+	t_img	north;
+	t_img	south;
+	t_img	west;
+	t_img	east;
+	t_img	door;
+}	t_tex;
 
 typedef struct s_data
 {
@@ -113,10 +124,14 @@ typedef struct s_data
     int     mouse_y;
     int     mouse_locked;
 	//Textures
-	t_img	wall_tex[4];
-	t_img	ceiling_tex;
+	t_tex	textures;
 	t_img	floor_tex;	
 } t_data;
+
+
+//load xpm to image
+void	load_textures(t_data *data);
+t_img   load_xpm_to_img(void *mlx, char *path);
 
 // parser.c
 int		parser(t_data *data, char *file);
