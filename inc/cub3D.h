@@ -113,8 +113,8 @@ typedef struct s_data
     int     mouse_y;
     int     mouse_locked;
 	//Textures
-	t_img	wall_tex[4]
-t_img	ceiling_tex;
+	t_img	wall_tex[4];
+	t_img	ceiling_tex;
 	t_img	floor_tex;	
 } t_data;
 
