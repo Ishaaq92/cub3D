@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:08:45 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 20:16:29 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/20 13:57:09 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,10 @@ void	move(t_data *data)
 {
 	t_player	*player;
 	double		pace;
+	double		rot_pace;
 
-	pace = 0.01;
+	pace = 0.013;
+	rot_pace = 0.008;
 	player = data->player;
 	if (player->forward)
 	 	walk(data, 'f', pace);
@@ -66,9 +68,9 @@ void	move(t_data *data)
 	if (player->left)
 	 	walk(data, 'l', pace);
 	if (player->rotate_right)
-		rotate(data, -0.01);
+		rotate(data, -rot_pace);
 	if (player->rotate_left)
-		rotate(data, 0.01);
+		rotate(data, rot_pace);
 
 	// player->forward = false;
 	// player->back = false;

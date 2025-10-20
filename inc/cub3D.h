@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 20:23:13 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/10/20 14:04:09 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@
 
 typedef struct s_player
 {
-	double x;
-	double y;
-	char orientation;
+	double	x;
+	double	y;
+	char	orientation;
 	// movement
 	bool	right;
 	bool	left;
@@ -45,64 +45,63 @@ typedef struct s_player
 
 typedef struct s_map
 {
-	char **map;
-	t_list *map_list;
-	int map_size;
-	int floor_rgb;
-	int celling_rgb;
-	char *path_to_NO;
-	char *path_to_SO;
-	char *path_to_WE;
-	char *path_to_EA;
+	char	**map;
+	t_list	*map_list;
+	int		map_size;
+	int		floor_rgb;
+	int		celling_rgb;
+	char	*path_to_NO;
+	char	*path_to_SO;
+	char	*path_to_WE;
+	char	*path_to_EA;
 } t_map;
 
 typedef struct s_ray
 {
-	double ray_dir_x;
-	double ray_dir_y;
-	double side_dist_x;
-	double side_dist_y;
-	double delta_dist_x;
-	double delta_dist_y;
-	int map_x;
-	int map_y;
-	int	step_x;
-	int	step_y;
-} t_ray;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+}	t_ray;
 
 typedef struct s_game
 {
-	t_map *map;
+	t_map	*map;
 	// t_player *player;
-	double dir_x;
-	double dir_y;
-	double plane_x;
-	double plane_y;
-	double camera_x;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+	double	camera_x;
 	int		key_down;
 	int		key_up;
 	int		key_right;
 	int		key_left;
-} t_game;
+}	t_game;
 
 typedef struct t_img
 {
-	void *img;
-	char *pxls;
-	int bpp;
-	int line_length;
-	int endian;
-} t_img;
+	void	*img;
+	char	*pxls;
+	int		bpp;
+	int		line_length;
+	int		endian;
+} 	t_img;
 
 typedef struct s_data
 {
-	t_map map;
-	t_player *player;
-	t_game	*game;
-	void *mlx;
-	void *win;
-	t_img img;
-	double zoom;
+	t_map		map;
+	t_player	*player;
+	t_game		*game;
+	void		*mlx;
+	void		*win;
+	t_img		img;
 } t_data;
 
 // parser.c
