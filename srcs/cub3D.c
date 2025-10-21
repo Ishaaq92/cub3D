@@ -30,31 +30,30 @@ void    mouse_setup(t_data *data)
 
 int main(int ac, char **av)
 {
-	t_data		data;
+	t_data		*data;
 
-
-	ft_bzero(&data, sizeof(data));
-	data.map.celling_rgb = -1;
-	data.map.floor_rgb = -1;
-	if (ac != 2 || (av[1] && parser(&data, av[1])))
+	data = malloc(sizeof(t_data));
+	ft_bzero(data, sizeof(data));
+	data->map.ceiling_rgb = -1;
+	data->map.floor_rgb = -1;
+	if (ac != 2 || (av[1] && parser(data, av[1])))
 		return (1);
-	validate_input(&data, av[1]);
+	validate_input(data, av[1]);
 
-	if (initialise_data(&data) == -1)
+	if (initialise_data(data) == -1)
 		exit(1);
+	mouse_setup(data);//mouse_setup
 
-	mouse_setup(&data);//mouse_setup
-
-	mlx_hook(data.win, DestroyNotify, KeyReleaseMask, ft_quit, &data);
-	mlx_hook(data.win, KeyPress, KeyPressMask, key_press_hold, &data);
-	mlx_hook(data.win, KeyRelease, KeyReleaseMask, key_release, &data);
+	mlx_hook(data->win, DestroyNotify, KeyReleaseMask, ft_quit, data);
+	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_hold, data);
+	mlx_hook(data->win, KeyRelease, KeyReleaseMask, key_release, data);
 
 	//Mouse hook
-	mlx_hook(data.win, MotionNotify, PointerMotionMask, mouse_move, &data);
-    mlx_hook(data.win, ButtonPress, ButtonPressMask, mouse_click, &data);
+	mlx_hook(data->win, MotionNotify, PointerMotionMask, mouse_move, data);
+    mlx_hook(data->win, ButtonPress, ButtonPressMask, mouse_click, data);
 	
 	// mlx_key_hook(data.win, key_hook, &data);
-	mlx_loop_hook(data.mlx, game_loop, &data);
-	mlx_loop(data.mlx);
-	ft_quit(&data);
+	mlx_loop_hook(data->mlx, game_loop, data);
+	mlx_loop(data->mlx);
+	ft_quit(data);
 }

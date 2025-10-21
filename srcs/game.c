@@ -70,13 +70,6 @@ void	move(t_data *data)
 	if (player->rotate_left)
 		rotate(data, 0.01);
 
-	// player->forward = false;
-	// player->back = false;
-	// player->right = false;
-	// player->left = false;
-
-	// player->rotate_right = false;
-	// player->rotate_left = false;
 }
 
 

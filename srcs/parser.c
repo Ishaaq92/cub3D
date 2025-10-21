@@ -40,7 +40,7 @@ static int	set_texture_config(t_data *data, char *line, char c)
 	else if (c == 'F')
 		data->map.floor_rgb = set_rgb(line);
 	else if (c == 'C')
-		data->map.celling_rgb = set_rgb(line);
+		data->map.ceiling_rgb = set_rgb(line);
 	else
 		return (1);
 	return (0);
@@ -64,8 +64,8 @@ static	int process_textures(t_data *data, char *line)
 		return (count++, set_texture_config(data, line, 'W'), printf("east textures: %s\n", data->map.path_to_EA), 0);
 	else if (ft_strncmp(line, "F", 1) == 0  && data->map.floor_rgb == -1)
 		return (count++, printf("floor texture\n"), set_texture_config(data, line, 'F'));
-	else if (ft_strncmp(line, "C", 1) == 0 && data->map.celling_rgb == -1)
-		return (count++, printf("celling texture\n"), set_texture_config(data, line, 'C'));
+	else if (ft_strncmp(line, "C", 1) == 0 && data->map.ceiling_rgb == -1)
+		return (count++, printf("ceiling texture\n"), set_texture_config(data, line, 'C'));
 	else
 		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);
 }

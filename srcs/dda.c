@@ -12,36 +12,41 @@
 
 #include "cub3D.h"
 
-static void set_side_dist(t_ray *ray, t_data *data)
+static void	set_side_dist(t_ray *ray, t_data *data)
 {
-    if (ray->ray_dir_x < 0)
-    {
-        ray->step_x = -1;
-        ray->side_dist_x = (data->player->x - ray->map_x) * ray->delta_dist_x;
-    }
-    else
-    {
-        ray->step_x = 1;
-        ray->side_dist_x = (ray->map_x + 1.0 - data->player->x) * ray->delta_dist_x;
-    }
-    if (ray->ray_dir_y < 0)
-    {
-        ray->step_y = -1;
-        ray->side_dist_y = (data->player->y - ray->map_y) * ray->delta_dist_y;
-    }
-    else
-    {
-        ray->step_y = 1;
-        ray->side_dist_y = (ray->map_y + 1.0 - data->player->y) * ray->delta_dist_y;
-    }
+	if (ray->ray_dir_x < 0)
+	{
+		ray->step_x = -1;
+		ray->side_dist_x = (data->player->x - ray->map_x) * ray->delta_dist_x;
+	}
+	else
+	{
+		ray->step_x = 1;
+		ray->side_dist_x = (ray->map_x + 1.0 - data->player->x)
+			* ray->delta_dist_x;
+	}
+	if (ray->ray_dir_y < 0)
+	{
+		ray->step_y = -1;
+		ray->side_dist_y = (data->player->y - ray->map_y) * ray->delta_dist_y;
+	}
+	else
+	{
+		ray->step_y = 1;
+		ray->side_dist_y = (ray->map_y + 1.0 - data->player->y)
+			* ray->delta_dist_y;
+	}
 }
 
-static void	initialise_ray(t_ray *ray, t_data *data)
+static void	initialise_ray(t_data *data)
 {
-	t_game *game;
+	t_game	*game;
+	t_ray	*ray;
 
+	
+	ray = data->ray;
 	game = data->game;
-	ray->map_x = (int)data->player->x;
+	data->ray->map_x = (int)data->player->x;
 	ray->map_y = (int)data->player->y;
 	ray->step_x = 1;
 	ray->step_y = 1;
@@ -51,7 +56,6 @@ static void	initialise_ray(t_ray *ray, t_data *data)
 		ray->delta_dist_x = 1e30;
 	else
 		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
-
 	if (ray->ray_dir_y == 0)
 		ray->delta_dist_y = 1e30;
 	else
@@ -60,8 +64,7 @@ static void	initialise_ray(t_ray *ray, t_data *data)
 
 double	perform_dda(t_ray *ray, char **map)
 {
-	int		hit;
-	int		side;
+	int	hit;
 
 	hit = 0;
 	while (hit == 0)
@@ -70,30 +73,28 @@ double	perform_dda(t_ray *ray, char **map)
 		{
 			ray->side_dist_x += ray->delta_dist_x;
 			ray->map_x += ray->step_x;
-			side = 0;
+			ray->side = 0;
 		}
 		else
 		{
 			ray->side_dist_y += ray->delta_dist_y;
 			ray->map_y += ray->step_y;
-			side = 1;
+			ray->side = 1;
 		}
 		if (map[ray->map_y][ray->map_x] == '1')
 			hit = 1;
 	}
-	if (side == 0)
+	if (ray->side == 0)
 		return (ray->side_dist_x - ray->delta_dist_x);
 	else
-		return(ray->side_dist_y - ray->delta_dist_y);
+		return (ray->side_dist_y - ray->delta_dist_y);
 }
 
-double dda(t_data *data, int x)
+double	dda(t_data *data, int x)
 {
-	t_ray		ray;
-
-	x = WIDTH -x;
+	x = WIDTH - x;
 	data->game->camera_x = (2 * x) / (double)WIDTH - 1;
-	initialise_ray(&ray, data);
-	set_side_dist(&ray, data);
-	return (perform_dda(&ray, data->map.map));
+	initialise_ray(data);
+	set_side_dist(data->ray, data);
+	return (perform_dda(data->ray, data->map.map));
 }

@@ -35,44 +35,59 @@
 
 typedef struct s_player
 {
-	double x;
-	double y;
-	char orientation;
+	double		x;
+	double		y;
+	char		orientation;
 	// movement
-	bool	right;
-	bool	left;
-	bool	forward;
-	bool	back;
-	bool	rotate_right;
-	bool	rotate_left;
+	bool		right;
+	bool		left;
+	bool		forward;
+	bool		back;
+	bool		rotate_right;
+	bool		rotate_left;
 
 } t_player;
 
 typedef struct s_map
 {
-	char **map;
-	t_list *map_list;
-	int map_size;
-	int floor_rgb;
-	int celling_rgb;
-	char *path_to_NO;
-	char *path_to_SO;
-	char *path_to_WE;
-	char *path_to_EA;
+	char		**map;
+	t_list		*map_list;
+	int			map_size;
+	int			floor_rgb;
+	int			ceiling_rgb;
+	char		*path_to_NO;
+	char		*path_to_SO;
+	char		*path_to_WE;
+	char		*path_to_EA;
 } t_map;
 
 typedef struct s_ray
 {
-	double ray_dir_x;
-	double ray_dir_y;
-	double side_dist_x;
-	double side_dist_y;
-	double delta_dist_x;
-	double delta_dist_y;
-	int map_x;
-	int map_y;
-	int	step_x;
-	int	step_y;
+	double		ray_dir_x;
+	double		ray_dir_y;
+	double		side_dist_x;
+	double		side_dist_y;
+	double		delta_dist_x;
+	double		delta_dist_y;
+	int			map_x;
+	int			map_y;
+	int			step_x;
+	int			step_y;
+	//added features;
+	int			side;
+	int			draw_start;
+	int			draw_end;
+	int			tex_x;
+	int			tex_y;
+	float		floor_x;
+	float		floor_y;
+	float		row_dist;
+	float		rdy1;
+	double		wall_x;
+	double		tex_pos;
+	double		step;
+	double		distance;
+	int			line_height;
 } t_ray;
 
 typedef struct s_game
@@ -103,30 +118,38 @@ typedef struct t_img
 
 typedef struct s_textures
 {
-	t_img	north;
-	t_img	south;
 	t_img	west;
 	t_img	east;
 	t_img	door;
+	t_img	floor;
+	t_img	north;
+	t_img	south;
+	t_img	roof;
 }	t_tex;
 
 typedef struct s_data
 {
-	t_map map;
-	t_player *player;
-	t_game	*game;
-	void *mlx;
-	void *win;
-	t_img img;
-	double zoom;
+	t_map		map;
+	t_ray		*ray;
+	t_game		*game;
+	void		*mlx;
+	void		*win;
+	t_img		img;
+	double		zoom;
+	t_player	*player;
 	//mouse
-	int     mouse_x;
-    int     mouse_y;
-    int     mouse_locked;
+	int			mouse_x;
+    int			mouse_y;
+    int			mouse_locked;
 	//Textures
-	t_tex	textures;
-	t_img	floor_tex;	
+	t_tex		textures;
 } t_data;
+
+//new functions
+void	draw_floor_and_ceiling(t_data *data);
+void	pixel_put(int x, int y, t_img *img, int colour);
+unsigned int	get_pixel_img(t_img *img, int x, int y);
+void	draw_floor_row(t_data *data, int y, float rdx0, float rdy0, float rdx1);
 
 
 //load xpm to image
@@ -161,7 +184,7 @@ int		key_release(int keycode, t_data *data);
 int		check_player(t_data *data);
 int		check_allowed_chars(char **map, int map_size);
 int		validate_map(t_data *data);
-int		create_player(t_player **player, int i, int j, char orientation);
+int		create_player(t_data *data, int i, int j, char orientation);
 int		check_player_flow(t_data *data, int *pc);
 int		handle_player_char(int i, int j, t_data *data, int *pc);
 int		validate_input(t_data *data, char *file_name);

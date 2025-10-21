@@ -12,18 +12,21 @@
 
 #include "cub3D.h"
 
-int	create_player(t_player **player, int i, int j, char orientation)
+int	create_player(t_data *data, int i, int j, char orientation)
 {
-	*player = malloc(sizeof(t_player));
-	if (!*player)
+	data->player = malloc(sizeof(t_player));
+	if (!data->player)
 	{
 		printf("Malloc error.....exiting\n");
-		free(player);
+		free(data->player);
 		return (1);
 	}
-	(*player)->x = j + 0.3;
-	(*player)->y = i + 0.3;
-	(*player)->orientation = orientation;
+	data->player->x = j + 0.3;
+	data->player->y = i + 0.3;
+	data->player->orientation = orientation;
+	printf("x = %f\n", data->player->x);
+	printf("y = %f\n", data->player->y);
+	printf("Memory address %p\n", &data->player);
 	printf("Player has been duly allocated.\n");
 	return (0);
 }
@@ -43,7 +46,7 @@ int	handle_player_char(int i, int j, t_data *data, int *pc)
 			player_error("Multi-player error.....exiting\n", data->player);
 			return (1);
 		}
-		if (create_player(&data->player, i, j, c) != 0)
+		if (create_player(data, i, j, c) != 0)
 			return (1);
 	}
 	return (0);
