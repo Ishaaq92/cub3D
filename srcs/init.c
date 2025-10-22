@@ -20,13 +20,11 @@ void	load_textures(t_data *data)
 	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_EA);
 	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
 	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
+	// generate_floor_texture(data); //Tested generated floor tiles.
 }
 
 static void	reset_movement(t_data *data)
 {
-	printf("x = %f\n", data->player->x);
-	printf("y = %f\n", data->player->y);
-	printf("Memory address %p\n", &data->player);
 	data->player->forward = false;
 	data->player->back = false;
 	data->player->right = false;
@@ -68,8 +66,6 @@ int	initialise_data(t_data *data)
 	reset_movement(data);
 	data->mlx = mlx_init();
 	data->game = malloc(sizeof(t_game));
-	printf("x = %f\n", data->player->x);
-	printf("y = %f\n", data->player->y);
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
 	set_orientation(data);
@@ -83,7 +79,6 @@ int	initialise_data(t_data *data)
 		return (-1);
 	data->img.pxls = mlx_get_data_addr(data->img.img, &data->img.bpp,
 			&data->img.line_length, &data->img.endian);
-	// data->zoom = 1.0;
 	load_textures(data);
 	return (0);
 }

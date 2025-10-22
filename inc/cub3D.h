@@ -33,6 +33,10 @@
 # define ROT_SPEED 0.05
 # define MOUSE_SENSITIVITY 0.002
 
+//Set texture H and W
+# define TEX_HEIGHT 64
+# define TEX_WIDTH 64
+
 typedef struct s_player
 {
 	double		x;
@@ -102,6 +106,9 @@ typedef struct s_tex_calc
 	unsigned int	ccol;
 	int				cell_x;
 	int				cell_y;
+	float			world_x;
+	float			world_y;
+	float			tex_scale;
 }	t_tex_calc;
 
 typedef struct s_game
@@ -160,10 +167,11 @@ typedef struct s_data
 } t_data;
 
 //new functions
+void generate_floor_texture(t_data *data);
 void	draw_floor_and_ceiling(t_data *data);
 void	pixel_put(int x, int y, t_img *img, int colour);
 unsigned int	get_pixel_img(t_img *img, int x, int y);
-void	draw_floor_row(t_data *data, int y, float rdx0, float rdy0, float rdx1);
+void	draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1, float rdy1);
 
 
 //load xpm to image

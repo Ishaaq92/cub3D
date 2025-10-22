@@ -49,17 +49,17 @@ void	calculate_wall_bounds(t_data *data)
 		ray->draw_end = HEIGHT - 1;
 }
 
-void	draw_ceiling(t_data *data, int x)
-{
-	int	y;
+// void	draw_ceiling(t_data *data, int x)
+// {
+// 	int	y;
 
-	y = 0;
-	while (y < data->ray->draw_start)
-	{
-		pixel_put(x, y, &data->img, data->map.ceiling_rgb);
-		y++;
-	}
-}
+// 	y = 0;
+// 	while (y < data->ray->draw_start)
+// 	{
+// 		pixel_put(x, y, &data->img, data->map.ceiling_rgb);
+// 		y++;
+// 	}
+// }
 
 void	draw_wall_with_tex(t_data *data, t_img *texture, int x)
 {
@@ -80,17 +80,17 @@ void	draw_wall_with_tex(t_data *data, t_img *texture, int x)
 	}
 }
 
-void	draw_floor(t_data *data, int x)
-{
-	int	y;
+// void	draw_floor(t_data *data, int x)
+// {
+// 	int	y;
 
-	y = data->ray->draw_end;
-	while (y < HEIGHT)
-	{
-		pixel_put(x, y, &data->img, data->map.floor_rgb);
-		y++;
-	}
-}
+// 	y = data->ray->draw_end;
+// 	while (y < HEIGHT)
+// 	{
+// 		pixel_put(x, y, &data->img, data->map.floor_rgb);
+// 		y++;
+// 	}
+// }
 
 t_img	*choose_texture(t_data *data)
 {
@@ -157,7 +157,8 @@ void	render(t_data *data)
 
 	x = 0;
 	// call = 0;
-	data->ray = malloc(sizeof(t_ray));
+	if (!data->ray)
+		data->ray = malloc(sizeof(t_ray));
 	draw_floor_and_ceiling(data);
 	while (x < WIDTH)
 	{
