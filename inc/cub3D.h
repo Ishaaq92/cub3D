@@ -90,6 +90,20 @@ typedef struct s_ray
 	int			line_height;
 } t_ray;
 
+//struct for calculation to prevent lots of variable use (norminette)
+typedef struct s_tex_calc
+{
+	int				x;
+	float			fx;
+	float			fy;
+	float			frac_x;
+	float			frac_y;
+	unsigned int	fcol;
+	unsigned int	ccol;
+	int				cell_x;
+	int				cell_y;
+}	t_tex_calc;
+
 typedef struct s_game
 {
 	t_map *map;

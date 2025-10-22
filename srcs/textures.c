@@ -15,59 +15,55 @@ t_img	load_xpm_to_img(void *mlx, char *path)
 	return (tex);
 }
 
-// bool	is_inside_map(t_data *data, float fx, float fy)
-// {
-// 	int	map_x;
-// 	int	map_y;
+void    check_fractions(float *frac_x, float *frac_y)
+{
+    if (*frac_x < 0)
+		*frac_x += 1.0;
+	if (*frac_y < 0)
+		*frac_y += 1.0;
+}
 
-// 	map_x = (int)fx;
-// 	map_y = (int)fy;
-// 	printf("map_x is: %d\n", map_x);
-// 	printf("map_y is: %d\n", map_y);
-// 	printf("map_size is: %d\n", data->map.map_size);
-// 	if (map_y < 0 || map_y >= data->map.map_size)
-// 		return (false);
-// 	if (map_x < 0 || map_x >= (int)ft_strlen(data->map.map[map_x]))
-// 		return (false);
-// 	if (data->map.map[map_y][map_x] == ' ')
-// 		return (false);
-// 	return (true);
-// }
+void    bound_checks(t_data *d)
+{
+    if (d->ray->tex_x >= d->textures.floor.width)
+		d->ray->tex_x = d->textures.floor.width - 1;
+	if (d->ray->tex_y >= d->textures.floor.height)
+	    d->ray->tex_y = d->textures.floor.height - 1;
+}
+
+void    get_tex_coordinate(t_data *d, t_tex_calc *tex)
+{
+    d->ray->tex_x = (int)(tex->frac_x * d->textures.floor.width) 
+		% d->textures.floor.width;
+	d->ray->tex_y = (int)(tex->frac_y * d->textures.floor.height) 
+		% d->textures.floor.height;
+}
 
 void	compute_and_draw(t_data *d, float sx, float sy, int y)
 {
 	int				x;
-	float			fx;
-	float			fy;
-	unsigned int	fcol;
-	unsigned int	ccol;
+    t_tex_calc          tex;
 
 	x = 0;
-	fx = d->ray->floor_x;
-	fy = d->ray->floor_y;
-	//THERE IS A PROBLEM HERE THAT NEEDS FIXING...
-	// printf("fx is: %d\n", (int)fx);
-	// printf("fy is: %d\n", (int)fy);
+	tex.fx = d->ray->floor_x;
+	tex.fy = d->ray->floor_y;
 	while (x < WIDTH)
 	{
-		d->ray->tex_x = (int)((fx - (int)fx) * d->textures.floor.width)
-			% d->textures.floor.width;
-		// if (d->ray->tex_x < 0)
-		// 	d->ray->tex_x = 0;
-		// if (d->ray->tex_x > d->textures.floor.width)
-		// 	d->ray->tex_x = d->textures.floor.width - 1;
-		d->ray->tex_y = (int)((fy - (int)fy) * d->textures.floor.height)
-			% d->textures.floor.height;
-		// if (d->ray->tex_y < 0)
-		// 	d->ray->tex_y = 0;
-		// if (d->ray->tex_y > d->textures.floor.height)
-		// 	d->ray->tex_y = d->textures.floor.height - 1;
-		fcol = get_pixel_img(&d->textures.floor, d->ray->tex_x, d->ray->tex_y);
-		ccol = get_pixel_img(&d->textures.roof, d->ray->tex_x, d->ray->tex_y);
-		pixel_put(x, y, &d->img, fcol);
-		pixel_put(x, HEIGHT - y - 1, &d->img, ccol);
-		fx += sx;
-		fy += sy;
+		tex.cell_x = (int)floor(tex.fx); // Get the map cell (floor to integer)
+		tex.cell_y = (int)floor(tex.fy);
+		tex.frac_x = tex.fx - tex.cell_x; // Get fractional part (always 0.0 to 1.0)
+		tex.frac_y = tex.fy - tex.cell_y;
+		check_fractions(&tex.frac_x, &tex.frac_y); // Make sure fractions are positive
+		get_tex_coordinate(d, &tex); // Calculate texture coordinates
+		d->ray->tex_x = abs(d->ray->tex_x);// Absolute value to ensure positive
+		d->ray->tex_y = abs(d->ray->tex_y);
+		bound_checks(d); 	// Additional safety bounds check
+		tex.fcol = get_pixel_img(&d->textures.floor, d->ray->tex_x, d->ray->tex_y);
+		tex.ccol = get_pixel_img(&d->textures.roof, d->ray->tex_x, d->ray->tex_y);
+		pixel_put(x, y, &d->img, tex.fcol);
+		pixel_put(x, HEIGHT - y - 1, &d->img, tex.ccol);
+		tex.fx += sx;
+		tex.fy += sy;
 		x++;
 	}
 }
@@ -97,7 +93,7 @@ void	draw_floor_and_ceiling(t_data *d)
 	ray_diry0 = d->game->dir_y - d->game->plane_y;
 	ray_dirx1 = d->game->dir_x + d->game->plane_x;
 	d->ray->rdy1 = d->game->dir_y + d->game->plane_y;
-	y = HEIGHT / 2 + 5;
+	y = HEIGHT / 2 + 1; //or + 5
 	while (y < HEIGHT)
 	{
 		draw_floor_row(d, y, ray_dirx0, ray_diry0, ray_dirx1);
