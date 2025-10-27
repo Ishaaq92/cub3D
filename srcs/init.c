@@ -20,6 +20,7 @@ void	load_textures(t_data *data)
 	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_EA);
 	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
 	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
+	data->textures.gun = load_xpm_to_img(data->mlx, "./assets/weapon/shotgun/SHT2D0.xpm");
 	// generate_floor_texture(data); //Tested generated floor tiles.
 }
 

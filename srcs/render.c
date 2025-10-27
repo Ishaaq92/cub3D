@@ -149,10 +149,23 @@ void	draw_vertical_line(t_data *data, int x)
 	draw_wall_with_tex(data, tex, x);
 }
 
+void	draw_crosshair(t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = WIDTH / 2 - 9;
+	while (++x < (WIDTH / 2 + 10))
+		pixel_put(x, HEIGHT / 2, &data->img, 0xFFFFFF);
+	y = HEIGHT / 2 - 9;
+	while (++y < (HEIGHT / 2 + 10))
+		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
+}
+
 void	render(t_data *data)
 {
 	int x;
-	int y;
+	// int y;
 	// int call;
 
 	x = 0;
@@ -163,17 +176,13 @@ void	render(t_data *data)
 	while (x < WIDTH)
 	{
 		// printf("calls count: %d\n", ++call);
-		data->ray->distance = dda(data, x);
+		dda(data, x);
 		data->ray->line_height = (int)(HEIGHT / data->ray->distance);
 		calculate_wall_bounds(data);
 		draw_vertical_line(data, x);
 		x++;
 	}
+	draw_gun(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-	x = WIDTH / 2 - 9;
-	while (++x < (WIDTH / 2 + 10))
-		pixel_put(x, HEIGHT / 2, &data->img, 0xFFFFFF);
-	y = HEIGHT / 2 - 9;
-	while (++y < (HEIGHT / 2 + 10))
-		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
+	draw_crosshair(data);
 }

@@ -146,6 +146,7 @@ typedef struct s_textures
 	t_img	north;
 	t_img	south;
 	t_img	roof;
+	t_img	gun;
 }	t_tex;
 
 typedef struct s_data
@@ -167,6 +168,7 @@ typedef struct s_data
 } t_data;
 
 //new functions
+void	draw_gun(t_data *data);
 void generate_floor_texture(t_data *data);
 void	draw_floor_and_ceiling(t_data *data);
 void	pixel_put(int x, int y, t_img *img, int colour);
@@ -226,7 +228,8 @@ int		file_extension_valid(char *filepath);
 void	free_list_and_exit(t_list **map_list);
 
 // dda.c
-double	dda(t_data *data, int x);
+void	dda(t_data *data, int x);
+// double	dda(t_data *data, int x);
 
 // game.c
 int		game_loop(t_data *data);

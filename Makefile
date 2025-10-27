@@ -13,7 +13,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra  -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g 
 SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.c \
-		validate_map_utils.c validate_map.c dda.c game.c control.c textures.c
+		validate_map_utils.c validate_map.c dda.c game.c control.c textures.c texture_utils.c
 NAME = cub3D
 
 ODIR = objs/

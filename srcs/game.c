@@ -62,9 +62,9 @@ void	move(t_data *data)
 	if (player->back)
 	 	walk(data, 'b', -pace);
 	if (player->right)
-	 	walk(data, 'r', -pace);
+	 	walk(data, 'r', pace);
 	if (player->left)
-	 	walk(data, 'l', pace);
+	 	walk(data, 'l', -pace);
 	if (player->rotate_right)
 		rotate(data, -0.01);
 	if (player->rotate_left)

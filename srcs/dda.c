@@ -62,7 +62,7 @@ static void	initialise_ray(t_data *data)
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
-double	perform_dda(t_ray *ray, char **map)
+void	perform_dda(t_ray *ray, char **map, t_data *data)
 {
 	int	hit;
 
@@ -85,16 +85,17 @@ double	perform_dda(t_ray *ray, char **map)
 			hit = 1;
 	}
 	if (ray->side == 0)
-		return (ray->side_dist_x - ray->delta_dist_x);
+		ray->distance = (ray->map_x - data->player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
 	else
-		return (ray->side_dist_y - ray->delta_dist_y);
+		ray->distance = (ray->map_y - data->player->y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
 }
 
-double	dda(t_data *data, int x)
+void	dda(t_data *data, int x)
 {
-	x = WIDTH - x;
+	// x = WIDTH - x;
 	data->game->camera_x = (2 * x) / (double)WIDTH - 1;
 	initialise_ray(data);
 	set_side_dist(data->ray, data);
-	return (perform_dda(data->ray, data->map.map));
+	perform_dda(data->ray, data->map.map, data);
+	// return (perform_dda(data->ray, data->map.map));
 }
