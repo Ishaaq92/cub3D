@@ -16,7 +16,7 @@ int	check_allowed_chars(char **map, int map_size)
 {
 	int			i;
 	int			j;
-	const char	*expected_chars = "10NSEW ";
+	const char	*expected_chars = "10NSEWD ";
 
 	i = 0;
 	while (i < map_size)
@@ -60,7 +60,7 @@ int	check_cell(char **map, int row, int col, int max_rows,
 
 int	is_valid(char **map, int i, int j, int len)
 {
-	static const char	*exp_chars = "01NEWS";
+	static const char	*exp_chars = "01NEWSD";
 
 	if (check_cell(map, i - 1, j, len, exp_chars))
 		return (1);

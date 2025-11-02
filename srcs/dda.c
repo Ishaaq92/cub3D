@@ -62,33 +62,56 @@ static void	initialise_ray(t_data *data)
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
-void	perform_dda(t_ray *ray, char **map, t_data *data)
+void perform_dda(t_ray *ray, char **map, t_data *data)
 {
-	int	hit;
+    int     hit = 0;
+    t_door  *door = NULL;
+    char    tile;
 
-	hit = 0;
-	while (hit == 0)
-	{
-		if (ray->side_dist_x < ray->side_dist_y)
-		{
-			ray->side_dist_x += ray->delta_dist_x;
-			ray->map_x += ray->step_x;
-			ray->side = 0;
-		}
-		else
-		{
-			ray->side_dist_y += ray->delta_dist_y;
-			ray->map_y += ray->step_y;
-			ray->side = 1;
-		}
-		if (map[ray->map_y][ray->map_x] == '1')
-			hit = 1;
-	}
-	if (ray->side == 0)
-		ray->distance = (ray->map_x - data->player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
-	else
-		ray->distance = (ray->map_y - data->player->y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+    while (!hit)
+    {
+        // Step through the map
+        if (ray->side_dist_x < ray->side_dist_y)
+        {
+            ray->side_dist_x += ray->delta_dist_x;
+            ray->map_x += ray->step_x;
+            ray->side = 0;
+        }
+        else
+        {
+            ray->side_dist_y += ray->delta_dist_y;
+            ray->map_y += ray->step_y;
+            ray->side = 1;
+        }
+
+        tile = map[ray->map_y][ray->map_x];
+
+        if (tile == 'D')
+        {
+            door = find_door(data, ray->map_x, ray->map_y);
+            ray->door = door;
+
+            if (door && door->open_width >= 0.8)
+                continue; // pass through open door
+
+            hit = 1;
+            ray->tile = tile;
+        }
+        else if (tile == '1')
+        {
+            hit = 1;
+            ray->tile = tile;
+            ray->door = NULL;
+        }
+    }
+
+    // Calculate wall distance
+    if (ray->side == 0)
+        ray->distance = (ray->map_x - data->player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+    else
+        ray->distance = (ray->map_y - data->player->y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
 }
+
 
 void	dda(t_data *data, int x)
 {

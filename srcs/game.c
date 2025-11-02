@@ -77,7 +77,11 @@ int	game_loop(t_data *data)
 {
 	static long			frames = 0;
 	static long int		t0;
-
+	double				current_time;
+	double				delta_time;
+	
+	current_time = get_time_in_ms();
+	delta_time = (current_time - data->prev_time) / 1000.0; // to seconds
 	move(data);
 	if (get_time_in_ms() - t0 > 1000)
 	{
@@ -85,7 +89,12 @@ int	game_loop(t_data *data)
 		printf("%ld\n", frames);
 		frames = 0;
 	}
+	check_doors(data);
+	update_doors(data, delta_time);
+	// check_auto_doors(data);
+	// check_doors(data);
 	render(data);
 	frames ++;
+	data->prev_time = current_time;
 	return (0);
 }

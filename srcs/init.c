@@ -21,6 +21,7 @@ void	load_textures(t_data *data)
 	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
 	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
 	data->textures.gun = load_xpm_to_img(data->mlx, "./assets/weapon/shotgun/SHT2D0.xpm");
+	data->textures.door = load_xpm_to_img(data->mlx, "./assets/door/Layer-1_sprite_02.xpm");
 	// generate_floor_texture(data); //Tested generated floor tiles.
 }
 
@@ -69,6 +70,8 @@ int	initialise_data(t_data *data)
 	data->game = malloc(sizeof(t_game));
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
+	init_doors(data);
+	count_doors(data);
 	set_orientation(data);
 	if (!data->mlx)
 		return (-1);
@@ -81,5 +84,6 @@ int	initialise_data(t_data *data)
 	data->img.pxls = mlx_get_data_addr(data->img.img, &data->img.bpp,
 			&data->img.line_length, &data->img.endian);
 	load_textures(data);
+	printf("Finished init..\n");
 	return (0);
 }

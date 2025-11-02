@@ -96,6 +96,5 @@ int	validate_map(t_data *data)
 		exit(1);
 	if (check_player(data) != 0)
 		exit(1);
-	printf("exiting validate map\n");
 	return (0);
 }

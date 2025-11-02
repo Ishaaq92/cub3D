@@ -33,9 +33,47 @@
 # define ROT_SPEED 0.05
 # define MOUSE_SENSITIVITY 0.002
 
+//door
+#define MAX_DOORS 50
+#define DOOR_SPEED 0.8
+#define	DOOR_HOLD_TIME 2.0
+#define DOOR_CLOSE_SPEED 0.5
+#define DOOR_FRAMES 32
+
 //Set texture H and W
 # define TEX_HEIGHT 64
 # define TEX_WIDTH 64
+
+//Img struct
+typedef struct t_img
+{
+	void *img;
+	char *pxls;
+	int bpp;
+	int	width;
+	int	height;
+	int line_length;
+	int endian;
+} t_img;
+
+
+// Door texture structure
+typedef struct s_door_textures {
+    t_img   frames[DOOR_FRAMES];  // Array of door frames
+    int     frame_count;           // Actual number of loaded frames
+} t_door_tex;
+
+//Door struct
+typedef struct s_door
+{
+	int			x;
+	int			y;
+	int			current_frame;
+	double		open_width; // 0.0 = closed, 1.0 = fully open
+	int			state; // 1 = opening, -1 = closing, 0 = idle
+	double		timer; // time since last interaction
+	int			is_vertical;
+}		t_door;
 
 typedef struct s_player
 {
@@ -78,6 +116,7 @@ typedef struct s_ray
 	int			step_x;
 	int			step_y;
 	//added features;
+	int			tile;
 	int			side;
 	int			draw_start;
 	int			draw_end;
@@ -92,6 +131,8 @@ typedef struct s_ray
 	double		step;
 	double		distance;
 	int			line_height;
+	int			is_door_visible;
+	t_door		*door;
 } t_ray;
 
 //struct for calculation to prevent lots of variable use (norminette)
@@ -113,40 +154,30 @@ typedef struct s_tex_calc
 
 typedef struct s_game
 {
-	t_map *map;
+	t_map		*map;
 	// t_player *player;
-	double dir_x;
-	double dir_y;
-	double plane_x;
-	double plane_y;
-	double camera_x;
-	int		key_down;
-	int		key_up;
-	int		key_right;
-	int		key_left;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		camera_x;
+	int			key_down;
+	int			key_up;
+	int			key_right;
+	int			key_left;
 } t_game;
-
-typedef struct t_img
-{
-	void *img;
-	char *pxls;
-	int bpp;
-	int	width;
-	int	height;
-	int line_length;
-	int endian;
-} t_img;
 
 typedef struct s_textures
 {
-	t_img	west;
-	t_img	east;
-	t_img	door;
-	t_img	floor;
-	t_img	north;
-	t_img	south;
-	t_img	roof;
-	t_img	gun;
+	t_img		west;
+	t_img		east;
+	t_img		door;
+	t_img		floor;
+	t_img		north;
+	t_img		south;
+	t_img		roof;
+	t_img		gun;
+	t_door_tex	door_arr;
 }	t_tex;
 
 typedef struct s_data
@@ -165,11 +196,21 @@ typedef struct s_data
     int			mouse_locked;
 	//Textures
 	t_tex		textures;
+	//door
+	int			door_count;
+	double		prev_time;
+	t_door		doors[MAX_DOORS];
 } t_data;
 
 //new functions
+double 	ease_in_out_cubic(double t);
+t_door	*find_door(t_data *data, int x, int y);
+void    check_doors(t_data *data);
+void	init_doors(t_data *data);
+void	count_doors(t_data *data);
 void	draw_gun(t_data *data);
-void generate_floor_texture(t_data *data);
+void    update_doors(t_data *data, double delta_time);
+void	generate_floor_texture(t_data *data);
 void	draw_floor_and_ceiling(t_data *data);
 void	pixel_put(int x, int y, t_img *img, int colour);
 unsigned int	get_pixel_img(t_img *img, int x, int y);

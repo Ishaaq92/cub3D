@@ -12,8 +12,50 @@
 
 #include "cub3D.h"
 
-int	ft_quit(t_data *data)
+void	count_doors(t_data *data)
 {
+	int		x;
+	int		y;
+	t_door	*door;
+	
+	y = -1;
+	while (data->map.map[++y])
+	{
+		x = -1;
+		while (data->map.map[y][++x])
+		{
+			if (data->map.map[y][x] == 'D')
+			{
+				if (data->door_count < MAX_DOORS)
+				{
+					door = &data->doors[data->door_count++];
+					door->x = x;
+					door->y = y;
+				}
+			}
+		}
+	}
+}
+
+void	init_doors(t_data *data)
+{
+	int	i;
+
+	i = -1;
+	while (++i < MAX_DOORS)
+	{
+		data->doors[i].x = -1;
+		data->doors[i].y = -1;
+		data->doors[i].open_width = 0.0;
+		data->doors[i].state = 0;
+		data->doors[i].timer = 0.0;
+		data->doors[i].is_vertical = 0;
+	}
+	data->door_count = 0;
+}
+
+int	ft_quit(t_data *data)
+{      
 	if (!data || !data->mlx)
 		return (-1);
 	if (data->img.img)
