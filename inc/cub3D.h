@@ -33,6 +33,18 @@
 # define ROT_SPEED 0.05
 # define MOUSE_SENSITIVITY 0.002
 
+//Minimap
+#define MMAP_SCALE 6
+#define MINIMAP_RADIUS 6 
+#define MMAP_MARGIN 10
+#define MMAP_WALL_COLOR 0x444444
+#define MMAP_DOOR_COLOR 0xAA8800
+#define MMAP_PLAYER_COLOR 0xFF0000
+#define MINIMAP_SIZE (MINIMAP_RADIUS * 2 + 1)
+#define MINIMAP_CENTER (MINIMAP_RADIUS * MMAP_SCALE)
+#define MINIMAP_ARROW_LEN 8
+#define MINIMAP_ARROW_COLOR 0xFF0000 
+
 //door
 #define MAX_DOORS 50
 #define DOOR_SPEED 0.8
@@ -203,6 +215,7 @@ typedef struct s_data
 } t_data;
 
 //new functions
+void    draw_minimap(t_data *data);
 double 	ease_in_out_cubic(double t);
 t_door	*find_door(t_data *data, int x, int y);
 void    check_doors(t_data *data);

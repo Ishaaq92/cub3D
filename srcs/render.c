@@ -220,14 +220,15 @@ void	draw_crosshair(t_data *data)
 
 void render(t_data *data)
 {
+    int x;
+
+    x = 0;
     if (!data->ray)
         data->ray = malloc(sizeof(t_ray)); // consider moving this to init()
-
     draw_floor_and_ceiling(data);
-    for (int x = 0; x < WIDTH; x++)
+    while (x < WIDTH)
     {
         t_ray *r = data->ray;
-
         // Reset per-column values
         r->tile = '0';
         r->door = NULL;
@@ -236,8 +237,11 @@ void render(t_data *data)
         r->line_height = (int)(HEIGHT / r->distance);
         calculate_wall_bounds(data);
         draw_vertical_line(data, x);
+        x++;
     }
     draw_gun(data);
+    draw_minimap(data);
+    // draw_minimap_dynamic(data);
     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
     draw_crosshair(data);
 }
