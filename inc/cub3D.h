@@ -48,7 +48,7 @@
 //door
 #define MAX_DOORS 50
 #define DOOR_SPEED 0.8
-#define	DOOR_HOLD_TIME 2.0
+#define	DOOR_HOLD_TIME 3.0
 #define DOOR_CLOSE_SPEED 0.5
 #define DOOR_FRAMES 32
 
@@ -93,9 +93,9 @@ typedef struct s_door
 	int			y;
 	int			current_frame;
 	double		open_width; // 0.0 = closed, 1.0 = fully open
-	int			state; // 1 = opening, -1 = closing, 0 = idle
+	int			state; // 0 = closed, 1 = opening, 2 = open, 3 = closing
 	double		timer; // time since last interaction
-	int			is_vertical;
+	// int			is_vertical;
 }		t_door;
 
 typedef struct s_player
@@ -226,27 +226,32 @@ typedef struct s_data
 	double		prev_time;
 	double		*zbuffer;
 	int			sprite_x_tex;
-	t_door		doors[MAX_DOORS];
+	t_door		doors[DOOR_FRAMES];
 	t_sprite	sprites[MAX_SPRITE];
 } t_data;
 
 //new functions
-void    sort_sprites(t_data *data);
-void    project_sprites(t_data *data);
-void	init_sprites(t_data *data);
-void    draw_minimap(t_data *data);
-double 	ease_in_out_cubic(double t);
-t_door	*find_door(t_data *data, int x, int y);
-void    check_doors(t_data *data);
-void	init_doors(t_data *data);
-void	count_doors(t_data *data);
-void	draw_gun(t_data *data);
-void    update_doors(t_data *data, double delta_time);
-void	generate_floor_texture(t_data *data);
-void	draw_floor_and_ceiling(t_data *data);
-void	pixel_put(int x, int y, t_img *img, int colour);
+void			render_sprites(t_data *data);
+void			check_auto_doors(t_data *data);
+int				load_door_frames(t_data *data);
+void			sort_sprites(t_data *data);
+void    		project_sprites(t_data *data);
+void			update_sprite_distances(t_data *data);
+void			init_sprites(t_data *data);
+void    		draw_minimap(t_data *data);
+double 			ease_in_out_cubic(double t);
+t_door			*find_door(t_data *data, int x, int y);
+void    		check_doors(t_data *data);
+void			init_doors(t_data *data);
+void			count_doors(t_data *data);
+void			draw_gun(t_data *data);
+void    		update_doors(t_data *data, double delta_time);
+void			generate_floor_texture(t_data *data);
+void			draw_floor_and_ceiling(t_data *data);
+void			pixel_put(int x, int y, t_img *img, int colour);
 unsigned int	get_pixel_img(t_img *img, int x, int y);
-void	draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1, float rdy1);
+void			update_doors_with_frame(t_data *data, double delta_time);
+void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1, float rdy1);
 
 
 //load xpm to image

@@ -89,12 +89,13 @@ int	game_loop(t_data *data)
 		printf("%ld\n", frames);
 		frames = 0;
 	}
-	check_doors(data);
+	// check_doors(data);
+	check_auto_doors(data);
 	update_doors(data, delta_time);
 	// check_auto_doors(data);
 	// check_doors(data);
 	render(data);
-	frames ++;
+	frames++;
 	data->prev_time = current_time;
 	return (0);
 }

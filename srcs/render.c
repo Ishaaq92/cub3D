@@ -80,10 +80,10 @@ void calculate_door_texture(t_ray *ray, t_img *texture)
     }
     
     // Apply easing
-    double eased_amount = ease_in_out_cubic(door->open_width);
+    double easedopen_width = ease_in_out_cubic(door->open_width);
     
     // Calculate texture with slide
-    double tex_x_f = ray->wall_x + eased_amount;
+    double tex_x_f = ray->wall_x + easedopen_width;
     
     // If less than 90% open, still render the door
     if (door->open_width < 0.9)
@@ -122,29 +122,55 @@ void	calculate_hitside(t_data *data)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
-t_img	*choose_texture(t_data *data)
+// Get the correct door texture frame
+t_img *get_door_texture(t_data *data, t_door *door)
 {
-	t_img	*texture;
-
-	if (data->ray->tile == 'D')
-		texture = &data->textures.door;
-	else if (data->ray->side == 0) // vertical wall (X-side)
-	{
-		if (data->ray->ray_dir_x < 0)
-			texture = &data->textures.west;
-		else
-			texture = &data->textures.east;
-	}
-	else // horizontal wall (Y-side)
-	{
-		if (data->ray->ray_dir_y < 0)
-			texture = &data->textures.north;
-		else
-			texture = &data->textures.south;
-	}
-	return (texture);
+    int frame;
+    
+    if (!door)
+        return &data->textures.door_arr.frames[0]; // Fallback to closed
+    
+    frame = door->current_frame;
+    
+    // Validate frame index
+    if (frame < 0)
+        frame = 0;
+    if (frame >= data->textures.door_arr.frame_count)
+        frame = data->textures.door_arr.frame_count - 1;
+    
+    return &data->textures.door_arr.frames[frame];
 }
 
+// SIMPLIFIED choose_texture - just picks the right frame
+t_img *choose_texture(t_data *data)
+{
+    t_img *texture;
+    
+    // If it's a door, return the appropriate animation frame
+    if (data->ray->tile == 'D' && data->ray->door)
+    {
+        return get_door_texture(data, data->ray->door);
+    }
+    
+    // Regular wall texture selection
+    if (data->ray->side == 0) // vertical wall (X-side)
+    {
+        if (data->ray->ray_dir_x < 0)
+            texture = &data->textures.west;
+        else
+            texture = &data->textures.east;
+    }
+    else // horizontal wall (Y-side)
+    {
+        if (data->ray->ray_dir_y < 0)
+            texture = &data->textures.north;
+        else
+            texture = &data->textures.south;
+    }
+    return texture;
+}
+
+// SIMPLIFIED draw_wall_with_tex - no texture shifting needed!
 void draw_wall_with_tex(t_data *data, t_img *texture, int x)
 {
     int             y;
@@ -153,13 +179,10 @@ void draw_wall_with_tex(t_data *data, t_img *texture, int x)
 
     ray = data->ray;
     
-    // If it's a door and not visible (slid away), don't draw
-    if (ray->tile == 'D' && ray->door)
+    // Check if door is visible (>90% open means see-through)
+    if (ray->tile == 'D' && ray->door && ray->door->open_width >= 0.9)
     {
-        calculate_door_texture(ray, texture);
-        
-        if (!ray->is_door_visible)
-            return; // Door has slid completely away
+        return; // Door is transparent, wall behind it was already rendered
     }
     
     y = ray->draw_start;
@@ -168,12 +191,16 @@ void draw_wall_with_tex(t_data *data, t_img *texture, int x)
         ray->tex_y = (int)ray->tex_pos & (texture->height - 1);
         ray->tex_pos += ray->step;
         color = get_pixel_img(texture, ray->tex_x, ray->tex_y);
-        
-        // Optional: Add transparency effect as door opens
-        if (ray->tile == 'D' && ray->door && ray->door->open_width > 0.7)
+        // Skip black pixels - they're transparent
+        if ((color & 0x00FFFFFF) == 0)
         {
-            // Fade out near full open
-            double fade = (1.0 - ray->door->open_width) / 0.3;
+            y++;
+            continue; // Don't draw, show floor/ceiling behind
+        }
+        // Optional: Add slight fade as door becomes nearly open
+        if (ray->tile == 'D' && ray->door && ray->door->open_width > 0.8)
+        {
+            double fade = 1.0 - ((ray->door->open_width - 0.8) / 0.2);
             color = apply_alpha(color, fade);
         }
         
@@ -182,27 +209,116 @@ void draw_wall_with_tex(t_data *data, t_img *texture, int x)
     }
 }
 
-void	draw_vertical_line(t_data *data, int x)
+// Simplified draw_vertical_line - no door-specific code needed!
+void draw_vertical_line(t_data *data, int x)
 {
-	t_ray	*r;
-	t_img	*tex;
+    t_ray   *r;
+    t_img   *tex;
 
-	r = data->ray;
-	// Choose texture
-	tex = choose_texture(data);
-	// 2. Calculate exact hit location on wall (for tex_x)
-	calculate_hitside(data);
-	// 3. Convert wall_x to texture x-coordinate
-	r->tex_x = (int)(r->wall_x * tex->width);
-	if ((r->side == 0 && r->ray_dir_x > 0) || (r->side == 1
-			&& r->ray_dir_y < 0))
-		r->tex_x = tex->width - r->tex_x - 1;
-	// 4. Calculate step and starting position for texture y-coordinate
-	r->step = 1.0 * tex->height / r->line_height;
-	r->tex_pos = (r->draw_start - HEIGHT / 2 + r->line_height / 2)
-		* r->step;
-	draw_wall_with_tex(data, tex, x);
+    r = data->ray;
+    
+    // Choose texture (automatically handles door frames)
+    tex = choose_texture(data);
+    
+    // Calculate exact hit location on wall (for tex_x)
+    calculate_hitside(data);
+    
+    // Convert wall_x to texture x-coordinate
+    r->tex_x = (int)(r->wall_x * tex->width);
+    if ((r->side == 0 && r->ray_dir_x > 0) || 
+        (r->side == 1 && r->ray_dir_y < 0))
+        r->tex_x = tex->width - r->tex_x - 1;
+    
+    // Calculate step and starting position for texture y-coordinate
+    r->step = 1.0 * tex->height / r->line_height;
+    r->tex_pos = (r->draw_start - HEIGHT / 2 + r->line_height / 2) * r->step;
+    
+    // Draw the wall/door
+    draw_wall_with_tex(data, tex, x);
 }
+
+
+// t_img	*choose_texture(t_data *data)
+// {
+// 	t_img	*texture;
+
+// 	if (data->ray->tile == 'D')
+// 		texture = &data->textures.door;
+// 	else if (data->ray->side == 0) // vertical wall (X-side)
+// 	{
+// 		if (data->ray->ray_dir_x < 0)
+// 			texture = &data->textures.west;
+// 		else
+// 			texture = &data->textures.east;
+// 	}
+// 	else // horizontal wall (Y-side)
+// 	{
+// 		if (data->ray->ray_dir_y < 0)
+// 			texture = &data->textures.north;
+// 		else
+// 			texture = &data->textures.south;
+// 	}
+// 	return (texture);
+// }
+
+// void draw_wall_with_tex(t_data *data, t_img *texture, int x)
+// {
+//     int             y;
+//     t_ray           *ray;
+//     unsigned int    color;
+
+//     ray = data->ray;
+    
+//     // If it's a door and not visible (slid away), don't draw
+//     if (ray->tile == 'D' && ray->door)
+//     {
+//         calculate_door_texture(ray, texture);
+        
+//         if (!ray->is_door_visible)
+//             return; // Door has slid completely away
+//     }
+    
+//     y = ray->draw_start;
+//     while (y < ray->draw_end)
+//     {
+//         ray->tex_y = (int)ray->tex_pos & (texture->height - 1);
+//         ray->tex_pos += ray->step;
+//         color = get_pixel_img(texture, ray->tex_x, ray->tex_y);
+        
+//         // Optional: Add transparency effect as door opens
+//         if (ray->tile == 'D' && ray->door && ray->door->open_width > 0.7)
+//         {
+//             // Fade out near full open
+//             double fade = (1.0 - ray->door->open_width) / 0.3;
+//             color = apply_alpha(color, fade);
+//         }
+        
+//         pixel_put(x, y, &data->img, color);
+//         y++;
+//     }
+// }
+
+// void	draw_vertical_line(t_data *data, int x)
+// {
+// 	t_ray	*r;
+// 	t_img	*tex;
+
+// 	r = data->ray;
+// 	// Choose texture
+// 	tex = choose_texture(data);
+// 	// 2. Calculate exact hit location on wall (for tex_x)
+// 	calculate_hitside(data);
+// 	// 3. Convert wall_x to texture x-coordinate
+// 	r->tex_x = (int)(r->wall_x * tex->width);
+// 	if ((r->side == 0 && r->ray_dir_x > 0) || (r->side == 1
+// 			&& r->ray_dir_y < 0))
+// 		r->tex_x = tex->width - r->tex_x - 1;
+// 	// 4. Calculate step and starting position for texture y-coordinate
+// 	r->step = 1.0 * tex->height / r->line_height;
+// 	r->tex_pos = (r->draw_start - HEIGHT / 2 + r->line_height / 2)
+// 		* r->step;
+// 	draw_wall_with_tex(data, tex, x);
+// }
 
 void	draw_crosshair(t_data *data)
 {
@@ -264,8 +380,6 @@ void render(t_data *data)
     // 8. Draw crosshair on top
     draw_crosshair(data);
 }
-
-
 // void render(t_data *data)
 // {
 //     int x = 0;

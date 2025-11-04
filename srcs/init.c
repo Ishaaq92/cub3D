@@ -71,8 +71,16 @@ int	initialise_data(t_data *data)
 	data->game = malloc(sizeof(t_game));
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
-	init_doors(data);
-	count_doors(data);
+	// Load all 32 door animation frames
+    if (!load_door_frames(data))
+    {
+        printf("Error: Failed to load door animation frames\n");
+        exit(1);
+    }
+    // Initialize doors
+    init_doors(data);
+	// init_doors(data);
+	// count_doors(data);
 	init_sprites(data);
 	set_orientation(data);
 	data->ray = malloc(sizeof(t_ray));

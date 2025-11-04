@@ -13,19 +13,37 @@ double ease_in_out_cubic(double t)
 }
 
 // Trigger doo->state
+// void open_door(t_data *data, int map_x, int map_y)
+// {
+//     t_door *door = find_door(data, map_x, map_y);
+    
+//     if (door && door->state != 1 && door->state != 2)
+//     {
+//         door->state = 1; // Star->state
+//         door->timer = 0.0;
+//     }
+//     else if (door && door->state == 2)
+//     {
+//         // If already open, reset the timer
+//         door->timer = 0.0;
+//     }
+// }
+
 void open_door(t_data *data, int map_x, int map_y)
 {
     t_door *door = find_door(data, map_x, map_y);
     
-    if (door && door->state != 1 && door->state != 2)
+    if (door)
     {
-        door->state = 1; // Star->state
-        door->timer = 0.0;
-    }
-    else if (door && door->state == 2)
-    {
-        // If already open, reset the timer
-        door->timer = 0.0;
+        if (door->state == 0 || door->state == 3) // Closed or closing
+        {
+            door->state = 1; // Start opening
+            door->timer = 0.0;
+        }
+        else if (door->state == 2) // Already open
+        {
+            door->timer = 0.0; // Reset timer
+        }
     }
 }
 
@@ -45,69 +63,97 @@ t_door *find_door(t_data *data, int x, int y)
     return (NULL);
 }
 
-void    check_doors(t_data *data)
+void check_auto_doors(t_data *data)
 {
-    int i;
-    double	dx;
-	double	dy;
+    int     i;
     t_door  *door;
-    double  dist;
-
+    double  dx, dy, dist;
+    
     i = -1;
     while (++i < data->door_count)
     {
         door = &data->doors[i];
-        dx = (door->x + 0.5) - data->player->x;
-        dy = (door->y + 0.5) - data->player->y;
+        
+        // Calculate distance from player to door center
+        dx = door->x + 0.5 - data->player->x;
+        dy = door->y + 0.5 - data->player->y;
         dist = sqrt(dx * dx + dy * dy);
-        if (dist < 2.0 && door->open_width == 0.0)
+        
+        // Auto-open if player is within 2 units and door is closed
+        if (dist < 2.0 && door->state == 0)
         {
-            door->state = 1;
-            door->timer = 0;
+            door->state = 1;  // Start opening
+            door->timer = 0.0;
+            printf("Door at (%d, %d) opening automatically\n", door->x, door->y);
         }
+        // If player moves away while door is open, let it auto-close
+        // (the timer in update_doors handles this)
     }
 }
 
-void    update_doors(t_data *data, double delta_time)
-{
-    int i;
-    t_door  *door;
+// void    check_doors(t_data *data)
+// {
+//     int i;
+//     double	dx;
+// 	double	dy;
+//     t_door  *door;
+//     double  dist;
 
-    i = -1;
-    while (++i < data->door_count)
-    {
-        door = &data->doors[i];
-        if (door->state == 1)
-        {
-            door->open_width += delta_time / DOOR_SPEED;
-            if (door->open_width >= 1.0)
-            {
-                door->open_width = 1.0;
-                door->state = 0;
-                door->timer = 0;
-            }
-        }
-        else if (door->state == -1)
-        {
-            door->open_width -= delta_time / 0.5;
-            if (door->open_width <= 0.0)
-            {
-                door->open_width = 0.0;
-                door->state = 0;
-            }
-        }
-        else if (door->open_width > 0.0)
-        {
-            door->timer += delta_time;
-            if (door->timer > 3.0)
-                door->state = -1;
-        }
-        if (door->open_width > 0.5)
-            data->map.map[door->y][door->x] = '0';
-        else
-            data->map.map[door->y][door->x] = 'D';
-    }
-}
+//     i = -1;
+//     while (++i < data->door_count)
+//     {
+//         door = &data->doors[i];
+//         dx = (door->x + 0.5) - data->player->x;
+//         dy = (door->y + 0.5) - data->player->y;
+//         dist = sqrt(dx * dx + dy * dy);
+//         if (dist < 2.0 && door->open_width == 0.0)
+//         {
+//             door->state = 1;
+//             door->timer = 0;
+//         }
+//     }
+// }
+
+// void    update_doors(t_data *data, double delta_time)
+// {
+//     int i;
+//     t_door  *door;
+
+//     i = -1;
+//     while (++i < data->door_count)
+//     {
+//         door = &data->doors[i];
+//         if (door->state == 1)
+//         {
+//             door->open_width += delta_time / DOOR_SPEED;
+//             if (door->open_width >= 1.0)
+//             {
+//                 door->open_width = 1.0;
+//                 door->state = 0;
+//                 door->timer = 0;
+//             }
+//         }
+//         else if (door->state == -1)
+//         {
+//             door->open_width -= delta_time / 0.5;
+//             if (door->open_width <= 0.0)
+//             {
+//                 door->open_width = 0.0;
+//                 door->state = 0;
+//             }
+//         }
+//         else if (door->open_width > 0.0)
+//         {
+//             door->timer += delta_time;
+//             if (door->timer > 3.0)
+//                 door->state = -1;
+//         }
+//         if (door->open_width > 0.5)
+//             data->map.map[door->y][door->x] = '0';
+//         else
+//             data->map.map[door->y][door->x] = 'D';
+//     }
+// }
 
 // void    check_doors(t_data *data)
 // {

@@ -62,15 +62,15 @@ static void	initialise_ray(t_data *data)
 		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
 }
 
+// Modified DDA to handle open doors
 void perform_dda(t_ray *ray, char **map, t_data *data)
 {
-    int     hit = 0;
-    t_door  *door = NULL;
-    char    tile;
+    int     hit;
+    t_door  *door;
 
-    while (!hit)
+    hit = 0;
+    while (hit == 0)
     {
-        // Step through the map
         if (ray->side_dist_x < ray->side_dist_y)
         {
             ray->side_dist_x += ray->delta_dist_x;
@@ -84,18 +84,23 @@ void perform_dda(t_ray *ray, char **map, t_data *data)
             ray->side = 1;
         }
 
-        tile = map[ray->map_y][ray->map_x];
-
+        char tile = map[ray->map_y][ray->map_x];
+        
         if (tile == 'D')
         {
             door = find_door(data, ray->map_x, ray->map_y);
-            ray->door = door;
-
-            if (door && door->open_width >= 0.8)
-                continue; // pass through open door
-
-            hit = 1;
-            ray->tile = tile;
+            
+            // If door is 90% or more open, raycast through it
+            if (door && door->open_width >= 0.3)
+            {
+                continue; // Keep raycasting to find wall behind
+            }
+            else
+            {
+                hit = 1;
+                ray->tile = tile;
+                ray->door = door;
+            }
         }
         else if (tile == '1')
         {
@@ -105,12 +110,66 @@ void perform_dda(t_ray *ray, char **map, t_data *data)
         }
     }
 
-    // Calculate wall distance
+    // Calculate distance (unchanged)
     if (ray->side == 0)
-        ray->distance = (ray->map_x - data->player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+        ray->distance = (ray->map_x - data->player->x + 
+                        (1 - ray->step_x) / 2) / ray->ray_dir_x;
     else
-        ray->distance = (ray->map_y - data->player->y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+        ray->distance = (ray->map_y - data->player->y + 
+                        (1 - ray->step_y) / 2) / ray->ray_dir_y;
 }
+
+
+
+// void perform_dda(t_ray *ray, char **map, t_data *data)
+// {
+//     int     hit = 0;
+//     t_door  *door = NULL;
+//     char    tile;
+
+//     while (!hit)
+//     {
+//         // Step through the map
+//         if (ray->side_dist_x < ray->side_dist_y)
+//         {
+//             ray->side_dist_x += ray->delta_dist_x;
+//             ray->map_x += ray->step_x;
+//             ray->side = 0;
+//         }
+//         else
+//         {
+//             ray->side_dist_y += ray->delta_dist_y;
+//             ray->map_y += ray->step_y;
+//             ray->side = 1;
+//         }
+
+//         tile = map[ray->map_y][ray->map_x];
+
+//         if (tile == 'D')
+//         {
+//             door = find_door(data, ray->map_x, ray->map_y);
+//             ray->door = door;
+
+//             if (door && door->open_width >= 0.8)
+//                 continue; // pass through open door
+
+//             hit = 1;
+//             ray->tile = tile;
+//         }
+//         else if (tile == '1')
+//         {
+//             hit = 1;
+//             ray->tile = tile;
+//             ray->door = NULL;
+//         }
+//     }
+
+//     // Calculate wall distance
+//     if (ray->side == 0)
+//         ray->distance = (ray->map_x - data->player->x + (1 - ray->step_x) / 2) / ray->ray_dir_x;
+//     else
+//         ray->distance = (ray->map_y - data->player->y + (1 - ray->step_y) / 2) / ray->ray_dir_y;
+// }
 
 
 void	dda(t_data *data, int x)
