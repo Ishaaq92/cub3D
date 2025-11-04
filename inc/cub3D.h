@@ -56,16 +56,27 @@
 # define TEX_HEIGHT 64
 # define TEX_WIDTH 64
 
+//Sprite
+#define MAX_SPRITE 50
+
+typedef struct s_sprite
+{
+    double  x;
+    double  y;
+    int     tex_id;
+    double  distance;
+}   t_sprite;
+
 //Img struct
 typedef struct t_img
 {
-	void *img;
-	char *pxls;
-	int bpp;
-	int	width;
-	int	height;
-	int line_length;
-	int endian;
+	void	*img;
+	char	*pxls;
+	int		bpp;
+	int		width;
+	int		height;
+	int		line_length;
+	int		endian;
 } t_img;
 
 
@@ -189,6 +200,7 @@ typedef struct s_textures
 	t_img		south;
 	t_img		roof;
 	t_img		gun;
+	t_img		sprite;
 	t_door_tex	door_arr;
 }	t_tex;
 
@@ -210,11 +222,18 @@ typedef struct s_data
 	t_tex		textures;
 	//door
 	int			door_count;
+	int			sprite_count;
 	double		prev_time;
+	double		*zbuffer;
+	int			sprite_x_tex;
 	t_door		doors[MAX_DOORS];
+	t_sprite	sprites[MAX_SPRITE];
 } t_data;
 
 //new functions
+void    sort_sprites(t_data *data);
+void    project_sprites(t_data *data);
+void	init_sprites(t_data *data);
 void    draw_minimap(t_data *data);
 double 	ease_in_out_cubic(double t);
 t_door	*find_door(t_data *data, int x, int y);

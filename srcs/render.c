@@ -218,30 +218,123 @@ void	draw_crosshair(t_data *data)
 }
 
 
+// Modified render function
 void render(t_data *data)
 {
     int x;
-
+    t_ray *r;
+    
     x = 0;
-    if (!data->ray)
-        data->ray = malloc(sizeof(t_ray)); // consider moving this to init()
+    r = data->ray;
+    
+    // 1. Draw floor and ceiling
     draw_floor_and_ceiling(data);
+    
+    // 2. Draw walls and fill zbuffer
     while (x < WIDTH)
     {
-        t_ray *r = data->ray;
-        // Reset per-column values
         r->tile = '0';
         r->door = NULL;
-
         dda(data, x);
         r->line_height = (int)(HEIGHT / r->distance);
         calculate_wall_bounds(data);
         draw_vertical_line(data, x);
+        
+        // Store distance for sprite occlusion testing
+        data->zbuffer[x] = r->distance;
         x++;
     }
+    
+    // 3. Calculate sprite distances and sort
+    update_sprite_distances(data);
+    sort_sprites(data);
+    
+    // 4. Draw sprites (back to front)
+    render_sprites(data);
+    
+    // 5. Draw gun/weapon
     draw_gun(data);
+    
+    // 6. Draw minimap
     draw_minimap(data);
-    // draw_minimap_dynamic(data);
+    
+    // 7. Display everything
     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
+    
+    // 8. Draw crosshair on top
     draw_crosshair(data);
 }
+
+
+// void render(t_data *data)
+// {
+//     int x = 0;
+//     int i;
+//     t_ray *r = data->ray;
+
+//     draw_floor_and_ceiling(data);
+//     while (x < WIDTH)
+//     {
+//         r->tile = '0';
+//         r->door = NULL;
+//         dda(data, x);
+//         r->line_height = (int)(HEIGHT / r->distance);
+//         calculate_wall_bounds(data);
+//         draw_vertical_line(data, x);
+//         data->zbuffer[x] = r->distance;
+//         x++;
+//     }
+//     i = -1;
+//     while (++i < data->sprite_count)
+//     {
+//         double dx = data->player->x - data->sprites[i].x;
+//         double dy = data->player->y - data->sprites[i].y;
+//         data->sprites[i].distance = dx * dx + dy * dy;
+//     }
+//     sort_sprite(data);
+//     project_sprites(data);
+//     draw_gun(data);
+//     draw_minimap(data);
+//     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
+//     draw_crosshair(data);
+// }
+
+
+// void render(t_data *data)
+// {
+//     int i;
+//     int x;
+
+//     x = 0;
+//     if (!data->ray)
+//         data->ray = malloc(sizeof(t_ray)); // consider moving this to init()
+//     draw_floor_and_ceiling(data);
+//     while (x < WIDTH)
+//     {
+//         t_ray *r = data->ray;
+//         // Reset per-column values
+//         r->tile = '0';
+//         r->door = NULL;
+
+//         dda(data, x);
+//         r->line_height = (int)(HEIGHT / r->distance);
+//         calculate_wall_bounds(data);
+//         draw_vertical_line(data, x);
+//         data->zbuffer[x] = data->ray->distance;
+//         x++;
+//     }
+//     i = 0;
+//     while (i < data->sprite_count)
+//     {
+//         data->sprites[i].distance = (data->player->x - data->sprites[i].x) * (data->player->x - data->sprites[i]. x)
+//             + (data->player->y - data->sprites[i].y) * (data->player->y - data->sprites[i].y);
+//         i++;
+//     }
+//     sort_sprite(data);
+//     project_sprites(data);
+//     draw_gun(data);
+//     draw_minimap(data);
+//     // draw_minimap_dynamic(data);
+//     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
+//     draw_crosshair(data);
+// }

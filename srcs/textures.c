@@ -1,39 +1,39 @@
 #include "cub3D.h"
 
 // Generate checkerboard floor texture testing generated floor tiles here
-// void generate_floor_texture(t_data *data)
-// {
-//     int x, y;
+void generate_floor_texture(t_data *data)
+{
+    int x, y;
 
-//     //Floor texture
-// 	t_img	tex;
+    //Floor texture
+	t_img	tex;
 
-// 	tex.img = mlx_new_image(data->mlx, TEX_WIDTH, TEX_HEIGHT);
-// 	if (!tex.img)
-// 		printf("Unable to create mlx image\n");
-// 	tex.pxls = mlx_get_data_addr(tex.img, &tex.bpp, &tex.line_length,
-// 			&tex.endian);
-//     data->textures.floor = tex;
-//     data->textures.floor.width = TEX_WIDTH;
-//     data->textures.floor.height = TEX_HEIGHT;
+	tex.img = mlx_new_image(data->mlx, TEX_WIDTH, TEX_HEIGHT);
+	if (!tex.img)
+		printf("Unable to create mlx image\n");
+	tex.pxls = mlx_get_data_addr(tex.img, &tex.bpp, &tex.line_length,
+			&tex.endian);
+    data->textures.floor = tex;
+    data->textures.floor.width = TEX_WIDTH;
+    data->textures.floor.height = TEX_HEIGHT;
     
-//     for (y = 0; y < TEX_HEIGHT; y++)
-//     {
-//         for (x = 0; x < TEX_WIDTH; x++)
-//         {
-//             int color;
-//             if ((x / 8 + y / 8) % 2 == 0)
-//                 color = 0x505050; // Dark gray
-//             else
-//                 color = 0x808080; // Light gray
+    for (y = 0; y < TEX_HEIGHT; y++)
+    {
+        for (x = 0; x < TEX_WIDTH; x++)
+        {
+            int color;
+            if ((x / 8 + y / 8) % 2 == 0)
+                color = 0x505050; // Dark gray
+            else
+                color = 0x808080; // Light gray
             
-//             char *dst = data->textures.floor.pxls + 
-//                        (y * data->textures.floor.line_length + 
-//                         x * (data->textures.floor.bpp / 8));
-//             *(unsigned int*)dst = color;
-//         }
-//     }
-// }
+            char *dst = data->textures.floor.pxls + 
+                       (y * data->textures.floor.line_length + 
+                        x * (data->textures.floor.bpp / 8));
+            *(unsigned int*)dst = color;
+        }
+    }
+}
 
 t_img	load_xpm_to_img(void *mlx, char *path)
 {
@@ -43,12 +43,24 @@ t_img	load_xpm_to_img(void *mlx, char *path)
 	if (!tex.img)
 	{
 		printf("Error: unable to load XPM file: %s\n", path);
-		return ((t_img){0});
+		tex.width = 0;
+		tex.height = 0;
+		tex.pxls = NULL;
+		tex.bpp = 0;
+		tex.line_length = 0;
+		tex.endian = 0;
+		return (tex);
 	}
-	tex.pxls = mlx_get_data_addr(tex.img, &tex.bpp, &tex.line_length,
-			&tex.endian);
+	tex.pxls = mlx_get_data_addr(tex.img, &tex.bpp, &tex.line_length, &tex.endian);
+	if (!tex.pxls)
+	{
+		printf("Error: unable to get data address for: %s\n", path);
+		mlx_destroy_image(mlx, tex.img);
+		tex.img = NULL;
+	}
 	return (tex);
 }
+
 
 void    check_fractions(float *frac_x, float *frac_y)
 {
@@ -128,7 +140,8 @@ void	draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1, float 
 	float	step_y;
 
     p = (y - HEIGHT / 2.0);
-    
+    if (d->ray == NULL)
+		printf("D ray is empty\n");
 	d->ray->row_dist = (0.5 * HEIGHT) / p;
 	d->ray->row_dist = fmin(d->ray->row_dist, 20.0);
 	step_x = d->ray->row_dist * (rdx1 - rdx0) / WIDTH;
