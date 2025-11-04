@@ -49,20 +49,6 @@ void	calculate_wall_bounds(t_data *data)
 		ray->draw_end = HEIGHT - 1;
 }
 
-// Helper function for alpha blending (optional fade effect)
-unsigned int apply_alpha(unsigned int color, double alpha)
-{
-    if (alpha >= 1.0)
-        return color;
-    if (alpha <= 0.0)
-        return 0; // Fully transparent
-    
-    int r = ((color >> 16) & 0xFF) * alpha;
-    int g = ((color >> 8) & 0xFF) * alpha;
-    int b = (color & 0xFF) * alpha;
-    
-    return (r << 16) | (g << 8) | b;
-}
 // Modified wall rendering to handle sliding door texture
 void calculate_door_texture(t_ray *ray, t_img *texture)
 {
@@ -178,13 +164,9 @@ void draw_wall_with_tex(t_data *data, t_img *texture, int x)
     unsigned int    color;
 
     ray = data->ray;
-    
     // Check if door is visible (>90% open means see-through)
     if (ray->tile == 'D' && ray->door && ray->door->open_width >= 0.9)
-    {
-        return; // Door is transparent, wall behind it was already rendered
-    }
-    
+        return; // Door is transparent, wall behind it was already rendered.
     y = ray->draw_start;
     while (y < ray->draw_end)
     {
@@ -236,89 +218,6 @@ void draw_vertical_line(t_data *data, int x)
     // Draw the wall/door
     draw_wall_with_tex(data, tex, x);
 }
-
-
-// t_img	*choose_texture(t_data *data)
-// {
-// 	t_img	*texture;
-
-// 	if (data->ray->tile == 'D')
-// 		texture = &data->textures.door;
-// 	else if (data->ray->side == 0) // vertical wall (X-side)
-// 	{
-// 		if (data->ray->ray_dir_x < 0)
-// 			texture = &data->textures.west;
-// 		else
-// 			texture = &data->textures.east;
-// 	}
-// 	else // horizontal wall (Y-side)
-// 	{
-// 		if (data->ray->ray_dir_y < 0)
-// 			texture = &data->textures.north;
-// 		else
-// 			texture = &data->textures.south;
-// 	}
-// 	return (texture);
-// }
-
-// void draw_wall_with_tex(t_data *data, t_img *texture, int x)
-// {
-//     int             y;
-//     t_ray           *ray;
-//     unsigned int    color;
-
-//     ray = data->ray;
-    
-//     // If it's a door and not visible (slid away), don't draw
-//     if (ray->tile == 'D' && ray->door)
-//     {
-//         calculate_door_texture(ray, texture);
-        
-//         if (!ray->is_door_visible)
-//             return; // Door has slid completely away
-//     }
-    
-//     y = ray->draw_start;
-//     while (y < ray->draw_end)
-//     {
-//         ray->tex_y = (int)ray->tex_pos & (texture->height - 1);
-//         ray->tex_pos += ray->step;
-//         color = get_pixel_img(texture, ray->tex_x, ray->tex_y);
-        
-//         // Optional: Add transparency effect as door opens
-//         if (ray->tile == 'D' && ray->door && ray->door->open_width > 0.7)
-//         {
-//             // Fade out near full open
-//             double fade = (1.0 - ray->door->open_width) / 0.3;
-//             color = apply_alpha(color, fade);
-//         }
-        
-//         pixel_put(x, y, &data->img, color);
-//         y++;
-//     }
-// }
-
-// void	draw_vertical_line(t_data *data, int x)
-// {
-// 	t_ray	*r;
-// 	t_img	*tex;
-
-// 	r = data->ray;
-// 	// Choose texture
-// 	tex = choose_texture(data);
-// 	// 2. Calculate exact hit location on wall (for tex_x)
-// 	calculate_hitside(data);
-// 	// 3. Convert wall_x to texture x-coordinate
-// 	r->tex_x = (int)(r->wall_x * tex->width);
-// 	if ((r->side == 0 && r->ray_dir_x > 0) || (r->side == 1
-// 			&& r->ray_dir_y < 0))
-// 		r->tex_x = tex->width - r->tex_x - 1;
-// 	// 4. Calculate step and starting position for texture y-coordinate
-// 	r->step = 1.0 * tex->height / r->line_height;
-// 	r->tex_pos = (r->draw_start - HEIGHT / 2 + r->line_height / 2)
-// 		* r->step;
-// 	draw_wall_with_tex(data, tex, x);
-// }
 
 void	draw_crosshair(t_data *data)
 {
@@ -380,75 +279,4 @@ void render(t_data *data)
     // 8. Draw crosshair on top
     draw_crosshair(data);
 }
-// void render(t_data *data)
-// {
-//     int x = 0;
-//     int i;
-//     t_ray *r = data->ray;
 
-//     draw_floor_and_ceiling(data);
-//     while (x < WIDTH)
-//     {
-//         r->tile = '0';
-//         r->door = NULL;
-//         dda(data, x);
-//         r->line_height = (int)(HEIGHT / r->distance);
-//         calculate_wall_bounds(data);
-//         draw_vertical_line(data, x);
-//         data->zbuffer[x] = r->distance;
-//         x++;
-//     }
-//     i = -1;
-//     while (++i < data->sprite_count)
-//     {
-//         double dx = data->player->x - data->sprites[i].x;
-//         double dy = data->player->y - data->sprites[i].y;
-//         data->sprites[i].distance = dx * dx + dy * dy;
-//     }
-//     sort_sprite(data);
-//     project_sprites(data);
-//     draw_gun(data);
-//     draw_minimap(data);
-//     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-//     draw_crosshair(data);
-// }
-
-
-// void render(t_data *data)
-// {
-//     int i;
-//     int x;
-
-//     x = 0;
-//     if (!data->ray)
-//         data->ray = malloc(sizeof(t_ray)); // consider moving this to init()
-//     draw_floor_and_ceiling(data);
-//     while (x < WIDTH)
-//     {
-//         t_ray *r = data->ray;
-//         // Reset per-column values
-//         r->tile = '0';
-//         r->door = NULL;
-
-//         dda(data, x);
-//         r->line_height = (int)(HEIGHT / r->distance);
-//         calculate_wall_bounds(data);
-//         draw_vertical_line(data, x);
-//         data->zbuffer[x] = data->ray->distance;
-//         x++;
-//     }
-//     i = 0;
-//     while (i < data->sprite_count)
-//     {
-//         data->sprites[i].distance = (data->player->x - data->sprites[i].x) * (data->player->x - data->sprites[i]. x)
-//             + (data->player->y - data->sprites[i].y) * (data->player->y - data->sprites[i].y);
-//         i++;
-//     }
-//     sort_sprite(data);
-//     project_sprites(data);
-//     draw_gun(data);
-//     draw_minimap(data);
-//     // draw_minimap_dynamic(data);
-//     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-//     draw_crosshair(data);
-// }

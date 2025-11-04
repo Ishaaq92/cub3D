@@ -139,7 +139,7 @@ typedef struct s_ray
 	int			step_x;
 	int			step_y;
 	//added features;
-	int			tile;
+	char			tile;
 	int			side;
 	int			draw_start;
 	int			draw_end;
@@ -231,6 +231,8 @@ typedef struct s_data
 } t_data;
 
 //new functions
+unsigned int	apply_alpha(unsigned int color, double alpha);
+int				get_door_frame(t_door *door, int total_frames);
 void			render_sprites(t_data *data);
 void			check_auto_doors(t_data *data);
 int				load_door_frames(t_data *data);
@@ -307,6 +309,9 @@ void	free_list_and_exit(t_list **map_list);
 
 // dda.c
 void	dda(t_data *data, int x);
+void	initialise_ray(t_data *data);
+void	set_side_dist(t_ray *ray, t_data *data);
+
 // double	dda(t_data *data, int x);
 
 // game.c
