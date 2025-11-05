@@ -259,23 +259,17 @@ void render(t_data *data)
         data->zbuffer[x] = r->distance;
         x++;
     }
-    
     // 3. Calculate sprite distances and sort
     update_sprite_distances(data);
     sort_sprites(data);
-    
     // 4. Draw sprites (back to front)
     render_sprites(data);
-    
     // 5. Draw gun/weapon
     draw_gun(data);
-    
     // 6. Draw minimap
     draw_minimap(data);
-    
     // 7. Display everything
     mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-    
     // 8. Draw crosshair on top
     draw_crosshair(data);
 }

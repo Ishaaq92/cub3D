@@ -100,6 +100,5 @@ int	key_press_hold(int keycode, t_data *data)
 		data->player->rotate_left = true;
 	else
 		return (1);
-	// render(data);
 	return (0);
 }
