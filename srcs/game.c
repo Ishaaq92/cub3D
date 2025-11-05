@@ -14,9 +14,9 @@
 
 double	get_diff_in_usec(struct timeval t0)
 {
-	struct timeval t;
-	struct timeval t1;
-	
+	struct timeval	t;
+	struct timeval	t1;
+
 	gettimeofday(&t1, NULL);
 	t.tv_sec = t1.tv_sec - t0.tv_sec;
 	t.tv_usec = t1.tv_usec - t0.tv_usec;
@@ -28,11 +28,10 @@ void	fixed_fps(t_data *data, double fps)
 	static struct timeval	t0;
 	double					diff;
 
-	fps ++;
-	diff = get_diff_in_usec(t0) ;
+	fps++;
+	diff = get_diff_in_usec(t0);
 	if ((diff) > ((1.0 / fps) * 1000000.0))
 	{
-		// printf("fps = %d\n", (int)(1000000 / diff));
 		gettimeofday(&t0, NULL);
 		render(data);
 	}
@@ -58,29 +57,28 @@ void	move(t_data *data)
 	pace = 0.01;
 	player = data->player;
 	if (player->forward)
-	 	walk(data, 'f', pace);
+		walk(data, 'f', pace);
 	if (player->back)
-	 	walk(data, 'b', -pace);
+		walk(data, 'b', -pace);
 	if (player->right)
-	 	walk(data, 'r', pace);
+		walk(data, 'r', pace);
 	if (player->left)
-	 	walk(data, 'l', -pace);
+		walk(data, 'l', -pace);
 	if (player->rotate_right)
 		rotate(data, -0.01);
 	if (player->rotate_left)
 		rotate(data, 0.01);
-
 }
 
 int	game_loop(t_data *data)
 {
-	static long			frames = 0;
-	static long int		t0;
-	double				current_time;
-	double				delta_time;
-	
+	static long		frames = 0;
+	static long int	t0;
+	double			current_time;
+	double			delta_time;
+
 	current_time = get_time_in_ms();
-	delta_time = (current_time - data->prev_time) / 1000.0; // to seconds
+	delta_time = (current_time - data->prev_time) / 1000.0;
 	move(data);
 	if (get_time_in_ms() - t0 > 1000)
 	{

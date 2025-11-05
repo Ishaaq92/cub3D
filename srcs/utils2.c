@@ -50,22 +50,6 @@ void	print_map(char **map, int map_size)
 	printf("\n");
 }
 
-void	free_list_and_exit(t_list **map_list)
-{
-	ft_lstclear(map_list, free);
-	printf("malloc error.....exiting\n");
-	exit(1);
-}
-
-int	clean_up(char **map, t_list **map_list)
-{
-	if (map)
-		free_array(map);
-	if (map_list)
-		ft_lstclear(map_list, free);
-	return (1);
-}
-
 char	*dup_line(char *src)
 {
 	char	*dup;

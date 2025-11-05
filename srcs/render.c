@@ -32,7 +32,6 @@ unsigned int	get_pixel_img(t_img *img, int x, int y)
 		return (0);
 	offset = y * img->line_length + x * (img->bpp / 8);
 	dst = (unsigned char *)img->pxls + offset;
-	// Return as 0x00RRGGBB for easier usage
 	return ((dst[2] << 16) | (dst[1] << 8) | dst[0]);
 }
 

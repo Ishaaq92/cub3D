@@ -12,27 +12,27 @@
 
 #include "cub3D.h"
 
-int file_extension_valid(char* filepath)
+int	file_extension_valid(char *filepath)
 {
-    int len;
+	int	len;
 
-    len = ft_strlen(filepath);
-    if (len < 4)
-        return (0);
-    if (ft_strncmp(filepath + len - 4, ".cub", 4) == 0)
-        return (1);
-    return (0);
+	len = ft_strlen(filepath);
+	if (len < 4)
+		return (0);
+	if (ft_strncmp(filepath + len - 4, ".cub", 4) == 0)
+		return (1);
+	return (0);
 }
 
-int validate_input(t_data *data, char* file_name)
+int	validate_input(t_data *data, char *file_name)
 {
-    if (!file_extension_valid(file_name))
-    {
-        printf("Error: file must have a .cub extension\n");
-        exit(1);
-    }
-    if (validate_map(data) != 0)
-        return (1);
-    print_map(data->map.map, data->map.map_size);
-    return (0);
+	if (!file_extension_valid(file_name))
+	{
+		printf("Error: file must have a .cub extension\n");
+		exit(1);
+	}
+	if (validate_map(data) != 0)
+		return (1);
+	print_map(data->map.map, data->map.map_size);
+	return (0);
 }

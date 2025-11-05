@@ -14,17 +14,19 @@
 
 void	rotate(t_data *data, double rot_speed)
 {
-	double		old_dir_x;
-	double		old_plane_x;
-	
+	double	old_dir_x;
+	double	old_plane_x;
+
 	old_dir_x = data->game->dir_x;
 	old_plane_x = data->game->plane_x;
-
-    data->game->dir_x = data->game->dir_x * cos(rot_speed) - data->game->dir_y * sin(rot_speed);
-    data->game->dir_y = old_dir_x * sin(rot_speed) + data->game->dir_y * cos(rot_speed);
-
-    data->game->plane_x = data->game->plane_x * cos(rot_speed) - data->game->plane_y * sin(rot_speed);
-    data->game->plane_y = old_plane_x * sin(rot_speed) + data->game->plane_y * cos(rot_speed);
+	data->game->dir_x = data->game->dir_x * cos(rot_speed) - data->game->dir_y
+		* sin(rot_speed);
+	data->game->dir_y = old_dir_x * sin(rot_speed) + data->game->dir_y
+		* cos(rot_speed);
+	data->game->plane_x = data->game->plane_x * cos(rot_speed)
+		- data->game->plane_y * sin(rot_speed);
+	data->game->plane_y = old_plane_x * sin(rot_speed) + data->game->plane_y
+		* cos(rot_speed);
 }
 
 int	wall_detection(t_data *data, double new_x, double new_y)
@@ -40,14 +42,14 @@ int	wall_detection(t_data *data, double new_x, double new_y)
 		return (1);
 	else if (data->map.map[(int)(new_y + gap)][(int)(new_x)] == '1')
 		return (1);
-	else 
-		return(0);
+	else
+		return (0);
 }
 
 void	walk(t_data *data, char dir, double scale)
 {
-	double	new_x;	
-	double	new_y;	
+	double	new_x;
+	double	new_y;
 
 	if (dir == 'f' || dir == 'b')
 	{
@@ -65,7 +67,7 @@ void	walk(t_data *data, char dir, double scale)
 	data->player->y = new_y;
 }
 
-int	key_release(int keycode, t_data *data) 
+int	key_release(int keycode, t_data *data)
 {
 	if (keycode == XK_w || keycode == XK_W)
 		data->player->forward = false;

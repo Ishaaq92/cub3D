@@ -43,7 +43,6 @@ void	initialise_ray(t_data *data)
 	t_game	*game;
 	t_ray	*ray;
 
-	
 	ray = data->ray;
 	game = data->game;
 	data->ray->map_x = (int)data->player->x;

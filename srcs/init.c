@@ -12,6 +12,7 @@
 
 #include "cub3D.h"
 
+// generate_floor_texture(data); //Tested generated floor tiles.
 void	load_textures(t_data *data)
 {
 	data->textures.north = load_xpm_to_img(data->mlx, data->map.path_to_NO);
@@ -20,10 +21,11 @@ void	load_textures(t_data *data)
 	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_EA);
 	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
 	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
-	data->textures.gun = load_xpm_to_img(data->mlx, "./assets/weapon/shotgun/SHT2D0.xpm");
-	data->textures.door = load_xpm_to_img(data->mlx, "./assets/door/Layer-1_sprite_02.xpm");
+	data->textures.gun = load_xpm_to_img(data->mlx,
+			"./assets/weapon/shotgun/SHT2D0.xpm");
+	data->textures.door = load_xpm_to_img(data->mlx,
+			"./assets/door/Layer-1_sprite_02.xpm");
 	data->textures.sprite = load_xpm_to_img(data->mlx, "./assets/goomba.xpm");
-	// generate_floor_texture(data); //Tested generated floor tiles.
 }
 
 static void	reset_movement(t_data *data)
@@ -64,6 +66,30 @@ void	set_orientation(t_data *data)
 	}
 }
 
+int	initialize_mlx_window(t_data *data)
+{
+	data->ray = malloc(sizeof(t_ray));
+	if (!data->ray)
+		perror("Failed to allocate ray struct");
+	if (!data->mlx)
+		return (1);
+	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
+	if (!data->win)
+		return (1);
+	data->img.img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+	if (!data->img.img)
+		return (1);
+	data->img.pxls = mlx_get_data_addr(data->img.img, &data->img.bpp,
+			&data->img.line_length, &data->img.endian);
+	data->zbuffer = malloc(sizeof(double) * WIDTH);
+	if (!data->zbuffer)
+	{
+		perror("zbuffer allocation failed\n");
+		return (1);
+	}
+	return (0);
+}
+
 int	initialise_data(t_data *data)
 {
 	reset_movement(data);
@@ -71,35 +97,17 @@ int	initialise_data(t_data *data)
 	data->game = malloc(sizeof(t_game));
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
-	// Load all 32 door animation frames
-    if (!load_door_frames(data))
-    {
-        printf("Error: Failed to load door animation frames\n");
-        exit(1);
-    }
-    // Initialize doors
-    init_doors(data);
-	// init_doors(data);
-	// count_doors(data);
+	if (!load_door_frames(data))
+	{
+		printf("Error: Failed to load door animation frames\n");
+		exit(1);
+	}
+	init_doors(data);
 	init_sprites(data);
 	set_orientation(data);
-	data->ray = malloc(sizeof(t_ray));
-	if (!data->ray)
-		perror("Failed to allocate ray struct");
-	if (!data->mlx)
-		return (-1);
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
-	if (!data->win)
-		return (-1);
-	data->img.img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	if (!data->img.img)
-		return (-1);
-	data->img.pxls = mlx_get_data_addr(data->img.img, &data->img.bpp,
-			&data->img.line_length, &data->img.endian);
-	data->zbuffer = malloc(sizeof(double) * WIDTH);
-	if (!data->zbuffer)
+	if (initialize_mlx_window(data))
 	{
-		perror("zbuffer allocation failed\n");
+		printf("Error while initializing.\n");
 		exit(1);
 	}
 	load_textures(data);

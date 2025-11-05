@@ -34,38 +34,38 @@
 # define MOUSE_SENSITIVITY 0.002
 
 //Minimap
-#define MMAP_SCALE 6
-#define MINIMAP_RADIUS 6 
-#define MMAP_MARGIN 10
-#define MMAP_WALL_COLOR 0x444444
-#define MMAP_DOOR_COLOR 0xAA8800
-#define MMAP_PLAYER_COLOR 0xFF0000
-#define MINIMAP_SIZE (MINIMAP_RADIUS * 2 + 1)
-#define MINIMAP_CENTER (MINIMAP_RADIUS * MMAP_SCALE)
-#define MINIMAP_ARROW_LEN 8
-#define MINIMAP_ARROW_COLOR 0xFF0000 
+# define MMAP_SCALE 6
+# define MINIMAP_RADIUS 6 
+# define MMAP_MARGIN 10
+# define MMAP_WALL_COLOR 0x444444
+# define MMAP_DOOR_COLOR 0xAA8800
+# define MMAP_PLAYER_COLOR 0xFF0000
+// # define MINIMAP_SIZE (MINIMAP_RADIUS * 2 + 1)
+// # define MINIMAP_CENTER (MINIMAP_RADIUS * MMAP_SCALE)
+// # define MINIMAP_ARROW_LEN 8
+// # define MINIMAP_ARROW_COLOR 0xFF0000 
 
 //door
-#define MAX_DOORS 50
-#define DOOR_SPEED 0.8
-#define	DOOR_HOLD_TIME 3.0
-#define DOOR_CLOSE_SPEED 0.5
-#define DOOR_FRAMES 32
+# define MAX_DOORS 50
+# define DOOR_SPEED 0.8
+# define DOOR_HOLD_TIME 3.0
+# define DOOR_CLOSE_SPEED 0.5
+# define DOOR_FRAMES 32
 
 //Set texture H and W
 # define TEX_HEIGHT 64
 # define TEX_WIDTH 64
 
 //Sprite
-#define MAX_SPRITE 50
+# define MAX_SPRITE 50
 
 typedef struct s_sprite
 {
-    double  x;
-    double  y;
-    int     tex_id;
-    double  distance;
-}   t_sprite;
+	double		x;
+	double		y;
+	int			tex_id;
+	double		distance;
+}	t_sprite;
 
 //Img struct
 typedef struct t_img
@@ -77,14 +77,15 @@ typedef struct t_img
 	int		height;
 	int		line_length;
 	int		endian;
-} t_img;
+}	t_img;
 
 
 // Door texture structure
-typedef struct s_door_textures {
-    t_img   frames[DOOR_FRAMES];  // Array of door frames
-    int     frame_count;           // Actual number of loaded frames
-} t_door_tex;
+typedef struct s_door_textures
+{
+	t_img		frames[DOOR_FRAMES];
+	int			frame_count;
+}	t_door_tex;
 
 //Door struct
 typedef struct s_door
@@ -95,7 +96,6 @@ typedef struct s_door
 	double		open_width; // 0.0 = closed, 1.0 = fully open
 	int			state; // 0 = closed, 1 = opening, 2 = open, 3 = closing
 	double		timer; // time since last interaction
-	// int			is_vertical;
 }		t_door;
 
 typedef struct s_player
@@ -111,7 +111,7 @@ typedef struct s_player
 	bool		rotate_right;
 	bool		rotate_left;
 
-} t_player;
+}	t_player;
 
 typedef struct s_map
 {
@@ -124,7 +124,7 @@ typedef struct s_map
 	char		*path_to_SO;
 	char		*path_to_WE;
 	char		*path_to_EA;
-} t_map;
+}	t_map;
 
 typedef struct s_ray
 {
@@ -156,7 +156,7 @@ typedef struct s_ray
 	int			line_height;
 	int			is_door_visible;
 	t_door		*door;
-} t_ray;
+}	t_ray;
 
 //struct for calculation to prevent lots of variable use (norminette)
 typedef struct s_tex_calc
@@ -188,7 +188,7 @@ typedef struct s_game
 	int			key_up;
 	int			key_right;
 	int			key_left;
-} t_game;
+}	t_game;
 
 typedef struct s_textures
 {
@@ -216,8 +216,8 @@ typedef struct s_data
 	t_player	*player;
 	//mouse
 	int			mouse_x;
-    int			mouse_y;
-    int			mouse_locked;
+	int			mouse_y;
+	int			mouse_locked;
 	//Textures
 	t_tex		textures;
 	//door
@@ -228,32 +228,34 @@ typedef struct s_data
 	int			sprite_x_tex;
 	t_door		doors[DOOR_FRAMES];
 	t_sprite	sprites[MAX_SPRITE];
-} t_data;
+}	t_data;
 
 //new functions
+// void			draw_minimap_dynamic(t_data *data);// Not in use..
 unsigned int	apply_alpha(unsigned int color, double alpha);
 int				get_door_frame(t_door *door, int total_frames);
 void			render_sprites(t_data *data);
 void			check_auto_doors(t_data *data);
 int				load_door_frames(t_data *data);
 void			sort_sprites(t_data *data);
-void    		project_sprites(t_data *data);
+void			project_sprites(t_data *data);
 void			update_sprite_distances(t_data *data);
 void			init_sprites(t_data *data);
-void    		draw_minimap(t_data *data);
+void			draw_minimap(t_data *data);
 double 			ease_in_out_cubic(double t);
 t_door			*find_door(t_data *data, int x, int y);
-void    		check_doors(t_data *data);
+void			check_doors(t_data *data);
 void			init_doors(t_data *data);
 void			count_doors(t_data *data);
 void			draw_gun(t_data *data);
-void    		update_doors(t_data *data, double delta_time);
+void			update_doors(t_data *data, double delta_time);
 void			generate_floor_texture(t_data *data);
 void			draw_floor_and_ceiling(t_data *data);
 void			pixel_put(int x, int y, t_img *img, int colour);
 unsigned int	get_pixel_img(t_img *img, int x, int y);
 void			update_doors_with_frame(t_data *data, double delta_time);
-void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1, float rdy1);
+void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0, 
+					float rdx1, float rdy1);
 
 
 //load xpm to image

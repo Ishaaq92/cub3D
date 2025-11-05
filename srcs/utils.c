@@ -12,125 +12,8 @@
 
 #include "cub3D.h"
 
-void	init_sprites(t_data *data)
-{
-	int				x;
-	int				y;
-	t_sprite		*sprite;
-
-	y = -1;
-	data->sprite_count = 0;
-	while (data->map.map[++y])
-	{
-		x = -1;
-		while (data->map.map[y][++x])
-		{
-			if (data->map.map[y][x] == 'G')
-			{
-				if (data->door_count < MAX_SPRITE)
-				{
-					sprite = &data->sprites[data->sprite_count++];
-					sprite->x = x + 0.5;
-					sprite->y = y + 0.5;
-					sprite->tex_id = 0;
-					sprite->distance = 0.0;
-				}
-			}
-		}
-	}
-	printf("Initialized %d sprites\n", data->sprite_count);
-}
-
-// Initialize doors with new fields
-void init_doors(t_data *data)
-{
-    int     x, y, count;
-    t_door  *door;
-    
-    // Count doors
-    count = 0;
-    y = -1;
-    while (data->map.map[++y])
-    {
-        x = -1;
-        while (data->map.map[y][++x])
-        {
-            if (data->map.map[y][x] == 'D')
-                count++;
-        }
-    }
-    
-    data->door_count = count;
-    printf("Found %d doors\n", count);
-    
-    // Initialize each door
-    count = 0;
-    y = -1;
-    while (data->map.map[++y])
-    {
-        x = -1;
-        while (data->map.map[y][++x])
-        {
-            if (data->map.map[y][x] == 'D')
-            {
-                door = &data->doors[count];
-                door->x = x;
-                door->y = y;
-                door->open_width = 0.0;     // NEW: replaces open_width
-                door->state = 0;             // NEW: replaces opening
-                door->timer = 0.0;
-                door->current_frame = 0;     // NEW: starts at frame 0 (closed)
-                count++;
-            }
-        }
-    }
-}
-
-
-// void	count_doors(t_data *data)
-// {
-// 	int		x;
-// 	int		y;
-// 	t_door	*door;
-	
-// 	y = -1;
-// 	while (data->map.map[++y])
-// 	{
-// 		x = -1;
-// 		while (data->map.map[y][++x])
-// 		{
-// 			if (data->map.map[y][x] == 'D')
-// 			{
-// 				if (data->door_count < MAX_DOORS)
-// 				{
-// 					door = &data->doors[data->door_count++];
-// 					door->x = x;
-// 					door->y = y;
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
-// void	init_doors(t_data *data)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < MAX_DOORS)
-// 	{
-// 		data->doors[i].x = -1;
-// 		data->doors[i].y = -1;
-// 		data->doors[i].open_width = 0.0;
-// 		data->doors[i].state = 0;
-// 		data->doors[i].timer = 0.0;
-// 		data->doors[i].is_vertical = 0;
-// 	}
-// 	data->door_count = 0;
-// }
-
 int	ft_quit(t_data *data)
-{      
+{
 	if (!data || !data->mlx)
 		return (-1);
 	if (data->img.img)
@@ -149,13 +32,13 @@ int	ft_quit(t_data *data)
 
 int	set_rgb(char *line)
 {
-	int		colour;
-	int		rgb;
-	int		i;
+	int	colour;
+	int	rgb;
+	int	i;
 
 	i = 0;
 	while (!ft_isdigit(line[i]))
-		i ++;
+		i++;
 	colour = ft_atoi(&line[i]);
 	rgb = (colour << 16);
 	line = ft_strchr(line, ',') + 1;
@@ -165,4 +48,28 @@ int	set_rgb(char *line)
 	colour = ft_atoi(line);
 	rgb = rgb + colour;
 	return (rgb);
+}
+
+int	check_allowed_chars(char **map, int map_size)
+{
+	int			i;
+	int			j;
+	const char	*expected_chars = "10NSEWDG ";
+
+	i = 0;
+	while (i < map_size)
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if ((map[i][j] != '\n') && !ft_strchr(expected_chars, map[i][j]))
+			{
+				printf("Map error at row %d, col %d.\n", i, j);
+				return (1);
+			}
+			++j;
+		}
+		++i;
+	}
+	return (0);
 }
