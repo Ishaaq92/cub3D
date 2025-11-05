@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/05 15:12:10 by aaladeok          #+#    #+#             */
+/*   Updated: 2025/11/05 15:12:14 by aaladeok         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 // Generate checkerboard floor texture testing generated floor tiles here
@@ -62,20 +74,20 @@ t_img	load_xpm_to_img(void *mlx, char *path)
 }
 
 
-void    check_fractions(float *frac_x, float *frac_y)
+void	check_fractions(float *frac_x, float *frac_y)
 {
-    if (*frac_x < 0)
+	if (*frac_x < 0)
 		*frac_x += 1.0;
 	if (*frac_y < 0)
 		*frac_y += 1.0;
 }
 
-void    bound_checks(t_data *d)
+void	bound_checks(t_data *d)
 {
-    if (d->ray->tex_x >= d->textures.floor.width)
+	if (d->ray->tex_x >= d->textures.floor.width)
 		d->ray->tex_x = d->textures.floor.width - 1;
 	if (d->ray->tex_y >= d->textures.floor.height)
-	    d->ray->tex_y = d->textures.floor.height - 1;
+		d->ray->tex_y = d->textures.floor.height - 1;
 }
 
 // void    get_tex_coordinate(t_data *d, t_tex_calc *tex)

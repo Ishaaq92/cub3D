@@ -14,10 +14,10 @@
 
 void	init_sprites(t_data *data)
 {
-	int		x;
-	int		y;
-	t_sprite	*sprite;
-	
+	int				x;
+	int				y;
+	t_sprite		*sprite;
+
 	y = -1;
 	data->sprite_count = 0;
 	while (data->map.map[++y])
@@ -38,7 +38,7 @@ void	init_sprites(t_data *data)
 			}
 		}
 	}
-    printf("Initialized %d sprites\n", data->sprite_count);
+	printf("Initialized %d sprites\n", data->sprite_count);
 }
 
 // Initialize doors with new fields
