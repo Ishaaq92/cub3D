@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 17:45:31 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/06 17:53:18 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,8 @@ int	parser(t_data *data, char *file)
 		return (1);
 	data->map.map_height = 0;
 	s = get_next_line(fd);
-	while (s)
+	while (s && process_textures(data, s) == 0)
 	{
-		if (process_textures(data, s) == 1)
-			break ;
 		free(s);
 		s = get_next_line(fd);
 	}
@@ -152,10 +150,9 @@ int	parser(t_data *data, char *file)
 	while ((s))
 	{
 		if (process_map(data, s) != 0)
-			printf("error"); // Need to return 1 here?
+			printf("error");
 		free(s);
 		s = get_next_line(fd);
 	}
-	// close(fd); //Do we need to close file descriptor here?
 	return (0);
 }
