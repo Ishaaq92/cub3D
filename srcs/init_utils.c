@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 16:43:22 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/11/05 16:43:25 by aaladeok         ###   ########.fr       */
+/*   Updated: 2025/11/06 18:29:21 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ void	count_doors(t_data *data)
 
 	count = 0;
 	y = -1;
-	while (data->map.map[++y])
+	while (data->map.map[++y] != 0)
 	{
 		x = -1;
-		while (data->map.map[y][++x])
+		while (data->map.map[y][++x] != '\0')
 		{
+			// printf("%s\n", data->map.map[y]);
+			// printf("%d, %d\n", x, y);
 			if (data->map.map[y][x] == 'D')
 				count++;
 		}

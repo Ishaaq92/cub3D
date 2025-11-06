@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 12:40:08 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 20:23:13 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/06 18:59:58 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,26 @@ void	mouse_setup(t_data *data)
 	data->mouse_locked = 0;
 }
 
+void	reset_map(t_data *data)
+{
+	data->map.map_height = 0;
+	data->map.map = 0;
+	data->map.map_list = 0;
+	data->map.ceiling_rgb = -1;
+	data->map.floor_rgb = -1;
+	data->map.path_to_east = 0;
+	data->map.path_to_west = 0;
+	data->map.path_to_north = 0;
+	data->map.path_to_south = 0;
+}
+
 int	main(int ac, char **av)
 {
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
 	ft_bzero(data, sizeof(data));
-	data->map.ceiling_rgb = -1;
-	data->map.floor_rgb = -1;
+	reset_map(data);
 	if (ac != 2 || (av[1] && parser(data, av[1])))
 		return (1);
 	validate_input(data, av[1]);
