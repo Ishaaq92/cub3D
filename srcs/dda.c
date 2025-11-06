@@ -38,27 +38,27 @@ void	check_ray_dist(t_data *data, t_ray *ray)
 			/ ray->ray_dir_y;
 }
 
-void	dda_cycle(t_data *data, t_ray *ray, char **map, int *hit, t_door *door)
+void	dda_cycle(t_data *d, char **map, int *hit, t_door *door)
 {
 	while (*hit == 0)
 	{
-		check_side_dist(ray);
-		ray->tile = map[ray->map_y][ray->map_x];
-		if (ray->tile == 'D')
+		check_side_dist(d->ray);
+		d->ray->tile = map[d->ray->map_y][d->ray->map_x];
+		if (d->ray->tile == 'D')
 		{
-			door = find_door(data, ray->map_x, ray->map_y);
+			door = find_door(d, d->ray->map_x, d->ray->map_y);
 			if (door && door->open_width >= 0.3)
 				continue ;
 			else
 			{
 				*hit = 1;
-				ray->door = door;
+				d->ray->door = door;
 			}
 		}
-		else if (ray->tile == '1')
+		else if (d->ray->tile == '1')
 		{
 			*hit = 1;
-			ray->door = NULL;
+			d->ray->door = NULL;
 		}
 	}
 }
@@ -71,7 +71,7 @@ void	perform_dda(t_ray *ray, char **map, t_data *data)
 
 	hit = 0;
 	door = NULL;
-	dda_cycle(data, ray, map, &hit, door);
+	dda_cycle(data, map, &hit, door);
 	check_ray_dist(data, ray);
 }
 

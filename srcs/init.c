@@ -15,10 +15,10 @@
 // generate_floor_texture(data); //Tested generated floor tiles.
 void	load_textures(t_data *data)
 {
-	data->textures.north = load_xpm_to_img(data->mlx, data->map.path_to_NO);
-	data->textures.south = load_xpm_to_img(data->mlx, data->map.path_to_SO);
-	data->textures.west = load_xpm_to_img(data->mlx, data->map.path_to_WE);
-	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_EA);
+	data->textures.north = load_xpm_to_img(data->mlx, data->map.path_to_north);
+	data->textures.south = load_xpm_to_img(data->mlx, data->map.path_to_south);
+	data->textures.west = load_xpm_to_img(data->mlx, data->map.path_to_west);
+	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_east);
 	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
 	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
 	data->textures.gun = load_xpm_to_img(data->mlx,

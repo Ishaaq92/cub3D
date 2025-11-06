@@ -48,8 +48,8 @@ static int	get_frame(t_data *data, int i, int width, int height)
 		printf("Error: Failed to load %s\n", path);
 		return (0);
 	}
-	data->textures.door_arr.frames[i].pxls = mlx_get_data_addr(\
-                data->textures.door_arr.frames[i].img,
+	data->textures.door_arr.frames[i].pxls = mlx_get_data_addr(
+			data->textures.door_arr.frames[i].img,
 			&data->textures.door_arr.frames[i].bpp,
 			&data->textures.door_arr.frames[i].line_length,
 			&data->textures.door_arr.frames[i].endian);

@@ -12,165 +12,148 @@
 
 #include "cub3D.h"
 
-// Calculate sprite distances to player
-void update_sprite_distances(t_data *data)
+// Calculate texture step and position
+static void	init_texture_calc(t_tex_info *tex, t_sprite_draw *draw, int height)
 {
-    int i;
-    double dx, dy;
-    
-    i = -1;
-    while (++i < data->sprite_count)
-    {
-        dx = data->player->x - data->sprites[i].x;
-        dy = data->player->y - data->sprites[i].y;
-        // Store squared distance (faster, still works for sorting)
-        data->sprites[i].distance = dx * dx + dy * dy;
-    }
+	double	sprite_height_diff;
+
+	tex->step = 1.0 * height / (draw->draw_end_y - draw->draw_start_y);
+	sprite_height_diff = (draw->draw_end_y - draw->draw_start_y) / 2;
+	tex->tex_pos = (draw->draw_start_y - HEIGHT / 2 + sprite_height_diff);
+	tex->tex_pos *= tex->step;
 }
 
-void    sort_sprites(t_data *data)
+// Clamp drawing boundaries to screen
+static void	clamp_draw_bounds(t_sprite_draw *draw, t_tex_info *tex)
 {
-    int     i;
-    int     j;
-    t_sprite    tmp;
-
-    i = -1;
-    while (++i < data->sprite_count)
-    {
-        j = i;
-        while (++j < data->sprite_count)
-        {
-            if (data->sprites[i].distance < data->sprites[j].distance)
-            {
-                tmp = data->sprites[i];
-                data->sprites[i] = data->sprites[j];
-                data->sprites[j] = tmp;
-            }
-        }
-    }
+	if (draw->draw_start_y < 0)
+	{
+		tex->tex_pos += -draw->draw_start_y * tex->step;
+		draw->draw_start_y = 0;
+	}
+	if (draw->draw_end_y > HEIGHT)
+	{
+		draw->draw_end_y = HEIGHT;
+	}
 }
 
-// Draw a single sprite stripe (vertical column)
-void draw_sprite_stripe(t_data *data, t_sprite *sprite, int x, 
-                        int draw_start_y, int draw_end_y, int tex_x, double depth)
+// Draw single pixel if not transparent
+static void	draw_pixel_if_visible(t_data *data, int x, int y, int tex_x,
+		int tex_y)
 {
-    int y;
-    int tex_y;
-    double step;
-    double tex_pos;
-    unsigned int color;
-    
-    // Check if sprite is behind wall at this x coordinate
-    if (x < 0 || x >= WIDTH || depth >= data->zbuffer[x])
-        return;
-    
-    // Calculate step and starting texture position
-    step = 1.0 * data->textures.sprite.height / (draw_end_y - draw_start_y);
-    tex_pos = (draw_start_y - HEIGHT / 2 + (draw_end_y - draw_start_y) / 2) * step;
-    
-    // Clamp to screen bounds
-    if (draw_start_y < 0)
-    {
-        tex_pos += -draw_start_y * step;
-        draw_start_y = 0;
-    }
-    if (draw_end_y > HEIGHT)
-        draw_end_y = HEIGHT;
-    
-    y = draw_start_y - 1;
-    while (++y < draw_end_y)
-    {
-        tex_y = (int)tex_pos & (data->textures.sprite.height - 1);
-        tex_pos += step;
-        
-        color = get_pixel_img(&data->textures.sprite, tex_x, tex_y);
-        
-        // Check for transparency (black or specific color key)
-        // Using 0x00FFFFFF mask checks if color is not pure black
-        if ((color & 0x00FFFFFF) != 0)
-        {
-            pixel_put(x, y, &data->img, color);
-        }
-    }
+	unsigned int	color;
+
+	color = get_pixel_img(&data->textures.sprite, tex_x, tex_y);
+	if ((color & 0x00FFFFFF) != 0)
+	{
+		pixel_put(x, y, &data->img, color);
+	}
+}
+
+// Calculate drawing boundaries
+static void	calc_draw_bounds(t_sprite_draw *draw)
+{
+	draw->draw_start_y = -draw->sprite_height / 2 + HEIGHT / 2;
+	draw->draw_end_y = draw->sprite_height / 2 + HEIGHT / 2;
+	draw->draw_start_x = -draw->sprite_width / 2 + draw->sprite_screen_x;
+	draw->draw_end_x = draw->sprite_width / 2 + draw->sprite_screen_x;
+	if (draw->draw_start_x < 0)
+		draw->draw_start_x = 0;
+	if (draw->draw_end_x > WIDTH)
+		draw->draw_end_x = WIDTH;
+}
+
+// Draw one vertical stripe of sprite
+static void	draw_sprite_stripe(t_data *data, int x, t_stripe_data *stripe)
+{
+	t_sprite_draw	draw;
+	t_tex_info		tex;
+	int				y;
+
+	if (x < 0 || x >= WIDTH)
+		return ;
+	if (stripe->depth >= data->zbuffer[x])
+		return ;
+	draw.draw_start_y = stripe->draw_start_y;
+	draw.draw_end_y = stripe->draw_end_y;
+	init_texture_calc(&tex, &draw, data->textures.sprite.height);
+	clamp_draw_bounds(&draw, &tex);
+	y = draw.draw_start_y - 1;
+	while (++y < draw.draw_end_y)
+	{
+		tex.tex_y = (int)tex.tex_pos & (data->textures.sprite.height - 1);
+		tex.tex_pos += tex.step;
+		draw_pixel_if_visible(data, x, y, stripe->tex_x, tex.tex_y);
+	}
+}
+
+// Calculate texture X coordinate for stripe
+static int	calc_tex_x(t_sprite_draw *draw, int x, int tex_width)
+{
+	int	tex_x;
+	int	offset;
+
+	offset = -draw->sprite_width / 2 + draw->sprite_screen_x;
+	tex_x = (int)(256 * (x - offset) * tex_width / draw->sprite_width) / 256;
+	if (tex_x < 0)
+		tex_x = 0;
+	if (tex_x >= tex_width)
+		tex_x = tex_width - 1;
+	return (tex_x);
+}
+
+// Draw all vertical stripes of one sprite
+static void	draw_sprite_stripes(t_data *data, t_sprite_draw *draw, double depth)
+{
+	int				x;
+	t_stripe_data	stripe;
+
+	stripe.draw_start_y = draw->draw_start_y;
+	stripe.draw_end_y = draw->draw_end_y;
+	stripe.depth = depth;
+	x = draw->draw_start_x - 1;
+	while (++x < draw->draw_end_x)
+	{
+		stripe.tex_x = calc_tex_x(draw, x, data->textures.sprite.width);
+		draw_sprite_stripe(data, x, &stripe);
+	}
+}
+
+// Process and render single sprite
+static void	render_single_sprite(t_data *data, t_sprite *sprite)
+{
+	t_transform		t;
+	t_sprite_draw	draw;
+	double			det;
+
+	t.sprite_x = sprite->x - data->player->x;
+	t.sprite_y = sprite->y - data->player->y;
+	det = data->game->plane_x * data->game->dir_y;
+	det -= data->game->dir_x * data->game->plane_y;
+	t.inv_det = (1.0 / det);
+	t.transform_x = t.inv_det * (data->game->dir_y * t.sprite_x);
+	t.transform_x -= t.inv_det * (data->game->dir_x * t.sprite_y);
+	t.transform_y = t.inv_det * (-data->game->plane_y * t.sprite_x);
+	t.transform_y += t.inv_det * (data->game->plane_x * t.sprite_y);
+	if (t.transform_y <= 0.1)
+		return ;
+	draw.sprite_height = abs((int)(HEIGHT / t.transform_y));
+	draw.sprite_width = abs((int)(HEIGHT / t.transform_y));
+	draw.sprite_screen_x = (int)((WIDTH / 2) * (1 + t.transform_x
+				/ t.transform_y));
+	calc_draw_bounds(&draw);
+	draw_sprite_stripes(data, &draw, t.transform_y);
 }
 
 // Project and render all sprites
-void render_sprites(t_data *data)
+void	render_sprites(t_data *data)
 {
-    int i, x;
-    t_sprite *sprite;
-    double sprite_x, sprite_y;
-    double inv_det;
-    double transform_x, transform_y;
-    int sprite_screen_x;
-    int sprite_height, sprite_width;
-    int draw_start_y, draw_end_y;
-    int draw_start_x, draw_end_x;
-    int tex_x;
-    
-    i = -1;
-    while (++i < data->sprite_count)
-    {
-        sprite = &data->sprites[i];
-        
-        // Translate sprite position relative to camera
-        sprite_x = sprite->x - data->player->x;
-        sprite_y = sprite->y - data->player->y;
-        
-        // Transform sprite with inverse camera matrix
-        // [ planeX   dirX ] [ spriteX ]
-        // [ planeY   dirY ] [ spriteY ]
-        inv_det = 1.0 / (data->game->plane_x * data->game->dir_y - 
-                         data->game->dir_x * data->game->plane_y);
-        
-        transform_x = inv_det * (data->game->dir_y * sprite_x - 
-                                 data->game->dir_x * sprite_y);
-        transform_y = inv_det * (-data->game->plane_y * sprite_x + 
-                                 data->game->plane_x * sprite_y);
-        
-        // Sprite is behind player
-        if (transform_y <= 0.1)
-            continue;
-        
-        // Calculate sprite screen position
-        sprite_screen_x = (int)((WIDTH / 2) * (1 + transform_x / transform_y));
-        
-        // Calculate sprite height and width
-        sprite_height = abs((int)(HEIGHT / transform_y));
-        sprite_width = abs((int)(HEIGHT / transform_y)); // Square sprites
-        
-        // Calculate draw boundaries
-        draw_start_y = -sprite_height / 2 + HEIGHT / 2;
-        draw_end_y = sprite_height / 2 + HEIGHT / 2;
-        
-        draw_start_x = -sprite_width / 2 + sprite_screen_x;
-        draw_end_x = sprite_width / 2 + sprite_screen_x;
-        
-        // Clamp to screen width
-        if (draw_start_x < 0)
-            draw_start_x = 0;
-        if (draw_end_x > WIDTH)
-            draw_end_x = WIDTH;
-        
-        // Draw each vertical stripe of the sprite
-        x = draw_start_x - 1;
-        while (++x < draw_end_x)
-        {
-            // Calculate texture X coordinate
-            tex_x = (int)(256 * (x - (-sprite_width / 2 + sprite_screen_x)) * 
-                         data->textures.sprite.width / sprite_width) / 256;
-            
-            // Ensure tex_x is within bounds
-            if (tex_x < 0)
-                tex_x = 0;
-            if (tex_x >= data->textures.sprite.width)
-                tex_x = data->textures.sprite.width - 1;
-            
-            // Draw this stripe if not occluded by walls
-            draw_sprite_stripe(data, sprite, x, draw_start_y, draw_end_y, 
-                             tex_x, transform_y);
-        }
-    }
+	int i;
+
+	sort_sprites(data);
+	i = -1;
+	while (++i < data->sprite_count)
+	{
+		render_single_sprite(data, &data->sprites[i]);
+	}
 }
-
-
