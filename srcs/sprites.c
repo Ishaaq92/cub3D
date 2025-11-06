@@ -12,44 +12,6 @@
 
 #include "cub3D.h"
 
-// Calculate texture step and position
-static void	init_texture_calc(t_tex_info *tex, t_sprite_draw *draw, int height)
-{
-	double	sprite_height_diff;
-
-	tex->step = 1.0 * height / (draw->draw_end_y - draw->draw_start_y);
-	sprite_height_diff = (draw->draw_end_y - draw->draw_start_y) / 2;
-	tex->tex_pos = (draw->draw_start_y - HEIGHT / 2 + sprite_height_diff);
-	tex->tex_pos *= tex->step;
-}
-
-// Clamp drawing boundaries to screen
-static void	clamp_draw_bounds(t_sprite_draw *draw, t_tex_info *tex)
-{
-	if (draw->draw_start_y < 0)
-	{
-		tex->tex_pos += -draw->draw_start_y * tex->step;
-		draw->draw_start_y = 0;
-	}
-	if (draw->draw_end_y > HEIGHT)
-	{
-		draw->draw_end_y = HEIGHT;
-	}
-}
-
-// Draw single pixel if not transparent
-static void	draw_pixel_if_visible(t_data *data, int x, int y, int tex_x,
-		int tex_y)
-{
-	unsigned int	color;
-
-	color = get_pixel_img(&data->textures.sprite, tex_x, tex_y);
-	if ((color & 0x00FFFFFF) != 0)
-	{
-		pixel_put(x, y, &data->img, color);
-	}
-}
-
 // Calculate drawing boundaries
 static void	calc_draw_bounds(t_sprite_draw *draw)
 {
@@ -69,6 +31,7 @@ static void	draw_sprite_stripe(t_data *data, int x, t_stripe_data *stripe)
 	t_sprite_draw	draw;
 	t_tex_info		tex;
 	int				y;
+	unsigned int	color;
 
 	if (x < 0 || x >= WIDTH)
 		return ;
@@ -83,38 +46,38 @@ static void	draw_sprite_stripe(t_data *data, int x, t_stripe_data *stripe)
 	{
 		tex.tex_y = (int)tex.tex_pos & (data->textures.sprite.height - 1);
 		tex.tex_pos += tex.step;
-		draw_pixel_if_visible(data, x, y, stripe->tex_x, tex.tex_y);
+		color = get_pixel_img(&data->textures.sprite, stripe->tex_x, tex.tex_y);
+		if ((color & 0x00FFFFFF) != 0)
+		{
+			pixel_put(x, y, &data->img, color);
+		}
 	}
-}
-
-// Calculate texture X coordinate for stripe
-static int	calc_tex_x(t_sprite_draw *draw, int x, int tex_width)
-{
-	int	tex_x;
-	int	offset;
-
-	offset = -draw->sprite_width / 2 + draw->sprite_screen_x;
-	tex_x = (int)(256 * (x - offset) * tex_width / draw->sprite_width) / 256;
-	if (tex_x < 0)
-		tex_x = 0;
-	if (tex_x >= tex_width)
-		tex_x = tex_width - 1;
-	return (tex_x);
 }
 
 // Draw all vertical stripes of one sprite
 static void	draw_sprite_stripes(t_data *data, t_sprite_draw *draw, double depth)
 {
 	int				x;
+	int				tex_x;
+	int				offset;
+	int				tex_width;
 	t_stripe_data	stripe;
 
 	stripe.draw_start_y = draw->draw_start_y;
 	stripe.draw_end_y = draw->draw_end_y;
 	stripe.depth = depth;
+	tex_width = data->textures.sprite.width;
 	x = draw->draw_start_x - 1;
 	while (++x < draw->draw_end_x)
 	{
-		stripe.tex_x = calc_tex_x(draw, x, data->textures.sprite.width);
+		offset = -draw->sprite_width / 2 + draw->sprite_screen_x;
+		tex_x = (int)(256 * (x - offset) * tex_width / draw->sprite_width)
+			/ 256;
+		if (tex_x < 0)
+			tex_x = 0;
+		if (tex_x >= tex_width)
+			tex_x = tex_width - 1;
+		stripe.tex_x = tex_x;
 		draw_sprite_stripe(data, x, &stripe);
 	}
 }

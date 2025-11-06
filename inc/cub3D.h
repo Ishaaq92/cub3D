@@ -268,10 +268,15 @@ typedef struct s_data
 	t_sprite	sprites[MAX_SPRITE];
 }	t_data;
 
-
-
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
+unsigned int	apply_fade(t_ray *ray, unsigned int color);
+t_img			*choose_texture(t_data *data);
+void			calculate_hitside(t_data *data);
+void			calculate_wall_bounds(t_data *data);
+void			clamp_draw_bounds(t_sprite_draw *draw, t_tex_info *tex);
+unsigned int	get_pixel_img(t_img *img, int x, int y);
+void			pixel_put(int x, int y, t_img *img, int colour);
 void			update_sprite_distances(t_data *data);
 void			draw_crosshair(t_data *data);
 unsigned int	apply_alpha(unsigned int color, double alpha);
@@ -299,6 +304,8 @@ unsigned int	get_pixel_img(t_img *img, int x, int y);
 void			update_doors_with_frame(t_data *data, double delta_time);
 void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0,
 					float rdx1, float rdy1);
+void			init_texture_calc(t_tex_info *tex, t_sprite_draw *draw,
+					int height);
 
 //load xpm to image
 void			load_textures(t_data *data);

@@ -1,4 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprite_extended.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/06 09:28:00 by aaladeok          #+#    #+#             */
+/*   Updated: 2025/11/06 09:28:05 by aaladeok         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
+
+void	pixel_put(int x, int y, t_img *img, int colour)
+{
+	char	*pixel;
+
+	if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT)
+	{
+		pixel = img->pxls + (y * img->line_length + x * (img->bpp / 8));
+		*(unsigned int *)pixel = colour;
+	}
+}
+
+unsigned int	get_pixel_img(t_img *img, int x, int y)
+{
+	unsigned char	*dst;
+	int				offset;
+
+	if (x < 0 || x >= img->width || y < 0 || y >= img->height)
+		return (0);
+	offset = y * img->line_length + x * (img->bpp / 8);
+	dst = (unsigned char *)img->pxls + offset;
+	return ((dst[2] << 16) | (dst[1] << 8) | dst[0]);
+}
 
 // Calculate sprite distances to player
 void	update_sprite_distances(t_data *data)
