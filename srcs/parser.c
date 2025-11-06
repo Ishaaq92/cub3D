@@ -15,6 +15,8 @@
 // if (access(ft_strtrim(ft_strchr(line, '.'), "\n "), 0) == -1)
 // 	return (printf("failure: bad path for %c", c), exit(1), -1);
 
+//changes map.map_zsize to map_height.
+
 static int	set_texture_config(t_data *data, char *line, char c)
 {
 	if (c == 'N')
@@ -95,19 +97,20 @@ static char	**add_map_line(t_data *data, char **line)
 	char	**map;
 	int		i;
 
-	if (data->map.map_size == 0)
+	if (data->map.map_height == 0)
 	{
 		map = malloc(sizeof(char *) * 1);
 		map[0] = *line;
-		data->map.map_size++;
+		data->map.map_height++;
 		return (map);
 	}
-	map = malloc(sizeof(char *) * (data->map.map_size + 1));
+	map = malloc(sizeof(char *) * (data->map.map_height + 1));
 	i = -1;
-	while (++i < data->map.map_size)
+	while (++i < data->map.map_height)
 		map[i] = data->map.map[i];
 	map[i] = ft_strdup(*line);
-	data->map.map_size++;
+	data->map.map_height++;
+	printf("Map size: %d\n", data->map.map_height);
 	free(data->map.map);
 	return (map);
 }
@@ -134,7 +137,7 @@ int	parser(t_data *data, char *file)
 	fd = open(file, 0);
 	if (fd < 0)
 		return (1);
-	data->map.map_size = 0;
+	data->map.map_height = 0;
 	s = get_next_line(fd);
 	while (s)
 	{

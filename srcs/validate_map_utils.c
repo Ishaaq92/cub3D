@@ -12,19 +12,10 @@
 
 #include "cub3D.h"
 
-int	get_row_len(char **map, int map_size, int *len)
+int	check_cell(char **map, int row, int col, int max_rows)
 {
-	if (!map || !map[0])
-		return (1);
-	*len = 0;
-	while (*len < map_size)
-		++(*len);
-	return (0);
-}
+	static const char	*exp_chars = "01NEWSDG";
 
-int	check_cell(char **map, int row, int col, int max_rows,
-		const char *exp_chars)
-{
 	if (row < 0 || row >= max_rows)
 		return (1);
 	if (col < 0 || (size_t)col >= ft_strlen(map[row]))
@@ -36,52 +27,52 @@ int	check_cell(char **map, int row, int col, int max_rows,
 
 int	is_valid(char **map, int i, int j, int len)
 {
-	static const char	*exp_chars = "01NEWSDG";
-
-	if (check_cell(map, i - 1, j, len, exp_chars))
+	if (check_cell(map, i - 1, j, len))
 		return (1);
-	if (check_cell(map, i + 1, j, len, exp_chars))
+	if (check_cell(map, i + 1, j, len))
 		return (1);
-	if (check_cell(map, i, j - 1, len, exp_chars))
+	if (check_cell(map, i, j - 1, len))
 		return (1);
-	if (check_cell(map, i, j + 1, len, exp_chars))
+	if (check_cell(map, i, j + 1, len))
 		return (1);
 	return (0);
 }
 
-int	check_details(char **map, int map_size, int i, int j, int len)
+int	check_details(char **map, int rows, int r, int c)
 {
-	if (i < map_size && map[i][j] != '1' && map[i][j] != ' '
-		&& map[i][j] != '\n')
+	char	ch;
+
+	ch = map[r][c];
+	if (ch == '1' || ch == ' ' || ch == '\n')
+		return (0);
+	if (ch == '\0')
+		return (0);
+	if (r == 0 || c == 0 || r == rows - 1 || c >= (int)ft_strlen(map[r]) - 1)
+		return (1);
+	if (is_valid(map, r, c, rows))
 	{
-		if (is_valid(map, i, j, len) != 0)
-		{
-			printf("Map error at row %d, col %d.\n", i, j);
-			return (1);
-		}
+		printf("Map error at row %d, col %d.\n", r, c);
+		return (1);
 	}
 	return (0);
 }
 
-int	check_walls(char **map, int map_size)
+int	check_walls(char **map, int map_height)
 {
-	int	i;
-	int	j;
-	int	len;
+	int	row;
+	int	col;
 
-	if (get_row_len(map, map_size, &len) != 0)
-		return (1);
-	i = 0;
-	while (i < map_size)
+	row = 0;
+	while (row < map_height)
 	{
-		j = 0;
-		while (map[i][j])
+		col = 0;
+		while (map[row][col])
 		{
-			if (check_details(map, map_size, i, j, len))
+			if (check_details(map, map_height, row, col))
 				return (1);
-			++j;
+			++col;
 		}
-		i++;
+		row++;
 	}
 	return (0);
 }

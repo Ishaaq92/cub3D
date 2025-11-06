@@ -12,6 +12,8 @@
 
 #include "cub3D.h"
 
+// changes map.map_zsize to map_height.
+
 int	create_player(t_data *data, int i, int j, char orientation)
 {
 	data->player = malloc(sizeof(t_player));
@@ -58,7 +60,7 @@ int	check_player_flow(t_data *data, int *pc)
 	int	j;
 
 	i = 0;
-	while (i < data->map.map_size)
+	while (i < data->map.map_height)
 	{
 		j = 0;
 		while (data->map.map[i][j])
@@ -90,9 +92,9 @@ int	check_player(t_data *data)
 
 int	validate_map(t_data *data)
 {
-	if (check_allowed_chars(data->map.map, data->map.map_size) != 0)
+	if (check_allowed_chars(data->map.map, data->map.map_height) != 0)
 		exit(1);
-	if (check_walls(data->map.map, data->map.map_size) != 0)
+	if (check_walls(data->map.map, data->map.map_height) != 0)
 		exit(1);
 	if (check_player(data) != 0)
 		exit(1);

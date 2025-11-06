@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/06 11:24:27 by aaladeok          #+#    #+#             */
+/*   Updated: 2025/11/06 11:24:31 by aaladeok         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 unsigned int	apply_fade(t_ray *ray, unsigned int color)
@@ -70,7 +82,7 @@ void	calculate_wall_bounds(t_data *data)
 
 void	calculate_hitside(t_data *data)
 {
-	t_ray *ray;
+	t_ray	*ray;
 
 	ray = data->ray;
 	if (ray->side == 0)

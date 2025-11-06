@@ -111,7 +111,7 @@ static void	render_single_sprite(t_data *data, t_sprite *sprite)
 // Project and render all sprites
 void	render_sprites(t_data *data)
 {
-	int i;
+	int		i;
 
 	sort_sprites(data);
 	i = -1;

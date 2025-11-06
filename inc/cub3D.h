@@ -70,7 +70,18 @@ typedef struct s_sprite
 	double		distance;
 }	t_sprite;
 
-// Helper structures for sprite calculations
+// Helper structures for sprite calculations and floor_ray
+
+typedef struct s_floor_ray
+{
+	float		ray_dir_x0;
+	float		ray_dir_y0;
+	float		ray_dir_x1;
+	float		ray_dir_y1;
+	float		step_x;
+	float		step_y;
+}			t_floor_ray;
+
 typedef struct s_sprite_draw
 {
 	int			draw_start_y;
@@ -155,7 +166,7 @@ typedef struct s_map
 {
 	char		**map;
 	t_list		*map_list;
-	int			map_size;
+	int			map_height;
 	int			floor_rgb;
 	int			ceiling_rgb;
 	char		*path_to_north;
@@ -302,8 +313,8 @@ void			draw_floor_and_ceiling(t_data *data);
 void			pixel_put(int x, int y, t_img *img, int colour);
 unsigned int	get_pixel_img(t_img *img, int x, int y);
 void			update_doors_with_frame(t_data *data, double delta_time);
-void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0,
-					float rdx1, float rdy1);
+// void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0,
+// 					float rdx1, float rdy1);
 void			init_texture_calc(t_tex_info *tex, t_sprite_draw *draw,
 					int height);
 

@@ -65,11 +65,11 @@ static double	calc_sprite_distance(t_data *data, t_sprite *sprite)
 // Sort sprites by distance (back to front)
 void	sort_sprites(t_data *data)
 {
-	int i;
-	int j;
-	t_sprite temp;
-	double dist_i;
-	double dist_j;
+	int			i;
+	int			j;
+	t_sprite	temp;
+	double		dist_i;
+	double		dist_j;
 
 	i = -1;
 	while (++i < data->sprite_count - 1)

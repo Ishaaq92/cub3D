@@ -62,41 +62,74 @@ void	compute_and_draw(t_data *d, float sx, float sy, int y)
 	}
 }
 
-void	draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1,
-		float rdy1)
+static void	draw_floor_row(t_data *d, int y, t_floor_ray *r)
 {
 	float	p;
-	float	step_x;
-	float	step_y;
 
 	p = (y - HEIGHT / 2.0);
 	if (d->ray == NULL)
 		printf("D ray is empty\n");
 	d->ray->row_dist = (0.5 * HEIGHT) / p;
 	d->ray->row_dist = fmin(d->ray->row_dist, 20.0);
-	step_x = d->ray->row_dist * (rdx1 - rdx0) / WIDTH;
-	step_y = d->ray->row_dist * (rdy1 - rdy0) / WIDTH;
-	d->ray->floor_x = d->player->x + d->ray->row_dist * rdx0;
-	d->ray->floor_y = d->player->y + d->ray->row_dist * rdy0;
-	compute_and_draw(d, step_x, step_y, y);
+	r->step_x = d->ray->row_dist * (r->ray_dir_x1 - r->ray_dir_x0) / WIDTH;
+	r->step_y = d->ray->row_dist * (r->ray_dir_y1 - r->ray_dir_y0) / WIDTH;
+	d->ray->floor_x = d->player->x + d->ray->row_dist * r->ray_dir_x0;
+	d->ray->floor_y = d->player->y + d->ray->row_dist * r->ray_dir_y0;
+	compute_and_draw(d, r->step_x, r->step_y, y);
 }
 
 void	draw_floor_and_ceiling(t_data *d)
 {
-	int		y;
-	float	ray_dirx0;
-	float	ray_diry0;
-	float	ray_dirx1;
-	float	ray_dir_y1;
+	int			y;
+	t_floor_ray	r;
 
-	ray_dirx0 = d->game->dir_x - d->game->plane_x;
-	ray_diry0 = d->game->dir_y - d->game->plane_y;
-	ray_dirx1 = d->game->dir_x + d->game->plane_x;
-	ray_dir_y1 = d->game->dir_y + d->game->plane_y;
+	r.ray_dir_x0 = d->game->dir_x - d->game->plane_x;
+	r.ray_dir_y0 = d->game->dir_y - d->game->plane_y;
+	r.ray_dir_x1 = d->game->dir_x + d->game->plane_x;
+	r.ray_dir_y1 = d->game->dir_y + d->game->plane_y;
 	y = HEIGHT / 2 + 10;
 	while (y < HEIGHT)
 	{
-		draw_floor_row(d, y, ray_dirx0, ray_diry0, ray_dirx1, ray_dir_y1);
+		draw_floor_row(d, y, &r);
 		y++;
 	}
 }
+
+// void	draw_floor_row(t_data *d, int y, float rdx0, float rdy0, float rdx1,
+// 		float rdy1)
+// {
+// 	float	p;
+// 	float	step_x;
+// 	float	step_y;
+
+// 	p = (y - HEIGHT / 2.0);
+// 	if (d->ray == NULL)
+// 		printf("D ray is empty\n");
+// 	d->ray->row_dist = (0.5 * HEIGHT) / p;
+// 	d->ray->row_dist = fmin(d->ray->row_dist, 20.0);
+// 	step_x = d->ray->row_dist * (rdx1 - rdx0) / WIDTH;
+// 	step_y = d->ray->row_dist * (rdy1 - rdy0) / WIDTH;
+// 	d->ray->floor_x = d->player->x + d->ray->row_dist * rdx0;
+// 	d->ray->floor_y = d->player->y + d->ray->row_dist * rdy0;
+// 	compute_and_draw(d, step_x, step_y, y);
+// }
+
+// void	draw_floor_and_ceiling(t_data *d)
+// {
+// 	int		y;
+// 	float	ray_dirx0;
+// 	float	ray_diry0;
+// 	float	ray_dirx1;
+// 	float	ray_dir_y1;
+
+// 	ray_dirx0 = d->game->dir_x - d->game->plane_x;
+// 	ray_diry0 = d->game->dir_y - d->game->plane_y;
+// 	ray_dirx1 = d->game->dir_x + d->game->plane_x;
+// 	ray_dir_y1 = d->game->dir_y + d->game->plane_y;
+// 	y = HEIGHT / 2 + 10;
+// 	while (y < HEIGHT)
+// 	{
+// 		draw_floor_row(d, y, ray_dirx0, ray_diry0, ray_dirx1, ray_dir_y1);
+// 		y++;
+// 	}
+// }
