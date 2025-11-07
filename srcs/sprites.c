@@ -88,6 +88,7 @@ static void	render_single_sprite(t_data *data, t_sprite *sprite)
 	t_transform		t;
 	t_sprite_draw	draw;
 	double			det;
+	double			sway;
 
 	t.sprite_x = sprite->x - data->player->x;
 	t.sprite_y = sprite->y - data->player->y;
@@ -102,8 +103,11 @@ static void	render_single_sprite(t_data *data, t_sprite *sprite)
 		return ;
 	draw.sprite_height = abs((int)(HEIGHT / t.transform_y));
 	draw.sprite_width = abs((int)(HEIGHT / t.transform_y));
+	// draw.sprite_screen_x = (int)((WIDTH / 2) * (1 + t.transform_x
+	// 			/ t.transform_y));
+	sway = sin(data->prev_time * 0.005 + sprite->x + sprite->y) * 30.0;
 	draw.sprite_screen_x = (int)((WIDTH / 2) * (1 + t.transform_x
-				/ t.transform_y));
+				/ t.transform_y)) + (int)sway;
 	calc_draw_bounds(&draw);
 	draw_sprite_stripes(data, &draw, t.transform_y);
 }

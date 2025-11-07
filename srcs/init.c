@@ -65,7 +65,7 @@ void	set_orientation(t_data *data)
 		data->game->plane_y = -0.66;
 	}
 }
-
+ /*Z_buffer needs to be freed in data struct.*/
 int	initialize_mlx_window(t_data *data)
 {
 	data->ray = malloc(sizeof(t_ray));
@@ -84,7 +84,7 @@ int	initialize_mlx_window(t_data *data)
 	data->zbuffer = malloc(sizeof(double) * WIDTH);
 	if (!data->zbuffer)
 	{
-		perror("zbuffer allocation failed\n");
+		printf("zbuffer allocation failed\n");
 		return (1);
 	}
 	return (0);
