@@ -52,6 +52,7 @@ int	main(int ac, char **av)
 	validate_input(data, av[1]);
 	if (initialise_data(data) == -1)
 		exit(1);
+	print_controls();
 	mouse_setup(data);
 	mlx_hook(data->win, DestroyNotify, KeyReleaseMask, ft_quit, data);
 	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_hold, data);

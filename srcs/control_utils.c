@@ -12,6 +12,17 @@
 
 #include "cub3D.h"
 
+void	print_controls(void)
+{
+	printf("\n");
+	printf("Controls:\n");
+    printf("  W/A/S/D - Move\n");
+    printf("  Arrow Keys - Rotate camera\n");
+    printf("  Mouse - Look around (click to lock/unlock)\n");
+    // printf("  Shift - Sprint\n"); Did we implement sprint.
+    printf("  ESC - Exit\n");
+}
+
 // Smooth easing function for natural animation
 double	ease_in_out_cubic(double t)
 {

@@ -282,71 +282,14 @@ typedef struct s_data
 
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
-unsigned int	apply_fade(t_ray *ray, unsigned int color);
-t_img			*choose_texture(t_data *data);
-void			calculate_hitside(t_data *data);
-void			calculate_wall_bounds(t_data *data);
-void			clamp_draw_bounds(t_sprite_draw *draw, t_tex_info *tex);
-unsigned int	get_pixel_img(t_img *img, int x, int y);
-void			pixel_put(int x, int y, t_img *img, int colour);
-void			update_sprite_distances(t_data *data);
-void			draw_crosshair(t_data *data);
-unsigned int	apply_alpha(unsigned int color, double alpha);
-int				get_door_frame(t_door *door, int total_frames);
-void			render_sprites(t_data *data);
-void			check_auto_doors(t_data *data);
-int				load_door_frames(t_data *data);
-// void			sort_sprites(t_data *data);
-void			sort_sprites(t_data *data);
-void			project_sprites(t_data *data);
-void			update_sprite_distances(t_data *data);
-void			init_sprites(t_data *data);
-void			draw_minimap(t_data *data);
-double			ease_in_out_cubic(double t);
-t_door			*find_door(t_data *data, int x, int y);
-void			check_doors(t_data *data);
+
+//GAME SETUP
+//Initialization
 void			init_doors(t_data *data);
 void			count_doors(t_data *data);
-void			draw_gun(t_data *data);
-void			update_doors(t_data *data, double delta_time);
-void			generate_floor_texture(t_data *data);
-void			draw_floor_and_ceiling(t_data *data);
-void			pixel_put(int x, int y, t_img *img, int colour);
-unsigned int	get_pixel_img(t_img *img, int x, int y);
-void			update_doors_with_frame(t_data *data, double delta_time);
-// void			draw_floor_row(t_data *d, int y, float rdx0, float rdy0,
-// 					float rdx1, float rdy1);
-void			init_texture_calc(t_tex_info *tex, t_sprite_draw *draw,
-					int height);
-
-//load xpm to image
-void			load_textures(t_data *data);
-t_img			load_xpm_to_img(void *mlx, char *path);
-
-// parser.c
-int				parser(t_data *data, char *file);
-
-//mouse control
-int				mouse_move(int x, int y, t_data *data);
-int				mouse_click(int button, int x, int y, t_data *data);
-
-// utils.c
-int				ft_quit(t_data *data);
-int				set_rgb(char *line);
-char			*set_path(char *line);
-
-// render.c
-void			render(t_data *data);
-// void	pixel_put(int x, int y, t_img *img, int colour);
-
-// init.c
+void			init_sprites(t_data *data);
 int				initialise_data(t_data *data);
-
-// hooks.c
-int				key_press_hold(int keycode, t_data *data);
-void			walk(t_data *data, char dir, double scale);
-void			rotate(t_data *data, double rot_speed);
-int				key_release(int keycode, t_data *data);
+t_door			*find_door(t_data *data, int x, int y);
 
 // Validation functions
 int				check_player(t_data *data);
@@ -356,6 +299,63 @@ int				create_player(t_data *data, int i, int j, char orientation);
 int				check_player_flow(t_data *data, int *pc);
 int				handle_player_char(int i, int j, t_data *data, int *pc);
 int				validate_input(t_data *data, char *file_name);
+
+//Animation
+double			ease_in_out_cubic(double t);
+unsigned int	apply_fade(t_ray *ray, unsigned int color);
+unsigned int	apply_alpha(unsigned int color, double alpha);
+
+//CONTROLS
+void			print_controls(void);
+void			check_auto_doors(t_data *data);
+
+//mouse control
+int				mouse_move(int x, int y, t_data *data);
+int				mouse_click(int button, int x, int y, t_data *data);
+
+//Texture
+void			load_textures(t_data *data);
+t_img			*choose_texture(t_data *data);
+int				load_door_frames(t_data *data);
+void			calculate_wall_bounds(t_data *data);
+void			generate_floor_texture(t_data *data);
+t_img			load_xpm_to_img(void *mlx, char *path);
+int				get_door_frame(t_door *door, int total_frames);
+void			clamp_draw_bounds(t_sprite_draw *draw, t_tex_info *tex);
+void			init_texture_calc(t_tex_info *tex, t_sprite_draw *draw,
+					int height);
+
+//Rendering
+void			render(t_data *data);
+void			draw_gun(t_data *data);
+void			check_doors(t_data *data);
+void			draw_minimap(t_data *data);
+void			sort_sprites(t_data *data);
+void			render_sprites(t_data *data);
+void			draw_crosshair(t_data *data);
+void			project_sprites(t_data *data);
+void			draw_floor_and_ceiling(t_data *data);
+void			update_sprite_distances(t_data *data);
+unsigned int	get_pixel_img(t_img *img, int x, int y);
+void			update_doors(t_data *data, double delta_time);
+void			pixel_put(int x, int y, t_img *img, int colour);
+void			update_doors_with_frame(t_data *data, double delta_time);
+
+
+// parser.c
+int				parser(t_data *data, char *file);
+
+
+// utils.c
+int				ft_quit(t_data *data);
+int				set_rgb(char *line);
+char			*set_path(char *line);
+
+// hooks.c
+int				key_press_hold(int keycode, t_data *data);
+void			walk(t_data *data, char dir, double scale);
+void			rotate(t_data *data, double rot_speed);
+int				key_release(int keycode, t_data *data);
 
 // Utils
 int				check_walls(char **map, int map_size);
@@ -374,9 +374,8 @@ void			free_list_and_exit(t_list **map_list);
 // dda.c
 void			dda(t_data *data, int x);
 void			initialise_ray(t_data *data);
+void			calculate_hitside(t_data *data);
 void			set_side_dist(t_ray *ray, t_data *data);
-
-// double	dda(t_data *data, int x);
 
 // game.c
 int				game_loop(t_data *data);
