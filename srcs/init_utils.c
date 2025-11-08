@@ -54,8 +54,6 @@ void	count_doors(t_data *data)
 		x = -1;
 		while (data->map.map[y][++x] != '\0')
 		{
-			// printf("%s\n", data->map.map[y]);
-			// printf("%d, %d\n", x, y);
 			if (data->map.map[y][x] == 'D')
 				count++;
 		}

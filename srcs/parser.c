@@ -31,6 +31,7 @@ static int	set_texture_config(t_data *data, char *line, char c)
 	return (0);
 }
 
+/*At the end of the this function can you exit and return at thesame time??*/
 static int	process_textures(t_data *data, char *line)
 {
 	static int	count;
@@ -48,11 +49,9 @@ static int	process_textures(t_data *data, char *line)
 	else if (ft_strncmp(line, "WE", 2) == 0 && !data->map.path_to_west)
 		return (count++, set_texture_config(data, line, 'W'), 0);
 	else if (ft_strncmp(line, "F", 1) == 0 && data->map.floor_rgb == -1)
-		return (count++, printf("floor texture\n"), set_texture_config(data,
-				line, 'F'));
+		return (count++, set_texture_config(data, line, 'F'));
 	else if (ft_strncmp(line, "C", 1) == 0 && data->map.ceiling_rgb == -1)
-		return (count++, printf("ceiling texture\n"), set_texture_config(data,
-				line, 'C'));
+		return (count++, set_texture_config(data, line, 'C'));
 	else
 		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);
 }
@@ -68,10 +67,10 @@ static char	**add_map_line(t_data *data, char *line)
 		map[i] = data->map.map[i];
 	map[i] = ft_strdup(line);
 	data->map.map_height++;
-	printf("Map size: %d\n", data->map.map_height);
+	// printf("Map size: %d\n", data->map.map_height);
 	free(data->map.map);
-	print_map(map, data->map.map_height);
-	printf("|%s|\n", line);
+	// print_map(map, data->map.map_height);
+	// printf("|%s|\n", line);
 	return (map);
 }
 
@@ -111,7 +110,7 @@ int	parser(t_data *data, char *file)
 		free(s);
 		s = get_next_line(fd);
 	}
-	printf("%d\n", data->map.map_height);
 	data->map.map[data->map.map_height] = 0;
+	close(fd);
 	return (0);
 }

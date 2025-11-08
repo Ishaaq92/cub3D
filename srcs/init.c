@@ -65,12 +65,15 @@ void	set_orientation(t_data *data)
 		data->game->plane_y = -0.66;
 	}
 }
- /*Z_buffer needs to be freed in data struct.*/
+
 int	initialize_mlx_window(t_data *data)
 {
 	data->ray = malloc(sizeof(t_ray));
 	if (!data->ray)
-		perror("Failed to allocate ray struct");
+	{
+		printf("Error: Failed to load door animation frames\n");
+		exit(1);
+	}
 	if (!data->mlx)
 		return (1);
 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "CUB3D");
@@ -97,6 +100,7 @@ int	initialise_data(t_data *data)
 	data->game = malloc(sizeof(t_game));
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
+	data->prev_time = 0;
 	if (!load_door_frames(data))
 	{
 		printf("Error: Failed to load door animation frames\n");

@@ -12,8 +12,7 @@
 
 #include "cub3D.h"
 
-// changes map.map_zsize to map_height.
-
+// changes map.map_size to map_height.
 int	create_player(t_data *data, int i, int j, char orientation)
 {
 	data->player = malloc(sizeof(t_player));
@@ -26,10 +25,11 @@ int	create_player(t_data *data, int i, int j, char orientation)
 	data->player->x = j + 0.3;
 	data->player->y = i + 0.3;
 	data->player->orientation = orientation;
-	printf("x = %f\n", data->player->x);
-	printf("y = %f\n", data->player->y);
-	printf("Memory address %p\n", &data->player);
-	printf("Player has been duly allocated.\n");
+	printf("GAME INFO\n");
+	printf("Player position on map\n");
+	printf("x = %.2f\n", data->player->x);
+	printf("y = %.2f\n", data->player->y);
+	printf("Player allocated.\n");
 	return (0);
 }
 
@@ -78,7 +78,6 @@ int	check_player(t_data *data)
 {
 	int	player_count;
 
-	printf("In check player \n");
 	player_count = 0;
 	if (check_player_flow(data, &player_count) != 0)
 		return (1);

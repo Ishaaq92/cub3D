@@ -19,7 +19,7 @@ void	print_controls(void)
     printf("  W/A/S/D - Move\n");
     printf("  Arrow Keys - Rotate camera\n");
     printf("  Mouse - Look around (click to lock/unlock)\n");
-    // printf("  Shift - Sprint\n"); Did we implement sprint.
+    // printf("  Shift - Sprint\n"); Did we implement sprint? current speed is actually sprinting..
     printf("  ESC - Exit\n");
 }
 

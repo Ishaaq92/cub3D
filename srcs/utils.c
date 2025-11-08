@@ -38,6 +38,7 @@ char	*set_path(char *line)
 	return (path);
 }
 
+/*Return and exit???*/
 int	ft_quit(t_data *data)
 {
 	if (!data || !data->mlx)
@@ -47,6 +48,10 @@ int	ft_quit(t_data *data)
 	if (data->win)
 		mlx_destroy_window(data->mlx, data->win);
 	mlx_destroy_display(data->mlx);
+	if (data->player)
+		free(data->player);
+	if (data->zbuffer)
+		free(data->zbuffer);
 	free(data->mlx);
 	free(data->map.path_to_east);
 	free(data->map.path_to_north);

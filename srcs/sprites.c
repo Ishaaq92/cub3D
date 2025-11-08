@@ -103,8 +103,6 @@ static void	render_single_sprite(t_data *data, t_sprite *sprite)
 		return ;
 	draw.sprite_height = abs((int)(HEIGHT / t.transform_y));
 	draw.sprite_width = abs((int)(HEIGHT / t.transform_y));
-	// draw.sprite_screen_x = (int)((WIDTH / 2) * (1 + t.transform_x
-	// 			/ t.transform_y));
 	sway = sin(data->prev_time * 0.005 + sprite->x + sprite->y) * 25.0;
 	draw.sprite_screen_x = (int)((WIDTH / 2) * (1 + t.transform_x
 				/ t.transform_y)) + (int)sway;
