@@ -49,9 +49,11 @@ $(LIBFT_DIR)libft.a:
 
 clean:
 	rm -rf $(ODIR)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
