@@ -3,7 +3,7 @@
 	url = https://github.com/42paris/minilibx-linux.git
 [submodule "Libft"]
 	path = Libft
-	url = https://github.com/Lexymma/libft.git
+	url = git@github.com:Lexymma/libft.git
 
 
 ###https://github.com/ishaaq92/Libft.git
