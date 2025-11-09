@@ -38,28 +38,32 @@ char	*set_path(char *line)
 	return (path);
 }
 
-/*Return and exit???*/
 int	ft_quit(t_data *data)
 {
 	if (!data || !data->mlx)
-		return (-1);
+		return (0);
+	free_tex_images(data);
+	destroy_door_textures(data->mlx, &data->textures.door_arr);
 	if (data->img.img)
+	{
 		mlx_destroy_image(data->mlx, data->img.img);
+		data->img.img = NULL;
+	}
 	if (data->win)
+	{
 		mlx_destroy_window(data->mlx, data->win);
+		data->win = NULL;
+	}
 	mlx_destroy_display(data->mlx);
-	if (data->player)
-		free(data->player);
-	if (data->zbuffer)
-		free(data->zbuffer);
 	free(data->mlx);
-	free(data->map.path_to_east);
-	free(data->map.path_to_north);
-	free(data->map.path_to_west);
-	free(data->map.path_to_south);
+	data->mlx = NULL;
+	free_game_entities(data);
+	free_map_entities(data);
+	free(data);
 	exit(0);
 	return (0);
 }
+
 
 int	set_rgb(char *line)
 {

@@ -62,15 +62,20 @@ static char	**add_map_line(t_data *data, char *line)
 	int		i;
 
 	map = malloc(sizeof(char *) * (data->map.map_height + 2));
+	if (!map)
+		return (NULL);
 	i = -1;
 	while (++i < data->map.map_height)
 		map[i] = data->map.map[i];
 	map[i] = ft_strdup(line);
+	if (!map[i])
+	{
+		free(map);
+		return(NULL);
+	}
+	map[i + 1] = NULL;
 	data->map.map_height++;
-	// printf("Map size: %d\n", data->map.map_height);
 	free(data->map.map);
-	// print_map(map, data->map.map_height);
-	// printf("|%s|\n", line);
 	return (map);
 }
 
@@ -78,12 +83,22 @@ static int	process_map(t_data *data, char *line)
 {
 	static int	start;
 
-	if (start == 1 && !ft_strncmp(line, "\n", 1))
-		return (2);
 	if (!line)
 		return (1);
+
+	if (start == 1 && !ft_strncmp(line, "\n", 1))
+	{
+		free(line);
+		return (2);
+	}
 	data->map.map = add_map_line(data, line);
+	if (!data->map.map)
+	{
+		free(line);
+		return (1);
+	}
 	start = 1;
+	free(line);
 	return (0);
 }
 
@@ -92,8 +107,7 @@ int	parser(t_data *data, char *file)
 	int		fd;
 	char	*s;
 
-	s = NULL;
-	fd = open(file, 0);
+	fd = open(file, O_RDONLY);
 	if (fd < 0)
 		return (1);
 	s = get_next_line(fd);
@@ -102,15 +116,17 @@ int	parser(t_data *data, char *file)
 		free(s);
 		s = get_next_line(fd);
 	}
-	if (process_map(data, s) != 0)
-		return (printf("error"), 1);
-	s = get_next_line(fd);
-	while (s && process_map(data, s) == 0)
+	if (!s || process_map(data, s) != 0)
 	{
 		free(s);
-		s = get_next_line(fd);
+		close(fd);
+		return (printf("error\n"), 1);
 	}
-	data->map.map[data->map.map_height] = 0;
+	s = get_next_line(fd);
+	while (s && process_map(data, s) == 0)
+		s = get_next_line(fd);
+	free(s);
+	data->map.map[data->map.map_height] = NULL;
 	close(fd);
 	return (0);
 }

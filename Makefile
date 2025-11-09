@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra  -L$(MLX_DIR) -I$(LIBFT_DIR) -I$(IDIR) -I$(MLX_DIR) -g
 SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.c \
 		validate_map_utils.c validate_map.c dda.c game.c control.c textures.c texture_utils.c \
 		minimap.c sprites.c door_animation.c control_utils.c dda_utils.c animation_utils.c \
-		init_utils.c sprite_extended.c sprite_utils.c render_utils.c
+		init_utils.c sprite_extended.c sprite_utils.c render_utils.c cleanup.c
 		
 NAME = cub3D
 
@@ -28,6 +28,7 @@ MLX_DIR = minilibx-linux/
 LIBFT_DIR = Libft/
 
 all: $(NAME)
+	@echo "✅ Build complete or up to date."
 
 $(NAME): $(OBJS) $(MLX_DIR)libmlx.a $(LIBFT_DIR)libft.a
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -lmlx -lX11 -lXext -lm $(LIBFT_DIR)libft.a
@@ -57,5 +58,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re submodule
 

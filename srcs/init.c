@@ -69,6 +69,7 @@ void	set_orientation(t_data *data)
 int	initialize_mlx_window(t_data *data)
 {
 	data->ray = malloc(sizeof(t_ray));
+	ft_bzero(data->ray, sizeof(t_ray));
 	if (!data->ray)
 	{
 		printf("Error: Failed to load door animation frames\n");
@@ -85,6 +86,7 @@ int	initialize_mlx_window(t_data *data)
 	data->img.pxls = mlx_get_data_addr(data->img.img, &data->img.bpp,
 			&data->img.line_length, &data->img.endian);
 	data->zbuffer = malloc(sizeof(double) * WIDTH);
+	ft_memset(data->zbuffer, 0, sizeof(double) * WIDTH);
 	if (!data->zbuffer)
 	{
 		printf("zbuffer allocation failed\n");
@@ -98,9 +100,10 @@ int	initialise_data(t_data *data)
 	reset_movement(data);
 	data->mlx = mlx_init();
 	data->game = malloc(sizeof(t_game));
+	ft_bzero(data->game, sizeof(t_game));
 	data->game->plane_x = 0;
 	data->game->plane_y = 0.66;
-	data->prev_time = 0;
+	data->prev_time = get_time_in_ms();
 	if (!load_door_frames(data))
 	{
 		printf("Error: Failed to load door animation frames\n");

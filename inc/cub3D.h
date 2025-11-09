@@ -143,9 +143,9 @@ typedef struct s_door
 	int			x;
 	int			y;
 	int			current_frame;
-	double		open_width; // 0.0 = closed, 1.0 = fully open
-	int			state; // 0 = closed, 1 = opening, 2 = open, 3 = closing
-	double		timer; // time since last interaction
+	double		open_width;
+	int			state;
+	double		timer;
 }		t_door;
 
 typedef struct s_player
@@ -166,7 +166,6 @@ typedef struct s_player
 typedef struct s_map
 {
 	char		**map;
-	t_list		*map_list;
 	int			map_height;
 	int			floor_rgb;
 	int			ceiling_rgb;
@@ -227,8 +226,7 @@ typedef struct s_tex_calc
 
 typedef struct s_game
 {
-	t_map		*map;
-	// t_player *player;
+	// t_map		*map;
 	double		dir_x;
 	double		dir_y;
 	double		plane_x;
@@ -283,8 +281,16 @@ typedef struct s_data
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
 
+//Cleanup
+void    free_tex_images(t_data *data);
+void	free_map_entities(t_data *data);
+void    free_game_entities(t_data *data);
+void    destroy_door_textures(void *mlx, t_door_tex *door_arr);
+
+
 //GAME SETUP
 //Initialization
+double			get_time_in_ms(void);
 void			init_doors(t_data *data);
 void			count_doors(t_data *data);
 void			init_sprites(t_data *data);

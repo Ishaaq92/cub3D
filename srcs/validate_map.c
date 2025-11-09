@@ -16,6 +16,7 @@
 int	create_player(t_data *data, int i, int j, char orientation)
 {
 	data->player = malloc(sizeof(t_player));
+	ft_bzero(data->player, sizeof(t_player)); 
 	if (!data->player)
 	{
 		printf("Malloc error.....exiting\n");
@@ -25,7 +26,7 @@ int	create_player(t_data *data, int i, int j, char orientation)
 	data->player->x = j + 0.3;
 	data->player->y = i + 0.3;
 	data->player->orientation = orientation;
-	printf("GAME INFO\n");
+	printf("\nGAME INFO\n");
 	printf("Player position on map\n");
 	printf("x = %.2f\n", data->player->x);
 	printf("y = %.2f\n", data->player->y);

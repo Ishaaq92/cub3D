@@ -41,13 +41,13 @@ void	fixed_fps(t_data *data, double fps)
 	return ;
 }
 
-static long int	get_time_in_ms(void)
-{
-	struct timeval	t;
+// static long int	get_time_in_ms(void)
+// {
+// 	struct timeval	t;
 
-	gettimeofday(&t, NULL);
-	return (t.tv_sec * 1000 + t.tv_usec / 1000);
-}
+// 	gettimeofday(&t, NULL);
+// 	return (t.tv_sec * 1000 + t.tv_usec / 1000);
+// }
 
 void	move(t_data *data)
 {

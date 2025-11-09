@@ -33,6 +33,5 @@ int	validate_input(t_data *data, char *file_name)
 	}
 	if (validate_map(data) != 0)
 		return (1);
-	print_map(data->map.map, data->map.map_height);
 	return (0);
 }

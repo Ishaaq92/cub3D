@@ -31,7 +31,6 @@ void	reset_map(t_data *data)
 {
 	data->map.map_height = 0;
 	data->map.map = 0;
-	data->map.map_list = 0;
 	data->map.ceiling_rgb = -1;
 	data->map.floor_rgb = -1;
 	data->map.path_to_east = 0;
@@ -46,7 +45,7 @@ int	main(int ac, char **av)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	ft_bzero(data, sizeof(data));
+	ft_bzero(data, sizeof(t_data));
 	reset_map(data);
 	if (ac != 2 || (av[1] && parser(data, av[1])))
 		return (1);
@@ -55,12 +54,12 @@ int	main(int ac, char **av)
 		exit(1);
 	print_controls();
 	mouse_setup(data);
-	mlx_hook(data->win, DestroyNotify, KeyReleaseMask, ft_quit, data);
+	mlx_hook(data->win, DestroyNotify, 0, ft_quit, data);
 	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_hold, data);
 	mlx_hook(data->win, KeyRelease, KeyReleaseMask, key_release, data);
 	mlx_hook(data->win, MotionNotify, PointerMotionMask, mouse_move, data);
 	mlx_hook(data->win, ButtonPress, ButtonPressMask, mouse_click, data);
 	mlx_loop_hook(data->mlx, game_loop, data);
 	mlx_loop(data->mlx);
-	ft_quit(data);
+	return (0);
 }
