@@ -40,6 +40,7 @@ void	reset_map(t_data *data)
 	data->map.path_to_south = 0;
 }
 
+/*We need an interactive message, when game initiated without args*/
 int	main(int ac, char **av)
 {
 	t_data	*data;
