@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 20:23:13 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 13:47:46 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 //Set texture H and W
 # define TEX_HEIGHT 64
 # define TEX_WIDTH 64
-# define FLOOR_MODE 0
+# define FLOOR_MODE 1
 
 //Sprite
 # define MAX_SPRITE 50
