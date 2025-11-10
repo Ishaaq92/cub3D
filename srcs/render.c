@@ -103,7 +103,8 @@ void	render(t_data *data)
 
 	x = 0;
 	r = data->ray;
-	draw_floor_and_ceiling(data);
+	if (data->floor_mode == 0)
+		draw_floor_and_ceiling(data);
 	while (x < WIDTH)
 	{
 		r->tile = '0';
@@ -111,14 +112,11 @@ void	render(t_data *data)
 		dda(data, x);
 		r->line_height = (int)(HEIGHT / r->distance);
 		calculate_wall_bounds(data);
+		draw_ceiling_column(data, x, r->draw_start);
 		draw_vertical_line(data, x);
+		draw_floor_column(data, x, r->draw_end);
 		data->zbuffer[x] = r->distance;
 		x++;
 	}
-	update_sprite_distances(data);
-	render_sprites(data);
-	draw_gun(data);
-	draw_minimap(data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
-	draw_crosshair(data);
+	update_user_interface(data);
 }

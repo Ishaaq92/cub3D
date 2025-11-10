@@ -15,6 +15,7 @@
 // generate_floor_texture(data); //Tested generated floor tiles.
 void	load_textures(t_data *data)
 {
+	data->floor_mode = FLOOR_MODE;
 	data->textures.north = load_xpm_to_img(data->mlx, data->map.path_to_north);
 	data->textures.south = load_xpm_to_img(data->mlx, data->map.path_to_south);
 	data->textures.west = load_xpm_to_img(data->mlx, data->map.path_to_west);

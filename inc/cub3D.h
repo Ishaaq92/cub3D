@@ -56,6 +56,7 @@
 //Set texture H and W
 # define TEX_HEIGHT 64
 # define TEX_WIDTH 64
+# define FLOOR_MODE 0
 
 //Sprite
 # define MAX_SPRITE 50
@@ -267,6 +268,7 @@ typedef struct s_data
 	int			mouse_locked;
 	//Textures
 	t_tex		textures;
+	int			floor_mode;
 	//door
 	int			door_count;
 	int			sprite_count;
@@ -280,9 +282,12 @@ typedef struct s_data
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
 //Cleanup
+void			update_user_interface(t_data *data);
 void			free_tex_images(t_data *data);
 void			free_map_entities(t_data *data);
 void			free_game_entities(t_data *data);
+void			draw_ceiling_column(t_data *data, int x, int draw_end);
+void			draw_floor_column(t_data *data, int x, int draw_start);
 void			destroy_door_textures(void *mlx, t_door_tex *door_arr);
 
 //GAME SETUP
