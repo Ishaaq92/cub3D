@@ -85,8 +85,8 @@ static int	process_map(t_data *data, char *line)
 
 	if (!line)
 		return (1);
-	if (start == 1 && !ft_strncmp(line, "\n", 1))
-		return (2);
+	if (start == 1 && ft_strncmp(line, "\n", 1) == 0)
+		return (free(line), exit_error(data), 1);
 	data->map.map = add_map_line(data, line);
 	if (!data->map.map)
 	{
