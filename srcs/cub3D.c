@@ -39,6 +39,17 @@ void	reset_map(t_data *data)
 	data->map.path_to_south = 0;
 }
 
+void	setup_hooks(t_data *data)
+{
+	mlx_hook(data->win, DestroyNotify, 0, ft_quit, data);
+	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_hold, data);
+	mlx_hook(data->win, KeyRelease, KeyReleaseMask, key_release, data);
+	mlx_hook(data->win, MotionNotify, PointerMotionMask, mouse_move, data);
+	mlx_hook(data->win, ButtonPress, ButtonPressMask, mouse_click, data);
+	mlx_loop_hook(data->mlx, game_loop, data);
+	mlx_loop(data->mlx);
+}
+
 /*We need an interactive message, when game initiated without args*/
 int	main(int ac, char **av)
 {
@@ -47,19 +58,18 @@ int	main(int ac, char **av)
 	data = malloc(sizeof(t_data));
 	ft_bzero(data, sizeof(t_data));
 	reset_map(data);
-	if (ac != 2 || (av[1] && parser(data, av[1])))
+	if (ac != 2)
+	{
+		printf("Usage: ./cub3d <map.cub>\n");
+		return (1);
+	}
+	if (av[1] && parser(data, av[1]))
 		return (1);
 	validate_input(data, av[1]);
 	if (initialise_data(data) == -1)
 		exit(1);
 	print_controls();
 	mouse_setup(data);
-	mlx_hook(data->win, DestroyNotify, 0, ft_quit, data);
-	mlx_hook(data->win, KeyPress, KeyPressMask, key_press_hold, data);
-	mlx_hook(data->win, KeyRelease, KeyReleaseMask, key_release, data);
-	mlx_hook(data->win, MotionNotify, PointerMotionMask, mouse_move, data);
-	mlx_hook(data->win, ButtonPress, ButtonPressMask, mouse_click, data);
-	mlx_loop_hook(data->mlx, game_loop, data);
-	mlx_loop(data->mlx);
+	setup_hooks(data);
 	return (0);
 }
