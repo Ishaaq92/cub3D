@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 17:46:44 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 18:06:03 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*set_path(t_data *data, char *line)
 		exit_error(data);
 	path = ft_strdup(tmp);
 	if (access(path, 0) == -1)
-		exit_error(data);
+		return (free(tmp), exit_error(data), NULL);
 	free(tmp);
 	return (path);
 }

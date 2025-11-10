@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 17:45:26 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 17:59:15 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	set_texture_config(t_data *data, char *line, char c)
 	else if (c == 'C')
 		data->map.ceiling_rgb = set_rgb(line);
 	else
-		return (write(2, "test Error: Invalid texture\n", 24), exit(1), 1);
+		return (free(line), write(2, "test Error: Invalid texture\n", 24), exit_error(data), 1);
 	return (0);
 }
 

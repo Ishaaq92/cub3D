@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:55 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/11/10 12:30:58 by aaladeok         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:07:25 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	exit_error(t_data *data)
 {
-	if (data->map.map)
-		free_map_entities(data);
+	free_map_entities(data);
 	if (data->game)
 		free_game_entities(data);
 	if (data->player)
@@ -47,20 +46,18 @@ void	free_map_entities(t_data *data)
 
 	i = -1;
 	if (data->map.map)
-	{
 		while (data->map.map[++i])
 			free(data->map.map[i]);
-		if (data->map.path_to_north)
-			free(data->map.path_to_north);
-		if (data->map.path_to_west)
-			free(data->map.path_to_west);
-		if (data->map.path_to_south)
-			free(data->map.path_to_south);
-		if (data->map.path_to_east)
-			free(data->map.path_to_east);
-		if (data->map.map)
-			free(data->map.map);
-	}
+	if (data->map.path_to_north)
+		free(data->map.path_to_north);
+	if (data->map.path_to_west)
+		free(data->map.path_to_west);
+	if (data->map.path_to_south)
+		free(data->map.path_to_south);
+	if (data->map.path_to_east)
+		free(data->map.path_to_east);
+	if (data->map.map)
+		free(data->map.map);
 }
 
 void	destroy_door_textures(void *mlx, t_door_tex *door_arr)
