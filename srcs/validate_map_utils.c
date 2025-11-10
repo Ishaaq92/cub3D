@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:36:25 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/10/09 20:35:44 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 14:19:07 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ int	check_details(char **map, int rows, int r, int c)
 	if (ch == '\0')
 		return (0);
 	if (r == 0 || c == 0 || r == rows - 1 || c >= (int)ft_strlen(map[r]) - 1)
+	{
+		printf("Map error at row %d, col %d.\n", r, c);
 		return (1);
+	}
 	if (is_valid(map, r, c, rows))
 	{
 		printf("Map error at row %d, col %d.\n", r, c);

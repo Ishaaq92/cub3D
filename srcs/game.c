@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:08:45 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/06 20:02:48 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 14:01:34 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	move(t_data *data)
 	t_player	*player;
 	double		pace;
 
-	pace = 0.03;
+	pace = 0.01;
 	player = data->player;
 	if (player->forward)
 		walk(data, 'f', pace);
@@ -65,9 +65,9 @@ void	move(t_data *data)
 	if (player->left)
 		walk(data, 'l', -pace);
 	if (player->rotate_right)
-		rotate(data, -0.035);
+		rotate(data, -0.005);
 	if (player->rotate_left)
-		rotate(data, 0.035);
+		rotate(data, 0.005);
 }
 
 int	game_loop(t_data *data)
