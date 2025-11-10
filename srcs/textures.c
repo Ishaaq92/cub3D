@@ -94,4 +94,3 @@ void	draw_floor_and_ceiling(t_data *d)
 		y++;
 	}
 }
-

@@ -16,7 +16,7 @@
 int	create_player(t_data *data, int i, int j, char orientation)
 {
 	data->player = malloc(sizeof(t_player));
-	ft_bzero(data->player, sizeof(t_player)); 
+	ft_bzero(data->player, sizeof(t_player));
 	if (!data->player)
 	{
 		printf("Malloc error.....exiting\n");

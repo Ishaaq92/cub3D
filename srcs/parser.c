@@ -71,7 +71,7 @@ static char	**add_map_line(t_data *data, char *line)
 	if (!map[i])
 	{
 		free(map);
-		return(NULL);
+		return (NULL);
 	}
 	map[i + 1] = NULL;
 	data->map.map_height++;
@@ -85,7 +85,6 @@ static int	process_map(t_data *data, char *line)
 
 	if (!line)
 		return (1);
-
 	if (start == 1 && !ft_strncmp(line, "\n", 1))
 	{
 		free(line);

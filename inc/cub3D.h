@@ -72,7 +72,6 @@ typedef struct s_sprite
 }	t_sprite;
 
 // Helper structures for sprite calculations and floor_ray
-
 typedef struct s_floor_ray
 {
 	float		ray_dir_x0;
@@ -280,13 +279,11 @@ typedef struct s_data
 
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
-
 //Cleanup
-void    free_tex_images(t_data *data);
-void	free_map_entities(t_data *data);
-void    free_game_entities(t_data *data);
-void    destroy_door_textures(void *mlx, t_door_tex *door_arr);
-
+void			free_tex_images(t_data *data);
+void			free_map_entities(t_data *data);
+void			free_game_entities(t_data *data);
+void			destroy_door_textures(void *mlx, t_door_tex *door_arr);
 
 //GAME SETUP
 //Initialization
@@ -347,10 +344,8 @@ void			update_doors(t_data *data, double delta_time);
 void			pixel_put(int x, int y, t_img *img, int colour);
 void			update_doors_with_frame(t_data *data, double delta_time);
 
-
 // parser.c
 int				parser(t_data *data, char *file);
-
 
 // utils.c
 int				ft_quit(t_data *data);
@@ -371,7 +366,6 @@ void			print_map(char **map, int map_size);
 int				clean_up(char **map, t_list **map_list);
 void			free_list_and_exit(t_list **map_list);
 int				player_error(const char *msg, t_player *player);
-
 char			*dup_line(char *src);
 void			free_array(char **arr);
 int				file_extension_valid(char *filepath);

@@ -64,7 +64,6 @@ int	ft_quit(t_data *data)
 	return (0);
 }
 
-
 int	set_rgb(char *line)
 {
 	int	colour;
