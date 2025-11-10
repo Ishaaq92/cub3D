@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 18:06:03 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 19:14:39 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,53 @@ int	ft_quit(t_data *data)
 	return (0);
 }
 
-int	set_rgb(char *line)
+static void	free_colours(char **colours)
+{
+	int	i;
+
+	i = -1;
+	while (colours[++i])
+		free(colours[i]);
+	free(colours);
+}
+
+static int	is_whitespace(char c)
+{
+    return (c == ' ' || (c >= 9 && c <= 13));
+}
+
+int	validate_colours(t_data *data, char *line)
+{
+	char	**colours;
+	int		i;
+	int		j;
+
+	colours = ft_split(++line, ',');
+	i = -1;
+	while (colours[++i])
+		continue;
+	if (i != 3)
+		return (printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+	i = -1;
+	while (colours[++i])
+	{
+		j = -1;
+		while (colours[i][++j])
+			if (!ft_isdigit(colours[i][j]) && !(is_whitespace(colours[i][j])))
+				return(printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+	}
+	free_colours(colours);
+	return (0);
+}
+
+int	set_rgb(t_data *data, char *line)
 {
 	int	colour;
 	int	rgb;
 	int	i;
 
 	i = 0;
+	validate_colours(data, line);
 	while (!ft_isdigit(line[i]))
 		i++;
 	colour = ft_atoi(&line[i]);
