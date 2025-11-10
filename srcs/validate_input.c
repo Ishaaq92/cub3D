@@ -27,11 +27,9 @@ int	file_extension_valid(char *filepath)
 int	validate_input(t_data *data, char *file_name)
 {
 	if (!file_extension_valid(file_name))
-	{
-		printf("Error: file must have a .cub extension\n");
-		exit(1);
-	}
+		return (printf("Error: file must have a .cub extension\n"),
+			exit_error(data), 1);
 	if (validate_map(data) != 0)
-		return (1);
+		return (printf("Unable to validate map.\n"), exit_error(data), 1);
 	return (0);
 }

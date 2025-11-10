@@ -53,7 +53,7 @@ static int	process_textures(t_data *data, char *line)
 	else if (ft_strncmp(line, "C", 1) == 0 && data->map.ceiling_rgb == -1)
 		return (count++, set_texture_config(data, line, 'C'));
 	else
-		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);
+		return (write(2, "Error: Invalid texture\n", 24), exit_error(data), 1);
 }
 
 static char	**add_map_line(t_data *data, char *line)
@@ -86,10 +86,7 @@ static int	process_map(t_data *data, char *line)
 	if (!line)
 		return (1);
 	if (start == 1 && !ft_strncmp(line, "\n", 1))
-	{
-		free(line);
 		return (2);
-	}
 	data->map.map = add_map_line(data, line);
 	if (!data->map.map)
 	{
@@ -108,7 +105,7 @@ int	parser(t_data *data, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
-		return (1);
+		return (printf("Unable to open file\n"), exit_error(data), 1);
 	s = get_next_line(fd);
 	while (s && process_textures(data, s) == 0)
 	{
@@ -119,7 +116,7 @@ int	parser(t_data *data, char *file)
 	{
 		free(s);
 		close(fd);
-		return (printf("error\n"), 1);
+		return (printf("error \n"), exit_error(data), 1);
 	}
 	s = get_next_line(fd);
 	while (s && process_map(data, s) == 0)
