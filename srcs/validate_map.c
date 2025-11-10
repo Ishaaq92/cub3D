@@ -93,10 +93,10 @@ int	check_player(t_data *data)
 int	validate_map(t_data *data)
 {
 	if (check_allowed_chars(data->map.map, data->map.map_height) != 0)
-		exit(1);
+		return (1);
 	if (check_walls(data->map.map, data->map.map_height) != 0)
-		exit(1);
+		return (1);
 	if (check_player(data) != 0)
-		exit(1);
+		return (1);
 	return (0);
 }

@@ -282,6 +282,7 @@ typedef struct s_data
 //new functions
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
 //Cleanup
+void			exit_error(t_data *data);
 void			update_user_interface(t_data *data);
 void			free_tex_images(t_data *data);
 void			free_map_entities(t_data *data);
