@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/10/09 17:34:09 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 17:46:44 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,21 @@ void	draw_crosshair(t_data *data)
 		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
 }
 
-char	*set_path(char *line)
+char	*set_path(t_data *data, char *line)
 {
 	char	*path;
-	char	*tmp1;
+	char	*tmp;
 
-	tmp1 = ft_strtrim(ft_strchr(line, '.'), "\n ");
-	path = ft_strdup(tmp1);
+	tmp = ft_strchr(line, '.');
+	if (!tmp)
+		exit_error(data);
+	tmp = ft_strtrim(tmp, "\n ");
+	if (!tmp)
+		exit_error(data);
+	path = ft_strdup(tmp);
 	if (access(path, 0) == -1)
-		return (exit(1), NULL);
-	free(tmp1);
+		exit_error(data);
+	free(tmp);
 	return (path);
 }
 

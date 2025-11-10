@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/06 19:10:14 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 17:45:26 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 static int	set_texture_config(t_data *data, char *line, char c)
 {
 	if (c == 'N')
-		data->map.path_to_north = set_path(line);
+		data->map.path_to_north = set_path(data, line);
 	else if (c == 'S')
-		data->map.path_to_south = set_path(line);
+		data->map.path_to_south = set_path(data, line);
 	else if (c == 'E')
-		data->map.path_to_east = set_path(line);
+		data->map.path_to_east = set_path(data, line);
 	else if (c == 'W')
-		data->map.path_to_west = set_path(line);
+		data->map.path_to_west = set_path(data, line);
 	else if (c == 'F')
 		data->map.floor_rgb = set_rgb(line);
 	else if (c == 'C')
 		data->map.ceiling_rgb = set_rgb(line);
 	else
-		return (write(2, "Error: Invalid texture\n", 24), exit(1), 1);
+		return (write(2, "test Error: Invalid texture\n", 24), exit(1), 1);
 	return (0);
 }
 

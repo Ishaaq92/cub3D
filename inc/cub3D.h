@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 14:06:02 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/10 17:43:57 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,7 +356,7 @@ int				parser(t_data *data, char *file);
 // utils.c
 int				ft_quit(t_data *data);
 int				set_rgb(char *line);
-char			*set_path(char *line);
+char			*set_path(t_data *data, char *line);
 
 // hooks.c
 int				key_press_hold(int keycode, t_data *data);
