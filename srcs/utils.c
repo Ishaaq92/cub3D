@@ -88,7 +88,7 @@ int	validate_colours(t_data *data, char *line)
 	return (0);
 }
 
-void	set_rgb(t_data *data, char *line, int *map_color)
+void	set_rgb(t_data *data, char *line, int *map_color, int *flag)
 {
 	int	colour;
 	int	rgb;
@@ -96,6 +96,8 @@ void	set_rgb(t_data *data, char *line, int *map_color)
 
 	printf("Was called for color.\n");
 	i = 0;
+	 if (*flag)
+        exit_error(data, "Double texture rgb.");
 	validate_colours(data, line);
 	while (!ft_isdigit(line[i]))
 		i++;
@@ -108,6 +110,7 @@ void	set_rgb(t_data *data, char *line, int *map_color)
 	colour = ft_atoi(line);
 	rgb = rgb + colour;
 	*map_color = rgb;
+	*flag = 1;
 }
 
 int	check_allowed_chars(char **map, int map_size)

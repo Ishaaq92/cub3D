@@ -65,7 +65,6 @@ int	main(int ac, char **av)
 	}
 	if (av[1] && parser(data, av[1]))
 		return (1);
-	validate_input(data, av[1]);
 	if (initialise_data(data) == -1)
 		exit(1);
 	print_controls();

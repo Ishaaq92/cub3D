@@ -46,7 +46,7 @@ int	handle_player_char(int i, int j, t_data *data, int *pc)
 		++(*pc);
 		if (*pc != 1)
 		{
-			player_error("Multi-player error.....exiting\n", data->player);
+			exit_error(data, "Multiplayer error");
 			return (1);
 		}
 		if (create_player(data, i, j, c) != 0)
@@ -84,7 +84,7 @@ int	check_player(t_data *data)
 		return (1);
 	if (player_count == 0)
 	{
-		player_error("error: no player in map..exiting\n", data->player);
+		exit_error(data, "No player in game...exiting");;
 		return (1);
 	}
 	return (0);

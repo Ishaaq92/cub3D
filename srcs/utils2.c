@@ -12,16 +12,16 @@
 
 #include "cub3D.h"
 
-int	player_error(const char *msg, t_player *player)
-{
-	if (player)
-	{
-		free(player);
-		player = NULL;
-	}
-	printf("%s\n", msg);
-	return (1);
-}
+// int	player_error(const char *msg, t_player *player)
+// {
+// 	if (player)
+// 	{
+// 		free(player);
+// 		player = NULL;
+// 	}
+// 	printf("%s\n", msg);
+// 	return (1);
+// }
 
 void	free_array(char **arr)
 {

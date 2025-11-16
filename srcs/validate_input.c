@@ -27,7 +27,7 @@ int	file_extension_valid(char *filepath)
 int	validate_input(t_data *data)
 {
 	if (validate_map(data) != 0)
-		return (exit_error(data, "Unable to validate map.\n"), 1);
+		exit_error(data, "Unable to validate map.\n");
 	return (0);
 }
 

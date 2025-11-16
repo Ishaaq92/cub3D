@@ -299,7 +299,7 @@ typedef struct s_data
 //new functions for parsing
 void	free_entities(t_data *data);
 char **add_map_line(t_data *data, char *line);
-void	set_rgb(t_data *data, char *line, int *map_color);
+void	set_rgb(t_data *data, char *line, int *map_color, int *flag);
 void free_lines(t_line *list);
 void parse_file(t_data *data, t_line *list);
 int				process_file(t_data *data, char *file);

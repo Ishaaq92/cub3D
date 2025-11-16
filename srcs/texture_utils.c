@@ -12,6 +12,23 @@
 
 #include "cub3D.h"
 
+// generate_floor_texture(data); //Tested generated floor tiles.
+void	load_textures(t_data *data)
+{
+	data->floor_mode = FLOOR_MODE;
+	data->textures.north = load_xpm_to_img(data->mlx, data->map.path_to_north);
+	data->textures.south = load_xpm_to_img(data->mlx, data->map.path_to_south);
+	data->textures.west = load_xpm_to_img(data->mlx, data->map.path_to_west);
+	data->textures.east = load_xpm_to_img(data->mlx, data->map.path_to_east);
+	data->textures.roof = load_xpm_to_img(data->mlx, "./assets/ceiling/0.xpm");
+	data->textures.floor = load_xpm_to_img(data->mlx, "./assets/floor/0.xpm");
+	data->textures.gun = load_xpm_to_img(data->mlx,
+			"./assets/weapon/pistol/1.xpm");
+	data->textures.door = load_xpm_to_img(data->mlx,
+			"./assets/door/Layer-1_sprite_02.xpm");
+	data->textures.sprite = load_xpm_to_img(data->mlx, "./assets/goomba.xpm");
+}
+
 void	draw_gun(t_data *data)
 {
 	int				x;

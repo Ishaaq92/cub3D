@@ -53,13 +53,13 @@ void set_path(t_data *data, char *line, char **dest, int *flag)
         exit_error(data, "Excess texture paths...exiting.");
     tmp = ft_strchr(line, '.');
     if (!tmp)
-        exit_error(data, "Empty texture path."); // list and everything else is freed inside
+        exit_error(data, "Empty texture path.");
     tmp = ft_strtrim(tmp, "\n ");
     path = ft_strdup(tmp);
     free(tmp);
     if (access(path, F_OK) == -1)
     {
-        printf("Issues with this texture path: %s", path);
+        printf("Issues with this texture path: %s\n", path);
         free(path);
         exit_error(data, "Unable to open texture path.");
     }
@@ -108,6 +108,11 @@ void parse_file(t_data *data, t_line *list)
     while (cur)
     {
         line = cur->str;
+        if (!ft_strncmp(line, "\n", 1))
+        {
+            cur = cur->next;
+            continue ;
+        }
         if (starts_with(line, "NO"))
             set_path(data, line, &data->map.path_to_north, &data->map.flags.has_north);
         else if (starts_with(line, "SO"))
@@ -117,23 +122,22 @@ void parse_file(t_data *data, t_line *list)
         else if (starts_with(line, "WE"))
             set_path(data, line, &data->map.path_to_west, &data->map.flags.has_west);
         else if (starts_with(line, "F"))
-            set_rgb(data, line, &data->map.floor_rgb);
+            set_rgb(data, line, &data->map.floor_rgb, &data->map.flags.has_floor);
         else if (starts_with(line, "C"))
-            set_rgb(data, line, &data->map.ceiling_rgb);
+            set_rgb(data, line, &data->map.ceiling_rgb, &data->map.flags.has_ceiling);
         else if (is_map_line(line))
-        {
-            printf("Did we hit a map line???");
-            printf("Line is: %s\n", line);
             break;
-        }
+        else
+            exit_error(data, line);
         cur = cur->next;
     }
     parse_map(cur, data);
-    print_map(data->map.map, data->map.map_height);
 }
 
 
-
+//  printf("Did we hit a map line???");
+//             printf("Line is: %s\n", line);
+// print_map(data->map.map, data->map.map_height);
 //Testing
     // if (data->map.floor_rgb)
     //     printf("Floor RGB: %d\n", data->map.floor_rgb);
