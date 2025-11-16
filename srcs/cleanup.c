@@ -12,23 +12,31 @@
 
 #include "cub3D.h"
 
-void	exit_error(t_data *data)
+// void free_lines(t_line *list)
+void	free_entities(t_data *data)
 {
+	if (data->list)
+		free_lines(data->list);
 	free_map_entities(data);
 	if (data->game)
 		free_game_entities(data);
 	if (data->player)
 		free(data->player);
+	data->player = NULL;
 	free(data);
 	data = NULL;
-	exit (1);
+}
+
+int	exit_error(t_data *data, char *str)
+{
+	if (str)
+		printf("Error: %s\n", str);
+	free_entities(data);
+	exit(1);
 }
 
 void	free_game_entities(t_data *data)
 {
-	if (data->player)
-		free(data->player);
-	data->player = NULL;
 	if (data->ray)
 		free(data->ray);
 	data->ray = NULL;
@@ -40,25 +48,30 @@ void	free_game_entities(t_data *data)
 	data->game = NULL;
 }
 
-void	free_map_entities(t_data *data)
+void free_map_entities(t_data *data)
 {
-	int	i;
+    int i;
 
-	i = -1;
-	if (data->map.map)
-		while (data->map.map[++i])
-			free(data->map.map[i]);
-	if (data->map.path_to_north)
-		free(data->map.path_to_north);
-	if (data->map.path_to_west)
-		free(data->map.path_to_west);
-	if (data->map.path_to_south)
-		free(data->map.path_to_south);
-	if (data->map.path_to_east)
-		free(data->map.path_to_east);
-	if (data->map.map)
-		free(data->map.map);
+    if (!data)
+        return;
+    if (data->map.map)
+    {
+        i = 0;
+        while (data->map.map[i])
+            free(data->map.map[i++]);
+        free(data->map.map);
+        data->map.map = NULL;
+    }
+    free(data->map.path_to_north);
+	data->map.path_to_north = NULL;
+    free(data->map.path_to_south);
+	data->map.path_to_south = NULL;
+    free(data->map.path_to_east);
+	data->map.path_to_east  = NULL;
+    free(data->map.path_to_west);
+    data->map.path_to_west = NULL;
 }
+
 
 void	destroy_door_textures(void *mlx, t_door_tex *door_arr)
 {

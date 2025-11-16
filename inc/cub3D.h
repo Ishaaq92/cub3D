@@ -61,6 +61,21 @@
 //Sprite
 # define MAX_SPRITE 50
 
+typedef struct s_line
+{
+    char            *str;
+    struct s_line   *next;
+}	t_line;
+
+typedef struct s_tex_flags {
+    int has_north;
+    int has_south;
+    int has_east;
+    int has_west;
+    int has_floor;
+    int has_ceiling;
+} t_tex_flags;
+
 typedef struct s_sprite
 {
 	double		x;
@@ -173,6 +188,7 @@ typedef struct s_map
 	char		*path_to_south;
 	char		*path_to_west;
 	char		*path_to_east;
+	t_tex_flags	flags;
 }	t_map;
 
 typedef struct s_ray
@@ -261,6 +277,7 @@ typedef struct s_data
 	void		*win;
 	t_img		img;
 	double		zoom;
+	t_line		*list;
 	t_player	*player;
 	//mouse
 	int			mouse_x;
@@ -279,10 +296,19 @@ typedef struct s_data
 	t_sprite	sprites[MAX_SPRITE];
 }	t_data;
 
-//new functions
+//new functions for parsing
+void	free_entities(t_data *data);
+char **add_map_line(t_data *data, char *line);
+void	set_rgb(t_data *data, char *line, int *map_color);
+void free_lines(t_line *list);
+void parse_file(t_data *data, t_line *list);
+int				process_file(t_data *data, char *file);
+// int				set_path(t_data *data, char *line, char **dest);
+
+
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
 //Cleanup
-void			exit_error(t_data *data);
+int				exit_error(t_data *data, char *str);
 void			update_user_interface(t_data *data);
 void			free_tex_images(t_data *data);
 void			free_map_entities(t_data *data);
@@ -307,7 +333,7 @@ int				validate_map(t_data *data);
 int				create_player(t_data *data, int i, int j, char orientation);
 int				check_player_flow(t_data *data, int *pc);
 int				handle_player_char(int i, int j, t_data *data, int *pc);
-int				validate_input(t_data *data, char *file_name);
+int				validate_input(t_data *data);
 
 //Animation
 double			ease_in_out_cubic(double t);
@@ -351,12 +377,12 @@ void			pixel_put(int x, int y, t_img *img, int colour);
 void			update_doors_with_frame(t_data *data, double delta_time);
 
 // parser.c
-int				parser(t_data *data, char *file);
+int				parser(t_data *data, char *filename);
 
 // utils.c
 int				ft_quit(t_data *data);
-int				set_rgb(t_data *data, char *line);
-char			*set_path(t_data *data, char *line);
+// int				set_rgb(t_data *data, char *line);
+// char			*set_path(t_data *data, char *line);
 
 // hooks.c
 int				key_press_hold(int keycode, t_data *data);
@@ -366,14 +392,14 @@ int				key_release(int keycode, t_data *data);
 
 // Utils
 int				check_walls(char **map, int map_size);
-char			*dup_line(char *src);
+// char			*dup_line(char *src);
 void			free_array(char **arr);
 void			print_map(char **map, int map_size);
 int				clean_up(char **map, t_list **map_list);
-void			free_list_and_exit(t_list **map_list);
+// void			free_list_and_exit(t_list **map_list);
 int				player_error(const char *msg, t_player *player);
 char			*dup_line(char *src);
-void			free_array(char **arr);
+// void			free_array(char **arr);
 int				file_extension_valid(char *filepath);
 void			free_list_and_exit(t_list **map_list);
 

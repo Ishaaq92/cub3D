@@ -1,128 +1,149 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 19:16:12 by isahmed          ###   ########.fr       */
+/*   Created: 2025/11/05 15:12:10 by aaladeok          #+#    #+#             */
+/*   Updated: 2025/11/05 15:12:14 by aaladeok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static int	set_texture_config(t_data *data, char *line, char c)
+int texture_path_complete(t_tex_flags *flags)
 {
-	if (c == 'N')
-		data->map.path_to_north = set_path(data, line);
-	else if (c == 'S')
-		data->map.path_to_south = set_path(data, line);
-	else if (c == 'E')
-		data->map.path_to_east = set_path(data, line);
-	else if (c == 'W')
-		data->map.path_to_west = set_path(data, line);
-	else if (c == 'F')
-		data->map.floor_rgb = set_rgb(data, line);
-	else if (c == 'C')
-		data->map.ceiling_rgb = set_rgb(data, line);
-	else
-		return (free(line), write(2, "test Error: Invalid texture\n", 24), exit_error(data), 1);
-	return (0);
+    if (!flags->has_north) //0 0r 1
+        return (1);
+    if (!flags->has_south)
+        return (1);
+    if (!flags->has_west)
+        return (1);
+    if (!flags->has_east)
+        return (1);
+    return (0);
 }
 
-/*At the end of the this function can you exit and return at thesame time??*/
-static int	process_textures(t_data *data, char *line)
+int starts_with(const char *str, const char *prefix)
 {
-	static int	count;
+    int i;
 
-	if (!ft_strncmp(line, "\n", 1))
-		return (0);
-	else if (count == 6)
-		return (1);
-	else if (ft_strncmp(line, "NO", 2) == 0 && !data->map.path_to_north)
-		return (count++, set_texture_config(data, line, 'N'), 0);
-	else if (ft_strncmp(line, "SO", 2) == 0 && !data->map.path_to_south)
-		return (count++, set_texture_config(data, line, 'S'), 0);
-	else if (ft_strncmp(line, "EA", 2) == 0 && !data->map.path_to_east)
-		return (count++, set_texture_config(data, line, 'E'), 0);
-	else if (ft_strncmp(line, "WE", 2) == 0 && !data->map.path_to_west)
-		return (count++, set_texture_config(data, line, 'W'), 0);
-	else if (ft_strncmp(line, "F", 1) == 0 && data->map.floor_rgb == -1)
-		return (count++, set_texture_config(data, line, 'F'));
-	else if (ft_strncmp(line, "C", 1) == 0 && data->map.ceiling_rgb == -1)
-		return (count++, set_texture_config(data, line, 'C'));
-	else
-		return (write(2, "Error: Invalid texture\n", 24), exit_error(data), 1);
+    i = 0;
+    while (*str == ' ' || *str == '\t')
+        str++;
+    while(prefix[i])
+    {
+        if (str[i] != prefix[i])
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
-static char	**add_map_line(t_data *data, char *line)
+void set_path(t_data *data, char *line, char **dest, int *flag)
 {
-	char	**map;
-	int		i;
+    char *tmp;
+    char *path;
 
-	map = malloc(sizeof(char *) * (data->map.map_height + 2));
-	if (!map)
-		return (NULL);
-	i = -1;
-	while (++i < data->map.map_height)
-		map[i] = data->map.map[i];
-	map[i] = ft_strdup(line);
-	if (!map[i])
-	{
-		free(map);
-		return (NULL);
-	}
-	map[i + 1] = NULL;
-	data->map.map_height++;
-	free(data->map.map);
-	return (map);
+    printf("Was called for texture.\n");
+    if (*flag)
+        exit_error(data, "Double texture path.");
+    if (!texture_path_complete(&data->map.flags))
+        exit_error(data, "Excess texture paths...exiting.");
+    tmp = ft_strchr(line, '.');
+    if (!tmp)
+        exit_error(data, "Empty texture path."); // list and everything else is freed inside
+    tmp = ft_strtrim(tmp, "\n ");
+    path = ft_strdup(tmp);
+    free(tmp);
+    if (access(path, F_OK) == -1)
+    {
+        printf("Issues with this texture path: %s", path);
+        free(path);
+        exit_error(data, "Unable to open texture path.");
+    }
+    *dest = path;
+    *flag = 1;
 }
 
-static int	process_map(t_data *data, char *line)
+// Skip whitespace and tabs
+char *skip_whitespace(char *str)
 {
-	static int	start;
-
-	if (!line)
-		return (1);
-	if (start == 1 && ft_strncmp(line, "\n", 1) == 0)
-		return (free(line), exit_error(data), 1);
-	data->map.map = add_map_line(data, line);
-	if (!data->map.map)
-	{
-		free(line);
-		return (1);
-	}
-	start = 1;
-	free(line);
-	return (0);
+    while (*str && (*str == ' ' || *str == '\t'))
+        str++;
+    return str;
 }
 
-int	parser(t_data *data, char *file)
+int is_map_line(char *line)
 {
-	int		fd;
-	char	*s;
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return (printf("Unable to open file\n"), exit_error(data), 1);
-	s = get_next_line(fd);
-	while (s && process_textures(data, s) == 0)
-	{
-		free(s);
-		s = get_next_line(fd);
-	}
-	if (!s || process_map(data, s) != 0)
-	{
-		free(s);
-		close(fd);
-		return (printf("error \n"), exit_error(data), 1);
-	}
-	s = get_next_line(fd);
-	while (s && process_map(data, s) == 0)
-		s = get_next_line(fd);
-	free(s);
-	data->map.map[data->map.map_height] = NULL;
-	close(fd);
-	return (0);
+    char *s;
+    
+    if (!line)
+        return 0;
+    s = skip_whitespace(line);
+    if (*s == '1' || *s == '0' || *s == ' ')
+        return 1;
+    return 0;
 }
+
+void    parse_map(t_line *list, t_data *data)
+{
+    char *line;
+
+    while (list)
+    {
+        line = list->str;
+        data->map.map = add_map_line(data, line);
+        list = list->next;
+    }
+}
+
+void parse_file(t_data *data, t_line *list)
+{
+    t_line  *cur;
+    char    *line;
+    
+    cur = list;
+    while (cur)
+    {
+        line = cur->str;
+        if (starts_with(line, "NO"))
+            set_path(data, line, &data->map.path_to_north, &data->map.flags.has_north);
+        else if (starts_with(line, "SO"))
+            set_path(data, line, &data->map.path_to_south, &data->map.flags.has_south);
+        else if (starts_with(line, "EA"))
+            set_path(data, line, &data->map.path_to_east, &data->map.flags.has_east);
+        else if (starts_with(line, "WE"))
+            set_path(data, line, &data->map.path_to_west, &data->map.flags.has_west);
+        else if (starts_with(line, "F"))
+            set_rgb(data, line, &data->map.floor_rgb);
+        else if (starts_with(line, "C"))
+            set_rgb(data, line, &data->map.ceiling_rgb);
+        else if (is_map_line(line))
+        {
+            printf("Did we hit a map line???");
+            printf("Line is: %s\n", line);
+            break;
+        }
+        cur = cur->next;
+    }
+    parse_map(cur, data);
+    print_map(data->map.map, data->map.map_height);
+}
+
+
+
+//Testing
+    // if (data->map.floor_rgb)
+    //     printf("Floor RGB: %d\n", data->map.floor_rgb);
+    //  if (data->map.ceiling_rgb)
+    //     printf("Ceiling RGB: %d\n", data->map.ceiling_rgb);
+    // if (data->map.path_to_east)
+    //     printf("path to East: %s\n", data->map.path_to_east);
+    //  if (data->map.path_to_west)
+    //     printf("path to West: %s\n", data->map.path_to_west);
+    //  if (data->map.path_to_north)
+    //     printf("path to North: %s\n", data->map.path_to_north);
+    //  if (data->map.path_to_south)
+    //     printf("path to South: %s\n", data->map.path_to_south);

@@ -25,24 +25,6 @@ void	draw_crosshair(t_data *data)
 		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
 }
 
-char	*set_path(t_data *data, char *line)
-{
-	char	*path;
-	char	*tmp;
-
-	tmp = ft_strchr(line, '.');
-	if (!tmp)
-		exit_error(data);
-	tmp = ft_strtrim(tmp, "\n ");
-	if (!tmp)
-		exit_error(data);
-	path = ft_strdup(tmp);
-	if (access(path, 0) == -1)
-		return (free(tmp), exit_error(data), NULL);
-	free(tmp);
-	return (path);
-}
-
 int	ft_quit(t_data *data)
 {
 	if (!data || !data->mlx)
@@ -62,9 +44,7 @@ int	ft_quit(t_data *data)
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
 	data->mlx = NULL;
-	free_game_entities(data);
-	free_map_entities(data);
-	free(data);
+	free_entities(data);
 	exit(0);
 	return (0);
 }
@@ -95,25 +75,26 @@ int	validate_colours(t_data *data, char *line)
 	while (colours[++i])
 		continue;
 	if (i != 3)
-		return (printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+		return (free_colours(colours), exit_error(data, "Invalid texture color"));
 	i = -1;
 	while (colours[++i])
 	{
 		j = -1;
 		while (colours[i][++j])
 			if (!ft_isdigit(colours[i][j]) && !(is_whitespace(colours[i][j])))
-				return(printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+				return(free_colours(colours), exit_error(data, "Invalid texture color"));
 	}
 	free_colours(colours);
 	return (0);
 }
 
-int	set_rgb(t_data *data, char *line)
+void	set_rgb(t_data *data, char *line, int *map_color)
 {
 	int	colour;
 	int	rgb;
 	int	i;
 
+	printf("Was called for color.\n");
 	i = 0;
 	validate_colours(data, line);
 	while (!ft_isdigit(line[i]))
@@ -126,7 +107,7 @@ int	set_rgb(t_data *data, char *line)
 	line = ft_strchr(line, ',') + 1;
 	colour = ft_atoi(line);
 	rgb = rgb + colour;
-	return (rgb);
+	*map_color = rgb;
 }
 
 int	check_allowed_chars(char **map, int map_size)

@@ -24,12 +24,23 @@ int	file_extension_valid(char *filepath)
 	return (0);
 }
 
-int	validate_input(t_data *data, char *file_name)
+int	validate_input(t_data *data)
 {
-	if (!file_extension_valid(file_name))
-		return (printf("Error: file must have a .cub extension\n"),
-			exit_error(data), 1);
 	if (validate_map(data) != 0)
-		return (printf("Unable to validate map.\n"), exit_error(data), 1);
+		return (exit_error(data, "Unable to validate map.\n"), 1);
 	return (0);
+}
+
+void free_lines(t_line *list)
+{
+    t_line *next;
+
+    while (list)
+    {
+        next = list->next;
+        free(list->str);    // free each GNL line
+        free(list);         // free node
+        list = next;
+    }
+	printf("Entire list freed!!\n.");
 }
