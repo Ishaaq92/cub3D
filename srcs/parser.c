@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/16 19:01:59 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/16 19:15:45 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,15 +121,11 @@ int	parser(t_data *data, char *file)
 	if (!file_extension_valid(file) || fd < 0)
 		return (printf("Unable to open file\n"), exit_error(data), 1);
 	s = get_next_line(fd);
-	while (s)
+	while (s && process_textures(data, s) == 0)
 	{
-		if (process_textures(data, s) != 0)
-			break ;
 		free(s);
 		s = get_next_line(fd);
 	}
-	free(s);
-	s = get_next_line(fd);
 	while (s && is_line_empty_or_whitespace(s))
 	{
 		free(s);
@@ -137,7 +133,5 @@ int	parser(t_data *data, char *file)
 	}
 	while (s && process_map(data, s) == 0)
 		s = get_next_line(fd);
-	free(s);
-	close(fd);
-	return (0);
+	return (free(s), close(fd), 0);
 }
