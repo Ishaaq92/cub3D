@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 12:30:55 by aaladeok          #+#    #+#             */
-/*   Updated: 2025/11/10 18:07:25 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/16 19:03:09 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,11 @@ void	free_map_entities(t_data *data)
 
 	i = -1;
 	if (data->map.map)
+	{
 		while (data->map.map[++i])
 			free(data->map.map[i]);
+		free(data->map.map[i]);
+	}
 	if (data->map.path_to_north)
 		free(data->map.path_to_north);
 	if (data->map.path_to_west)

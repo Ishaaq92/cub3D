@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 16:13:42 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 19:16:12 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/16 19:01:59 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,29 @@ static int	set_texture_config(t_data *data, char *line, char c)
 	return (0);
 }
 
-/*At the end of the this function can you exit and return at thesame time??*/
+static int	is_line_empty_or_whitespace(char *line)
+{
+	int	i;
+
+	i = -1;
+	if (!line)
+		return (1);
+	while (line[++i])
+	{
+		if (line[i] != ' ' && (line[i] < 9 || line[i] > 13))
+			return (0);
+	}
+	return (1); /* Line is all whitespace */
+}
+
 static int	process_textures(t_data *data, char *line)
 {
 	static int	count;
 
-	if (!ft_strncmp(line, "\n", 1))
-		return (0);
-	else if (count == 6)
+	if (count == 6)
 		return (1);
+	else if (is_line_empty_or_whitespace(line))
+		return (0);
 	else if (ft_strncmp(line, "NO", 2) == 0 && !data->map.path_to_north)
 		return (count++, set_texture_config(data, line, 'N'), 0);
 	else if (ft_strncmp(line, "SO", 2) == 0 && !data->map.path_to_south)
@@ -53,7 +67,7 @@ static int	process_textures(t_data *data, char *line)
 	else if (ft_strncmp(line, "C", 1) == 0 && data->map.ceiling_rgb == -1)
 		return (count++, set_texture_config(data, line, 'C'));
 	else
-		return (write(2, "Error: Invalid texture\n", 24), exit_error(data), 1);
+		return (printf("%s\n", line), free(line), write(2, "2: Error: Invalid texture\n", 26), exit_error(data), 1);
 }
 
 static char	**add_map_line(t_data *data, char *line)
@@ -85,8 +99,8 @@ static int	process_map(t_data *data, char *line)
 
 	if (!line)
 		return (1);
-	if (start == 1 && ft_strncmp(line, "\n", 1) == 0)
-		return (free(line), exit_error(data), 1);
+	if (start == 1 && is_line_empty_or_whitespace(line))
+		return (free(line), printf("Error: Invalid Map"), exit_error(data), 1);
 	data->map.map = add_map_line(data, line);
 	if (!data->map.map)
 	{
@@ -104,25 +118,26 @@ int	parser(t_data *data, char *file)
 	char	*s;
 
 	fd = open(file, O_RDONLY);
-	if (fd < 0)
+	if (!file_extension_valid(file) || fd < 0)
 		return (printf("Unable to open file\n"), exit_error(data), 1);
 	s = get_next_line(fd);
-	while (s && process_textures(data, s) == 0)
+	while (s)
+	{
+		if (process_textures(data, s) != 0)
+			break ;
+		free(s);
+		s = get_next_line(fd);
+	}
+	free(s);
+	s = get_next_line(fd);
+	while (s && is_line_empty_or_whitespace(s))
 	{
 		free(s);
 		s = get_next_line(fd);
 	}
-	if (!s || process_map(data, s) != 0)
-	{
-		free(s);
-		close(fd);
-		return (printf("error \n"), exit_error(data), 1);
-	}
-	s = get_next_line(fd);
 	while (s && process_map(data, s) == 0)
 		s = get_next_line(fd);
 	free(s);
-	data->map.map[data->map.map_height] = NULL;
 	close(fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:52:04 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 18:34:37 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/16 17:57:46 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,17 +365,18 @@ void			rotate(t_data *data, double rot_speed);
 int				key_release(int keycode, t_data *data);
 
 // Utils
+// int				is_whitespace(char c);
 int				check_walls(char **map, int map_size);
 char			*dup_line(char *src);
 void			free_array(char **arr);
 void			print_map(char **map, int map_size);
-int				clean_up(char **map, t_list **map_list);
-void			free_list_and_exit(t_list **map_list);
+// int				clean_up(char **map, t_list **map_list);
+// void			free_list_and_exit(t_list **map_list);
 int				player_error(const char *msg, t_player *player);
 char			*dup_line(char *src);
 void			free_array(char **arr);
 int				file_extension_valid(char *filepath);
-void			free_list_and_exit(t_list **map_list);
+// void			free_list_and_exit(t_list **map_list);
 
 // dda.c
 void			dda(t_data *data, int x);

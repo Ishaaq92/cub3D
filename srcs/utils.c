@@ -6,7 +6,7 @@
 /*   By: isahmed <isahmed@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 16:13:13 by isahmed           #+#    #+#             */
-/*   Updated: 2025/11/10 19:14:39 by isahmed          ###   ########.fr       */
+/*   Updated: 2025/11/16 18:39:26 by isahmed          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*set_path(t_data *data, char *line)
 		exit_error(data);
 	path = ft_strdup(tmp);
 	if (access(path, 0) == -1)
-		return (free(tmp), exit_error(data), NULL);
+		return (free(tmp), printf("Error: Invalid File or Access\n"), exit_error(data), NULL);
 	free(tmp);
 	return (path);
 }
@@ -95,14 +95,14 @@ int	validate_colours(t_data *data, char *line)
 	while (colours[++i])
 		continue;
 	if (i != 3)
-		return (printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+		return (printf("Error: Invalid texture: three colours only\n"), free_colours(colours), exit_error(data), 1);
 	i = -1;
 	while (colours[++i])
 	{
 		j = -1;
 		while (colours[i][++j])
 			if (!ft_isdigit(colours[i][j]) && !(is_whitespace(colours[i][j])))
-				return(printf("Error: Invalid texture\n"), free_colours(colours), exit_error(data), 1);
+				return(printf("Error: Invalid texture: invalid character\n"), free_colours(colours), exit_error(data), 1);
 	}
 	free_colours(colours);
 	return (0);
