@@ -68,12 +68,12 @@ typedef struct s_line
 }	t_line;
 
 typedef struct s_tex_flags {
-    int has_north;
-    int has_south;
-    int has_east;
-    int has_west;
-    int has_floor;
-    int has_ceiling;
+	int			has_north;
+	int			has_south;
+    int			has_east;
+    int			has_west;
+    int			has_floor;
+    int			has_ceiling;
 } t_tex_flags;
 
 typedef struct s_sprite
@@ -336,7 +336,8 @@ int				validate_map(t_data *data);
 int				create_player(t_data *data, int i, int j, char orientation);
 int				check_player_flow(t_data *data, int *pc);
 int				handle_player_char(int i, int j, t_data *data, int *pc);
-int				validate_input(t_data *data);
+void			validate_input(t_data *data);
+// int				validate_input(t_data *data);
 
 //Animation
 double			ease_in_out_cubic(double t);

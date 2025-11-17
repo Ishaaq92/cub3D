@@ -112,10 +112,10 @@ int parser(t_data *data, char *filename)
 		return (exit_error(data, "file must have a .cub extension."));
     fd = open(filename, O_RDONLY);
     if (fd < 0)
-        return (exit_error(data, "Unable to open file")); //Only data malloced.
-    data->list = read_file(fd); //we have malloced entire list of lines.
+        return (exit_error(data, "Unable to open file"));
+    data->list = read_file(fd);
     close(fd);
-    parse_file(data, data->list); //map lines has now been malloced here.
+    parse_file(data, data->list);
     validate_input(data);
     return (0);
 }

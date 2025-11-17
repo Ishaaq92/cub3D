@@ -59,7 +59,7 @@ void	set_rgb(t_data *data, char *line, int *map_color, int *flag)
 
 	printf("Was called for color.\n");
 	i = 0;
-	 if (*flag)
+	if (*flag)
         exit_error(data, "Double texture rgb.");
 	validate_colours(data, line);
 	while (!ft_isdigit(line[i]))

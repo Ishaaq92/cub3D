@@ -79,27 +79,3 @@ void	print_map(char **map, int map_size)
 	printf("\n");
 }
 
-// void	free_array(char **arr)
-// {
-// 	int	i;
-
-// 	if (!arr)
-// 		return ;
-// 	i = 0;
-// 	while (arr[i])
-// 		free(arr[i++]);
-// 	free(arr);
-// }
-
-// char	*dup_line(char *src)
-// {
-// 	char	*dup;
-// 	int		str_len;
-
-// 	str_len = ft_strlen(src);
-// 	dup = malloc(sizeof(char) * (str_len + 1));
-// 	if (!dup)
-// 		return (NULL);
-// 	ft_strlcpy(dup, src, (str_len + 1));
-// 	return (dup);
-// }
