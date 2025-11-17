@@ -12,27 +12,56 @@
 
 #include "cub3D.h"
 
-// int	player_error(const char *msg, t_player *player)
-// {
-// 	if (player)
-// 	{
-// 		free(player);
-// 		player = NULL;
-// 	}
-// 	printf("%s\n", msg);
-// 	return (1);
-// }
-
-void	free_array(char **arr)
+// void free_lines(t_line *list)
+void	free_entities(t_data *data)
 {
-	int	i;
+	if (data->list)
+		free_lines(data->list);
+	free_map_entities(data);
+	if (data->game)
+		free_game_entities(data);
+	if (data->player)
+		free(data->player);
+	data->player = NULL;
+	free(data);
+	data = NULL;
+}
 
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+void	draw_crosshair(t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = WIDTH / 2 - 9;
+	while (++x < (WIDTH / 2 + 10))
+		pixel_put(x, HEIGHT / 2, &data->img, 0xFFFFFF);
+	y = HEIGHT / 2 - 9;
+	while (++y < (HEIGHT / 2 + 10))
+		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
+}
+
+int	ft_quit(t_data *data)
+{
+	if (!data || !data->mlx)
+		return (0);
+	free_tex_images(data);
+	destroy_door_textures(data->mlx, &data->textures.door_arr);
+	if (data->img.img)
+	{
+		mlx_destroy_image(data->mlx, data->img.img);
+		data->img.img = NULL;
+	}
+	if (data->win)
+	{
+		mlx_destroy_window(data->mlx, data->win);
+		data->win = NULL;
+	}
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+	data->mlx = NULL;
+	free_entities(data);
+	exit(0);
+	return (0);
 }
 
 void	print_map(char **map, int map_size)
@@ -50,15 +79,27 @@ void	print_map(char **map, int map_size)
 	printf("\n");
 }
 
-char	*dup_line(char *src)
-{
-	char	*dup;
-	int		str_len;
+// void	free_array(char **arr)
+// {
+// 	int	i;
 
-	str_len = ft_strlen(src);
-	dup = malloc(sizeof(char) * (str_len + 1));
-	if (!dup)
-		return (NULL);
-	ft_strlcpy(dup, src, (str_len + 1));
-	return (dup);
-}
+// 	if (!arr)
+// 		return ;
+// 	i = 0;
+// 	while (arr[i])
+// 		free(arr[i++]);
+// 	free(arr);
+// }
+
+// char	*dup_line(char *src)
+// {
+// 	char	*dup;
+// 	int		str_len;
+
+// 	str_len = ft_strlen(src);
+// 	dup = malloc(sizeof(char) * (str_len + 1));
+// 	if (!dup)
+// 		return (NULL);
+// 	ft_strlcpy(dup, src, (str_len + 1));
+// 	return (dup);
+// }

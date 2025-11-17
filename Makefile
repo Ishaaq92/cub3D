@@ -16,7 +16,7 @@ SRCS = cub3D.c init.c utils.c render.c hooks.c parser.c utils2.c validate_input.
 		validate_map_utils.c validate_map.c dda.c game.c control.c textures.c texture_utils.c \
 		minimap.c sprites.c door_animation.c control_utils.c dda_utils.c animation_utils.c \
 		init_utils.c sprite_extended.c sprite_utils.c render_utils.c cleanup.c render_colors.c \
-		file_to_list.c
+		file_to_list.c parser_utils.c
 		
 NAME = cub3D
 

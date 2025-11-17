@@ -12,43 +12,6 @@
 
 #include "cub3D.h"
 
-void	draw_crosshair(t_data *data)
-{
-	int	x;
-	int	y;
-
-	x = WIDTH / 2 - 9;
-	while (++x < (WIDTH / 2 + 10))
-		pixel_put(x, HEIGHT / 2, &data->img, 0xFFFFFF);
-	y = HEIGHT / 2 - 9;
-	while (++y < (HEIGHT / 2 + 10))
-		pixel_put(WIDTH / 2, y, &data->img, 0xFFFFFF);
-}
-
-int	ft_quit(t_data *data)
-{
-	if (!data || !data->mlx)
-		return (0);
-	free_tex_images(data);
-	destroy_door_textures(data->mlx, &data->textures.door_arr);
-	if (data->img.img)
-	{
-		mlx_destroy_image(data->mlx, data->img.img);
-		data->img.img = NULL;
-	}
-	if (data->win)
-	{
-		mlx_destroy_window(data->mlx, data->win);
-		data->win = NULL;
-	}
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	data->mlx = NULL;
-	free_entities(data);
-	exit(0);
-	return (0);
-}
-
 static void	free_colours(char **colours)
 {
 	int	i;

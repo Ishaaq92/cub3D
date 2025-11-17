@@ -1,4 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   file_to_list.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaladeok <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 21:35:28 by aaladeok          #+#    #+#             */
+/*   Updated: 2025/09/10 21:35:34 by aaladeok         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
+
+void set_path(t_data *data, char *line, char **dest, int *flag)
+{
+    char *tmp;
+    char *path;
+
+    printf("Was called for texture.\n");
+    if (*flag)
+        exit_error(data, "Double texture path.");
+    if (!texture_path_complete(&data->map.flags))
+        exit_error(data, "Excess texture paths...exiting.");
+    tmp = ft_strchr(line, '.');
+    if (!tmp)
+        exit_error(data, "Empty texture path.");
+    tmp = ft_strtrim(tmp, "\n ");
+    path = ft_strdup(tmp);
+    free(tmp);
+    if (access(path, F_OK) == -1)
+    {
+        printf("Issues with this texture path: %s\n", path);
+        free(path);
+        exit_error(data, "Unable to open texture path.");
+    }
+    *dest = path;
+    *flag = 1;
+}
 
 char **add_map_line(t_data *data, char *line)
 {

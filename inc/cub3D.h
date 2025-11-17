@@ -297,13 +297,16 @@ typedef struct s_data
 }	t_data;
 
 //new functions for parsing
-void	free_entities(t_data *data);
-char **add_map_line(t_data *data, char *line);
-void	set_rgb(t_data *data, char *line, int *map_color, int *flag);
-void free_lines(t_line *list);
-void parse_file(t_data *data, t_line *list);
+int				texture_path_complete(t_tex_flags *flags);
+char			*skip_whitespace(char *str);
+int				starts_with(const char *str, const char *prefix);
+void			free_entities(t_data *data);
+char			**add_map_line(t_data *data, char *line);
+void			set_rgb(t_data *data, char *line, int *map_color, int *flag);
+void			free_lines(t_line *list);
+void			parse_file(t_data *data, t_line *list);
 int				process_file(t_data *data, char *file);
-// int				set_path(t_data *data, char *line, char **dest);
+void			set_path(t_data *data, char *line, char **dest, int *flag);
 
 
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
@@ -381,8 +384,6 @@ int				parser(t_data *data, char *filename);
 
 // utils.c
 int				ft_quit(t_data *data);
-// int				set_rgb(t_data *data, char *line);
-// char			*set_path(t_data *data, char *line);
 
 // hooks.c
 int				key_press_hold(int keycode, t_data *data);

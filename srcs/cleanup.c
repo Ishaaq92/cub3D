@@ -12,21 +12,6 @@
 
 #include "cub3D.h"
 
-// void free_lines(t_line *list)
-void	free_entities(t_data *data)
-{
-	if (data->list)
-		free_lines(data->list);
-	free_map_entities(data);
-	if (data->game)
-		free_game_entities(data);
-	if (data->player)
-		free(data->player);
-	data->player = NULL;
-	free(data);
-	data = NULL;
-}
-
 int	exit_error(t_data *data, char *str)
 {
 	if (str)
@@ -88,22 +73,26 @@ void	destroy_door_textures(void *mlx, t_door_tex *door_arr)
 
 void	free_tex_images(t_data *data)
 {
-	if (data->textures.west.img)
+	if (data->mlx)
+	{
+		if (data->textures.west.img)
 		mlx_destroy_image(data->mlx, data->textures.west.img);
-	if (data->textures.east.img)
-		mlx_destroy_image(data->mlx, data->textures.east.img);
-	if (data->textures.north.img)
-		mlx_destroy_image(data->mlx, data->textures.north.img);
-	if (data->textures.south.img)
-		mlx_destroy_image(data->mlx, data->textures.south.img);
-	if (data->textures.door.img)
-		mlx_destroy_image(data->mlx, data->textures.door.img);
-	if (data->textures.floor.img)
-		mlx_destroy_image(data->mlx, data->textures.floor.img);
-	if (data->textures.roof.img)
-		mlx_destroy_image(data->mlx, data->textures.roof.img);
-	if (data->textures.gun.img)
-		mlx_destroy_image(data->mlx, data->textures.gun.img);
-	if (data->textures.sprite.img)
-		mlx_destroy_image(data->mlx, data->textures.sprite.img);
+		if (data->textures.east.img)
+			mlx_destroy_image(data->mlx, data->textures.east.img);
+		if (data->textures.north.img)
+			mlx_destroy_image(data->mlx, data->textures.north.img);
+		if (data->textures.south.img)
+			mlx_destroy_image(data->mlx, data->textures.south.img);
+		if (data->textures.door.img)
+			mlx_destroy_image(data->mlx, data->textures.door.img);
+		if (data->textures.floor.img)
+			mlx_destroy_image(data->mlx, data->textures.floor.img);
+		if (data->textures.roof.img)
+			mlx_destroy_image(data->mlx, data->textures.roof.img);
+		if (data->textures.gun.img)
+			mlx_destroy_image(data->mlx, data->textures.gun.img);
+		if (data->textures.sprite.img)
+			mlx_destroy_image(data->mlx, data->textures.sprite.img);
+	}
+	return ;
 }

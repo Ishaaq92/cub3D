@@ -61,6 +61,7 @@ int	main(int ac, char **av)
 	if (ac != 2)
 	{
 		printf("Usage: ./cub3d <map.cub>\n");
+		free(data);
 		return (1);
 	}
 	if (av[1] && parser(data, av[1]))
