@@ -63,18 +63,19 @@
 
 typedef struct s_line
 {
-    char            *str;
-    struct s_line   *next;
+	char			*str;
+	struct s_line	*next;
 }	t_line;
 
-typedef struct s_tex_flags {
+typedef struct s_tex_flags
+{
 	int			has_north;
 	int			has_south;
-    int			has_east;
-    int			has_west;
-    int			has_floor;
-    int			has_ceiling;
-} t_tex_flags;
+	int			has_east;
+	int			has_west;
+	int			has_floor;
+	int			has_ceiling;
+}	t_tex_flags;
 
 typedef struct s_sprite
 {
@@ -307,7 +308,6 @@ void			free_lines(t_line *list);
 void			parse_file(t_data *data, t_line *list);
 int				process_file(t_data *data, char *file);
 void			set_path(t_data *data, char *line, char **dest, int *flag);
-
 
 // void			draw_minimap_dynamic(t_data *data);// Not in use..
 //Cleanup

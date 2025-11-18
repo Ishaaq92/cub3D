@@ -78,4 +78,3 @@ void	print_map(char **map, int map_size)
 	}
 	printf("\n");
 }
-

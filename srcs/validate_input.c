@@ -49,16 +49,15 @@ void	validate_input(t_data *data)
 		exit_error(data, "Map setting is not complete.");
 }
 
-void free_lines(t_line *list)
+void	free_lines(t_line *list)
 {
-    t_line *next;
+	t_line	*next;
 
-    while (list)
-    {
-        next = list->next;
-        free(list->str);    // free each GNL line
-        free(list);         // free node
-        list = next;
-    }
-	printf("Entire list freed!!\n.");
+	while (list)
+	{
+		next = list->next;
+		free(list->str);
+		free(list);
+		list = next;
+	}
 }

@@ -12,44 +12,49 @@
 
 #include "cub3D.h"
 
-int is_map_line(char *line)
+int	is_map_line(char *line)
 {
-    char *s;
-    
-    if (!line)
-        return 0;
-    s = skip_whitespace(line);
-    if (*s == '1' || *s == '0' || *s == ' ')
-        return 1;
-    return 0;
+	char	*s;
+
+	if (!line)
+		return (0);
+	s = skip_whitespace(line);
+	if (*s == '1' || *s == '0' || *s == ' ')
+		return (1);
+	return (0);
 }
 
-void    parse_map(t_line *list, t_data *data)
+void	parse_map(t_line *list, t_data *data)
 {
-    char *line;
+	char	*line;
 
-    while (list)
-    {
-        line = list->str;
-        data->map.map = add_map_line(data, line);
-        list = list->next;
-    }
+	while (list)
+	{
+		line = list->str;
+		data->map.map = add_map_line(data, line);
+		list = list->next;
+	}
 }
 
 static int	handle_header_line(t_data *data, char *line)
 {
 	if (starts_with(line, "NO"))
-		set_path(data, line, &data->map.path_to_north, &data->map.flags.has_north);
+		set_path(data, line, &data->map.path_to_north,
+			&data->map.flags.has_north);
 	else if (starts_with(line, "SO"))
-		set_path(data, line, &data->map.path_to_south, &data->map.flags.has_south);
+		set_path(data, line, &data->map.path_to_south,
+			&data->map.flags.has_south);
 	else if (starts_with(line, "EA"))
-		set_path(data, line, &data->map.path_to_east, &data->map.flags.has_east);
+		set_path(data, line, &data->map.path_to_east,
+			&data->map.flags.has_east);
 	else if (starts_with(line, "WE"))
-		set_path(data, line, &data->map.path_to_west, &data->map.flags.has_west);
+		set_path(data, line, &data->map.path_to_west,
+			&data->map.flags.has_west);
 	else if (starts_with(line, "F"))
 		set_rgb(data, line, &data->map.floor_rgb, &data->map.flags.has_floor);
 	else if (starts_with(line, "C"))
-		set_rgb(data, line, &data->map.ceiling_rgb, &data->map.flags.has_ceiling);
+		set_rgb(data, line, &data->map.ceiling_rgb,
+			&data->map.flags.has_ceiling);
 	else
 		return (0);
 	return (1);
@@ -72,48 +77,10 @@ void	parse_file(t_data *data, t_line *list)
 	{
 		line = cur->str;
 		if (is_map_line(line))
-			break;
+			break ;
 		if (!handle_header_line(data, line))
 			exit_error(data, line);
 		cur = skip_empty(cur->next);
 	}
 	parse_map(cur, data);
 }
-
-
-
-
-// void parse_file(t_data *data, t_line *list)
-// {
-//     t_line  *cur;
-//     char    *line;
-    
-//     cur = list;
-//     while (cur)
-//     {
-//         line = cur->str;
-//         if (!ft_strncmp(line, "\n", 1))
-//         {
-//             cur = cur->next;
-//             continue ;
-//         }
-//         if (starts_with(line, "NO"))
-//             set_path(data, line, &data->map.path_to_north, &data->map.flags.has_north);
-//         else if (starts_with(line, "SO"))
-//             set_path(data, line, &data->map.path_to_south, &data->map.flags.has_south);
-//         else if (starts_with(line, "EA"))
-//             set_path(data, line, &data->map.path_to_east, &data->map.flags.has_east);
-//         else if (starts_with(line, "WE"))
-//             set_path(data, line, &data->map.path_to_west, &data->map.flags.has_west);
-//         else if (starts_with(line, "F"))
-//             set_rgb(data, line, &data->map.floor_rgb, &data->map.flags.has_floor);
-//         else if (starts_with(line, "C"))
-//             set_rgb(data, line, &data->map.ceiling_rgb, &data->map.flags.has_ceiling);
-//         else if (is_map_line(line))
-//             break;
-//         else
-//             exit_error(data, line);
-//         cur = cur->next;
-//     }
-//     parse_map(cur, data);
-// }

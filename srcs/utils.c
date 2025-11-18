@@ -24,7 +24,7 @@ static void	free_colours(char **colours)
 
 static int	is_whitespace(char c)
 {
-    return (c == ' ' || (c >= 9 && c <= 13));
+	return (c == ' ' || (c >= 9 && c <= 13));
 }
 
 int	validate_colours(t_data *data, char *line)
@@ -36,16 +36,18 @@ int	validate_colours(t_data *data, char *line)
 	colours = ft_split(++line, ',');
 	i = -1;
 	while (colours[++i])
-		continue;
+		continue ;
 	if (i != 3)
-		return (free_colours(colours), exit_error(data, "Invalid texture color"));
+		return (free_colours(colours), exit_error(data,
+				"Invalid texture color"));
 	i = -1;
 	while (colours[++i])
 	{
 		j = -1;
 		while (colours[i][++j])
 			if (!ft_isdigit(colours[i][j]) && !(is_whitespace(colours[i][j])))
-				return(free_colours(colours), exit_error(data, "Invalid texture color"));
+				return (free_colours(colours), exit_error(data,
+						"Invalid texture color"));
 	}
 	free_colours(colours);
 	return (0);
@@ -57,10 +59,9 @@ void	set_rgb(t_data *data, char *line, int *map_color, int *flag)
 	int	rgb;
 	int	i;
 
-	printf("Was called for color.\n");
 	i = 0;
 	if (*flag)
-        exit_error(data, "Double texture rgb.");
+		exit_error(data, "Double texture rgb.");
 	validate_colours(data, line);
 	while (!ft_isdigit(line[i]))
 		i++;

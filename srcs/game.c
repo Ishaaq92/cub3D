@@ -75,7 +75,6 @@ int	game_loop(t_data *data)
 	if (get_time_in_ms() - t0 > 1000)
 	{
 		t0 = get_time_in_ms();
-		printf("%ld\n", frames);
 		frames = 0;
 	}
 	check_auto_doors(data);

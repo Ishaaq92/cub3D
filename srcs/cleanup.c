@@ -33,30 +33,29 @@ void	free_game_entities(t_data *data)
 	data->game = NULL;
 }
 
-void free_map_entities(t_data *data)
+void	free_map_entities(t_data *data)
 {
-    int i;
+	int	i;
 
-    if (!data)
-        return;
-    if (data->map.map)
-    {
-        i = 0;
-        while (data->map.map[i])
-            free(data->map.map[i++]);
-        free(data->map.map);
-        data->map.map = NULL;
-    }
-    free(data->map.path_to_north);
+	if (!data)
+		return ;
+	if (data->map.map)
+	{
+		i = 0;
+		while (data->map.map[i])
+			free(data->map.map[i++]);
+		free(data->map.map);
+		data->map.map = NULL;
+	}
+	free(data->map.path_to_north);
 	data->map.path_to_north = NULL;
-    free(data->map.path_to_south);
+	free(data->map.path_to_south);
 	data->map.path_to_south = NULL;
-    free(data->map.path_to_east);
-	data->map.path_to_east  = NULL;
-    free(data->map.path_to_west);
-    data->map.path_to_west = NULL;
+	free(data->map.path_to_east);
+	data->map.path_to_east = NULL;
+	free(data->map.path_to_west);
+	data->map.path_to_west = NULL;
 }
-
 
 void	destroy_door_textures(void *mlx, t_door_tex *door_arr)
 {
@@ -76,7 +75,7 @@ void	free_tex_images(t_data *data)
 	if (data->mlx)
 	{
 		if (data->textures.west.img)
-		mlx_destroy_image(data->mlx, data->textures.west.img);
+			mlx_destroy_image(data->mlx, data->textures.west.img);
 		if (data->textures.east.img)
 			mlx_destroy_image(data->mlx, data->textures.east.img);
 		if (data->textures.north.img)

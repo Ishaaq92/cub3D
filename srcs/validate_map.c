@@ -84,7 +84,7 @@ int	check_player(t_data *data)
 		return (1);
 	if (player_count == 0)
 	{
-		exit_error(data, "No player in game...exiting");;
+		exit_error(data, "No player in game...exiting");
 		return (1);
 	}
 	return (0);
